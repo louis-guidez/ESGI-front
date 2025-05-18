@@ -13,5 +13,8 @@
       "esbenp.prettier-vscode",
       "dbaeumer.vscode-eslint"
     ]
+  },
+  "settings": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
