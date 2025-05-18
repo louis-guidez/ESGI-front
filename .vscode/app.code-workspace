@@ -5,6 +5,13 @@
     }
   ],
   "extensions": {
-    "recommendations": []
+    "recommendations": [
+      "usernamehw.errorlens",
+      "vivaxy.vscode-conventional-commits",
+      "gruntfuggly.todo-tree",
+      "vue.volar",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint"
+    ]
   }
 }
