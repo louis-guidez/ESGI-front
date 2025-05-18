@@ -3,6 +3,8 @@
     "usernamehw.errorlens",
     "vivaxy.vscode-conventional-commits",
     "gruntfuggly.todo-tree",
-    "vue.volar"
+    "vue.volar",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
   ]
 }
