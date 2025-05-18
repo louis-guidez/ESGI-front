@@ -8,7 +8,9 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky",
+    "pre-commit": "lint-staged"
   },
   "dependencies": {
     "@nuxt/eslint": "1.4.0",
@@ -19,8 +21,32 @@
   },
   "packageManager": "pnpm@9.6.0+sha512.38dc6fba8dba35b39340b9700112c2fe1e12f10b17134715a4aa98ccf7bb035e76fd981cf0bb384dfa98f8d6af5481c2bef2f4266a24bfa20c34eb7147ce0b5e",
   "devDependencies": {
+    "@commitlint/config-conventional": "^19.8.1",
     "@vue/eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
     "typescript": "^5.8.3"
+  },
+  "lint-staged": {
+    "**/*.{json,js,ts,tsx,vue}": [
+      "prettier --write",
+      "eslint"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "scope-enum": [
+        2,
+        "always",
+        [
+          "global",
+          "config"
+        ]
+      ]
+    }
   }
 }
