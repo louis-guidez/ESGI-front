@@ -9,6 +9,13 @@
         <option disabled selected>Choisir une page</option>
         <option value="/">Accueil</option>
         <option value="/photos">CRUD Photos</option>
+        <option value="/annonces">CRUD Annonces</option>
+        <option value="/conversations">CRUD Conversations</option>
+        <option value="/messages">CRUD Messages</option>
+        <option value="/reservations">CRUD Reservations</option>
+        <option value="/utilisateurs">CRUD Utilisateurs</option>
+        <option value="/utilisateur-conversations">CRUD Utilisateur-Conversations</option>
+        <option value="/users">CRUD Users</option>
       </select>
     </nav>
   </div>
