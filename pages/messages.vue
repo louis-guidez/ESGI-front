@@ -64,7 +64,7 @@ function showFlash({ message, type }) {
   }, 3000)
 }
 
-const { data: items, refresh } = await useAsyncData(resource, () => $fetch(`http://localhost:8000/api/${resource}`))
+const { data: items, refresh } = await useAsyncData(resource, () => apiFetch(`/${resource}`))
 
 const fields = ref([])
 const newItem = ref({})
@@ -84,7 +84,7 @@ function resetNewItem() {
 
 async function createItem() {
   try {
-    await $fetch(`http://localhost:8000/api/${resource}`, {
+    await apiFetch(`/${resource}`, {
       method: 'POST',
       body: newItem.value,
     })
@@ -103,7 +103,7 @@ function startEdit(item) {
 
 async function updateItem(id) {
   try {
-    await $fetch(`http://localhost:8000/api/${resource}/${id}`, {
+    await apiFetch(`/${resource}/${id}`, {
       method: 'PUT',
       body: editItem.value,
     })
@@ -121,7 +121,7 @@ function cancelEdit() {
 
 async function deleteItem(id) {
   try {
-    await $fetch(`http://localhost:8000/api/${resource}/${id}`, { method: 'DELETE' })
+    await apiFetch(`/${resource}/${id}`, { method: 'DELETE' })
     await refresh()
     showFlash({ message: 'Enregistrement supprimé !', type: 'success' })
   } catch (error) {
