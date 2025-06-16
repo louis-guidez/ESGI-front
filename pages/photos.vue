@@ -69,7 +69,7 @@ function showFlash({ message, type }) {
   }, 3000)
 }
 
-const { data: photos, refresh } = await useAsyncData('photos', () => $fetch('http://localhost:8000/api/photos'))
+const { data: photos, refresh } = await useAsyncData('photos', () => apiFetch('/photos'))
 
 const newPhoto = ref({ urlChemin: '', dateUpload: '' })
 const editingId = ref(null)
@@ -77,7 +77,7 @@ const editPhoto = ref({ urlChemin: '', dateUpload: '' })
 
 async function createPhoto() {
   try {
-    await $fetch('http://localhost:8000/api/photos', {
+    await apiFetch('/photos', {
       method: 'POST',
       body: newPhoto.value,
     })
@@ -96,7 +96,7 @@ function startEdit(photo) {
 
 async function updatePhoto(id) {
   try {
-    await $fetch(`http://localhost:8000/api/photos/${id}`, {
+    await apiFetch(`/photos/${id}`, {
       method: 'PUT',
       body: editPhoto.value,
     })
@@ -114,7 +114,7 @@ function cancelEdit() {
 
 async function deletePhoto(id) {
   try {
-    await $fetch(`http://localhost:8000/api/photos/${id}`, { method: 'DELETE' })
+    await apiFetch(`/photos/${id}`, { method: 'DELETE' })
     await refresh()
     showFlash({ message: 'Photo supprimée !', type: 'success' })
   } catch (error) {
