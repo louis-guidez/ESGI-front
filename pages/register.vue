@@ -14,6 +14,10 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+definePageMeta({
+  layout: 'auth',
+})
+
 const email = ref('')
 const password = ref('')
 const router = useRouter()

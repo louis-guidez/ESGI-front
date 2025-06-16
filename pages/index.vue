@@ -12,14 +12,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import AppToast from '@/components/AppToast.vue'
+
+definePageMeta({
+  layout: 'auth',
+})
 
 const email = ref('')
 const password = ref('')
 const error = ref('')
 const router = useRouter()
+const flash = useState<any>('flash', () => null)
+
+onMounted(() => {
+  if (flash.value) {
+    error.value = flash.value.message
+    flash.value = null
+  }
+})
 
 function loginUser() {
   if (email.value && password.value) {
