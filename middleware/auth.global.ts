@@ -1,6 +1,8 @@
 export default defineNuxtRouteMiddleware((to) => {
   const user = useState<any>('user')
   if (!user.value && to.path !== '/' && to.path !== '/register') {
+    const flash = useState<any>('flash')
+    flash.value = { message: 'Vous devez être connecté pour accéder à cette page', type: 'error' }
     return navigateTo('/')
   }
 })
