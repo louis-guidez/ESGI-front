@@ -1,9 +1,9 @@
 <!-- pages/index.vue -->
 <template>
   <div class="min-h-screen bg-gray-50">
-    <section class="px-4 mt-8" v-if="savedOffers.length">
-      <h2 class="text-2xl font-semibold mb-4">Vos offres sauvegardées</h2>
-      <div class="flex space-x-4 overflow-x-auto pb-4">
+    <section class="mt-8 w-full" v-if="savedOffers.length">
+      <h2 class="text-2xl font-semibold mb-4 px-4">Vos offres sauvegardées</h2>
+      <HorizontalScroller>
         <div v-for="offer in savedOffers" :key="offer.id" class="bg-white rounded shadow w-40 flex-shrink-0">
           <img :src="offer.image" class="h-24 w-full object-cover rounded-t" />
           <div class="p-2">
@@ -11,12 +11,12 @@
             <p class="text-xs text-gray-500">{{ offer.price }}</p>
           </div>
         </div>
-      </div>
+      </HorizontalScroller>
     </section>
 
-    <section class="px-4 mt-8" v-if="furnitureOffers.length">
-      <h2 class="text-2xl font-semibold mb-4">Mobilier</h2>
-      <div class="flex space-x-4 overflow-x-auto pb-4">
+    <section class="mt-8 w-full" v-if="furnitureOffers.length">
+      <h2 class="text-2xl font-semibold mb-4 px-4">Mobilier</h2>
+      <HorizontalScroller>
         <div v-for="item in furnitureOffers" :key="item.id" class="bg-white rounded shadow w-40 flex-shrink-0">
           <img :src="item.image" class="h-24 w-full object-cover rounded-t" />
           <div class="p-2">
@@ -24,10 +24,10 @@
             <p class="text-xs text-gray-500">{{ item.price }}</p>
           </div>
         </div>
-      </div>
+      </HorizontalScroller>
     </section>
 
-    <section class="px-4 mt-8 pb-20">
+    <section class="mt-8 pb-20 w-full">
       <h2 class="text-2xl font-semibold mb-4">Découvrir</h2>
       <div class="grid grid-cols-2 gap-4">
         <div v-for="cat in categories" :key="cat.name" :class="[cat.color, 'rounded p-4 flex items-center text-white space-x-2']">
@@ -41,6 +41,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import HorizontalScroller from '@/components/HorizontalScroller.vue'
 
 const savedOffers = ref([
   { id: 1, title: 'Chaise scandinave', price: '30€', image: 'https://picsum.photos/200/150?random=1' },
