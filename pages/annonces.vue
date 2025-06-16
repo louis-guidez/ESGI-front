@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue'
+import { ref } from 'vue'
 import AppToast from '@/components/AppToast.vue'
 
 const resource = 'annonces'
@@ -66,17 +66,15 @@ function showFlash({ message, type }) {
 
 const { data: items, refresh } = await useAsyncData(resource, () => apiFetch(`/${resource}`))
 
-const fields = ref([])
+// Explicitly define the fields of an annonce so the form is rendered even when
+// the API returns an empty array
+const fields = ref(['titre', 'description', 'prix'])
 const newItem = ref({})
 const editingId = ref(null)
 const editItem = ref({})
 
-watchEffect(() => {
-  if (items.value?.length && fields.value.length === 0) {
-    fields.value = Object.keys(items.value[0]).filter((k) => k !== 'id')
-    resetNewItem()
-  }
-})
+// Initialize a blank annonce object when the component is created
+resetNewItem()
 
 function resetNewItem() {
   newItem.value = fields.value.reduce((acc, f) => ({ ...acc, [f]: '' }), {})
