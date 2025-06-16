@@ -29,6 +29,18 @@
     </nav>
     <div v-if="open" class="fixed inset-0 z-0" @click="open = false"></div>
     <div v-if="open" class="absolute bottom-20 right-4 bg-white border rounded shadow-md p-4 z-20">
+      <select class="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4" @change="navigate($event)">
+        <option disabled selected>Choisir une page</option>
+        <option value="/">Accueil</option>
+        <option value="/photos">CRUD Photos</option>
+        <option value="/annonces">CRUD Annonces</option>
+        <option value="/conversations">CRUD Conversations</option>
+        <option value="/messages">CRUD Messages</option>
+        <option value="/reservations">CRUD Reservations</option>
+        <option value="/utilisateurs">CRUD Utilisateurs</option>
+        <option value="/utilisateur-conversations">CRUD Utilisateur-Conversations</option>
+        <option value="/users">CRUD Users</option>
+      </select>
       <ul class="space-y-2">
         <li>
           <NuxtLink to="/favorites" class="block">Mes favoris</NuxtLink>
@@ -43,9 +55,20 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const open = ref(false)
+const router = useRouter()
 function toggle() {
   open.value = !open.value
+}
+
+function navigate(event: Event) {
+  const target = event.target as HTMLSelectElement
+  const value = target.value
+  if (value) {
+    router.push(value)
+    open.value = false
+  }
 }
 </script>
