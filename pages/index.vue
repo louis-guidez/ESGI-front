@@ -1,46 +1,33 @@
-<!-- pages/index.vue -->
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <section class="mt-8 pb-8 w-full">
-      <h2 class="text-2xl font-semibold mb-4 px-4">Annonces</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
-        <div
-          v-for="annonce in annonces"
-          :key="annonce.id"
-          class="bg-white rounded shadow"
-        >
-          <img :src="annonce.image" class="h-24 w-full object-cover rounded-t" />
-          <div class="p-2">
-            <h3 class="font-medium text-sm truncate">{{ annonce.title }}</h3>
-            <p class="text-xs text-gray-500">{{ annonce.price }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="mt-8 pb-20 w-full">
-      <h2 class="text-2xl font-semibold mb-4">Découvrir</h2>
-      <div class="grid grid-cols-2 gap-4">
-        <div v-for="cat in categories" :key="cat.name" :class="[cat.color, 'rounded p-4 flex items-center text-white space-x-2']">
-          <span class="text-2xl">{{ cat.icon }}</span>
-          <span class="font-medium">{{ cat.name }}</span>
-        </div>
-      </div>
-    </section>
+  <div class="min-h-screen flex items-center justify-center bg-gray-50">
+    <form class="bg-white p-6 rounded shadow w-80 space-y-4" @submit.prevent="loginUser">
+      <h1 class="text-2xl font-bold text-center mb-4">Connexion</h1>
+      <input v-model="email" type="email" placeholder="Email" class="w-full border px-4 py-2 rounded" />
+      <input v-model="password" type="password" placeholder="Mot de passe" class="w-full border px-4 py-2 rounded" />
+      <button type="submit" class="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700">Se connecter</button>
+      <NuxtLink to="/register" class="block text-center text-blue-600 hover:underline">Créer un compte</NuxtLink>
+    </form>
+    <AppToast v-if="error" :message="error" type="error" />
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import AppToast from '@/components/AppToast.vue'
 
-const { data: annonces } = await useAsyncData('annonces', () =>
-  $fetch('http://localhost:8000/api/annonces')
-)
+const email = ref('')
+const password = ref('')
+const error = ref('')
+const router = useRouter()
 
-const categories = ref([
-  { name: 'Outils', color: 'bg-blue-600', icon: '🛠️' },
-  { name: 'Sport', color: 'bg-green-600', icon: '⚽' },
-  { name: 'Électronique', color: 'bg-yellow-500', icon: '💻' },
-  { name: 'Jeux', color: 'bg-red-500', icon: '🎲' },
-])
+function loginUser() {
+  if (email.value && password.value) {
+    const userState = useState('user')
+    userState.value = { email: email.value }
+    router.push('/home')
+  } else {
+    error.value = 'Email et mot de passe requis'
+  }
+}
 </script>

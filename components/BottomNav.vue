@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t shadow flex justify-around items-center py-3 z-10">
-      <NuxtLink to="/" class="flex flex-col items-center">
+      <NuxtLink to="/home" class="flex flex-col items-center">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75" />
         </svg>
@@ -31,7 +31,7 @@
     <div v-if="open" class="absolute bottom-20 right-4 bg-white border rounded shadow-md p-4 z-20">
       <select class="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4" @change="navigate($event)">
         <option disabled selected>Choisir une page</option>
-        <option value="/">Accueil</option>
+        <option value="/home">Accueil</option>
         <option value="/photos">CRUD Photos</option>
         <option value="/annonces">CRUD Annonces</option>
         <option value="/conversations">CRUD Conversations</option>
