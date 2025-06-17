@@ -9,4 +9,9 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
   modules: ['@nuxt/eslint'],
+  runtimeConfig: {
+    public: {
+      API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:8000/api',
+    },
+  },
 })
