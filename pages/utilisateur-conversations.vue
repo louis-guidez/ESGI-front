@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue'
+import { ref } from 'vue'
 import AppToast from '@/components/AppToast.vue'
 
 const resource = 'utilisateur-conversations'
@@ -66,17 +66,14 @@ function showFlash({ message, type }) {
 
 const { data: items, refresh } = await useAsyncData(resource, () => apiFetch(`/${resource}`))
 
-const fields = ref([])
+// Explicit fields to render form without API data
+const fields = ref(['utilisateurId', 'conversationId'])
 const newItem = ref({})
 const editingId = ref(null)
 const editItem = ref({})
 
-watchEffect(() => {
-  if (items.value?.length && fields.value.length === 0) {
-    fields.value = Object.keys(items.value[0]).filter((k) => k !== 'id')
-    resetNewItem()
-  }
-})
+// Initialize a blank utilisateur-conversation object when the component is created
+resetNewItem()
 
 function resetNewItem() {
   newItem.value = fields.value.reduce((acc, f) => ({ ...acc, [f]: '' }), {})
