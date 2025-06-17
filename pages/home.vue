@@ -4,15 +4,11 @@
     <section class="mt-8 pb-8 w-full">
       <h2 class="text-2xl font-semibold mb-4 px-4">Annonces</h2>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
-        <div
-          v-for="annonce in annonces"
-          :key="annonce.id"
-          class="bg-white rounded shadow"
-        >
+        <div v-for="annonce in annonces" :key="annonce.id" class="bg-white rounded shadow">
           <img :src="annonce.image" class="h-24 w-full object-cover rounded-t" />
           <div class="p-2">
-            <h3 class="font-medium text-sm truncate">{{ annonce.title }}</h3>
-            <p class="text-xs text-gray-500">{{ annonce.price }}</p>
+            <h3 class="font-medium text-sm truncate">{{ annonce.titre }}</h3>
+            <p class="text-xs text-gray-500">{{ annonce.prix }}</p>
           </div>
         </div>
       </div>
@@ -33,9 +29,7 @@
 <script setup>
 import { ref } from 'vue'
 
-const { data: annonces } = await useAsyncData('annonces', () =>
-  $fetch('http://localhost:8000/api/annonces')
-)
+const { data: annonces } = await useAsyncData('annonces', () => $fetch('http://localhost:8000/api/annonces'))
 
 const categories = ref([
   { name: 'Outils', color: 'bg-blue-600', icon: '🛠️' },
