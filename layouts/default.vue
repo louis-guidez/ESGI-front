@@ -1,5 +1,6 @@
 <template>
-  <div class="pb-16">
+  <div class="pt-16 pb-16">
+    <TopNav />
     <slot />
     <BottomNav />
   </div>
