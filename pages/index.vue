@@ -48,6 +48,8 @@ async function loginUser() {
     })
     const userState = useState('user')
     userState.value = data
+    const token = useCookie<any>('user_token')
+    token.value = data
     router.push('/home')
   } catch (e: any) {
     error.value = e?.data?.message || 'Erreur lors de la connexion'

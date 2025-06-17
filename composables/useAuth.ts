@@ -5,6 +5,8 @@ export function useAuth() {
 
   function logout() {
     user.value = null
+    const token = useCookie<any>('user_token')
+    token.value = null
     navigateTo('/')
   }
 
