@@ -15,6 +15,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import AppToast from '@/components/AppToast.vue'
+import { apiFetch } from '@/composables/useApi'
 
 definePageMeta({
   layout: 'auth',
@@ -33,13 +34,22 @@ onMounted(() => {
   }
 })
 
-function loginUser() {
-  if (email.value && password.value) {
-    const userState = useState('user')
-    userState.value = { email: email.value }
-    router.push('/home')
-  } else {
+async function loginUser() {
+  error.value = ''
+  if (!email.value || !password.value) {
     error.value = 'Email et mot de passe requis'
+    return
+  }
+  try {
+    const data = await apiFetch<any>('/login', {
+      method: 'POST',
+      body: { email: email.value, password: password.value },
+    })
+    const userState = useState('user')
+    userState.value = data
+    router.push('/home')
+  } catch (e: any) {
+    error.value = e?.data?.message || 'Erreur lors de la connexion'
   }
 }
 </script>
