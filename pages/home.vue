@@ -28,8 +28,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { apiFetch } from '@/composables/useApi'
 
-const { data: annonces } = await useAsyncData('annonces', () => $fetch('http://localhost:8000/api/annonces'))
+const { data: annonces } = await useAsyncData('annonces', () => apiFetch('/annonces'))
 
 const categories = ref([
   { name: 'Outils', color: 'bg-blue-600', icon: '🛠️' },
