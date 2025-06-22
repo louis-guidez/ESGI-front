@@ -27,9 +27,9 @@ const button = cva('button', {
       error: 'bg-red-500 hover:bg-red-600 text-white',
     },
     size: {
-      small: 'px-2 py-1 rounded text-xs',
-      medium: 'px-4 py-2 rounded text-sm',
-      large: 'px-6 py-3 rounded text-md',
+      sm: 'px-2 py-1 rounded text-xs',
+      md: 'px-4 py-2 rounded text-sm',
+      lg: 'px-6 py-3 rounded text-md',
     },
     disabled: {
       true: 'opacity-50 cursor-not-allowed',
@@ -47,7 +47,7 @@ withDefaults(
   }>(),
   {
     intent: 'primary',
-    size: 'medium',
+    size: 'md',
     disabled: false,
   },
 )
