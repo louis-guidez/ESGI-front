@@ -22,7 +22,7 @@ const button = cva('button', {
     intent: {
       primary: 'bg-green-500 hover:bg-green-600 text-white',
       secondary: 'bg-gray-500 hover:bg-gray-600 text-white',
-      ghost: 'bg-transparent text-gray-500 hover:text-gray-600',
+      ghost: 'bg-transparent text-gray-560 hover:bg-gray-300',
       warning: 'bg-orange-500 hover:bg-orange-600 text-white',
       error: 'bg-red-500 hover:bg-red-600 text-white',
     },

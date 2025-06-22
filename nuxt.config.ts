@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  modules: ['@nuxt/eslint', '@nuxt/icon'],
+  modules: ['@nuxt/eslint', '@nuxt/icon', '@pinia/nuxt', '@nuxt/image'],
   runtimeConfig: {
     public: {
       API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:8000/api',
