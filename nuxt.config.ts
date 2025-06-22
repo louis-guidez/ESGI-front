@@ -11,8 +11,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/eslint'],
   runtimeConfig: {
     public: {
-      // API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:8000/api',
-      API_BASE_URL: process.env.API_BASE_URL || 'http://nginx/api',
+      API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:8000/api',
     },
   },
 })
