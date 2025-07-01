@@ -34,9 +34,8 @@
           </SelectScrollUpButton>
 
           <SelectViewport class="p-1">
-            <template v-if="typeof options[0] === 'object' && 'options' in options[0]">
-              <!-- eslint-disable-next-line prettier/prettier -->
-              <template v-for="({ label: groupLabel, options: groupOptions }, i) in options as OptionGroup[]" :key="groupLabel">
+            <template v-if="Array.isArray(options) && options.every((option) => 'options' in option)">
+              <template v-for="({ label: groupLabel, options: groupOptions }, i) in options" :key="groupLabel">
                 <SelectSeparator v-if="i > 0" class="h-[1px] bg-gray-300 m-1" />
 
                 <SelectLabel
