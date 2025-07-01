@@ -1,19 +1,3 @@
-<template>
-  <button
-    :disabled="typeof $attrs['disabled'] !== 'undefined'"
-    :class="
-      button({
-        intent,
-        size,
-        disabled: typeof $attrs['disabled'] !== 'undefined',
-      })
-    "
-    class="size-fit flex items-center justify-center"
-  >
-    <slot />
-  </button>
-</template>
-
 <script setup lang="ts">
 import { cva, type VariantProps } from 'class-variance-authority'
 
@@ -52,3 +36,19 @@ withDefaults(
   },
 )
 </script>
+
+<template>
+  <button
+    :disabled="typeof $attrs['disabled'] !== 'undefined'"
+    :class="
+      button({
+        intent,
+        size,
+        disabled: typeof $attrs['disabled'] !== 'undefined',
+      })
+    "
+    class="size-fit flex items-center justify-center"
+  >
+    <slot />
+  </button>
+</template>

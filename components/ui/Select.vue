@@ -1,3 +1,109 @@
+<script setup lang="ts">
+import {
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectItemIndicator,
+  SelectItemText,
+  SelectLabel,
+  SelectPortal,
+  SelectRoot,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+  SelectViewport,
+} from 'reka-ui'
+
+import { cva, type VariantProps } from 'class-variance-authority'
+
+const selectTrigger = cva('selectTrigger', {
+  variants: {
+    intent: {
+      primary: 'border border-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent',
+    },
+    size: {
+      sm: 'px-2 py-1 rounded text-xs',
+      md: 'px-4 py-2 rounded text-sm',
+      lg: 'px-6 py-3 rounded text-md',
+    },
+    disabled: {
+      true: 'opacity-50 cursor-not-allowed',
+      false: 'cursor-pointer',
+    },
+  },
+})
+
+type SelectTriggerProps = VariantProps<typeof selectTrigger>
+
+const selectContent = cva('selectContent', {
+  variants: {
+    intent: {
+      primary: 'bg-white border border-gray-400',
+    },
+    size: {
+      sm: 'px-2 py-1 rounded text-xs',
+      md: 'px-4 py-2 rounded text-sm',
+      lg: 'px-6 py-3 rounded text-md',
+    },
+  },
+})
+
+const selectGroupLabel = cva('selectGroupLabel', {
+  variants: {
+    intent: {
+      primary: 'font-semibold',
+    },
+    size: {
+      sm: 'px-2 py-1 rounded text-xs',
+      md: 'px-4 py-2 rounded text-sm',
+      lg: 'px-6 py-3 rounded text-md',
+    },
+  },
+})
+
+const selectItem = cva('selectItem', {
+  variants: {
+    intent: {
+      primary: 'hover:bg-gray-100',
+    },
+    size: {
+      sm: 'px-2 py-1 rounded text-xs',
+      md: 'px-4 py-2 rounded text-sm',
+      lg: 'px-6 py-3 rounded text-md',
+    },
+    disabled: {
+      true: 'opacity-50 cursor-not-allowed',
+      false: 'cursor-pointer',
+    },
+  },
+})
+
+type Option = { label: string; value: string | number | null; disabled?: boolean }
+type OptionGroup = { label: string; options: Option[] }
+
+// TODO multiple values
+withDefaults(
+  defineProps<{
+    label: string
+    placeholder?: string
+    modelValue: Option['value']
+    options: Option[] | OptionGroup[]
+    intent?: SelectTriggerProps['intent']
+    size?: SelectTriggerProps['size']
+  }>(),
+  {
+    placeholder: 'Sélectionner une option',
+    intent: 'primary',
+    size: 'md',
+    disabled: false,
+  },
+)
+
+const emit = defineEmits(['update:modelValue'])
+</script>
+
 <template>
   <fieldset class="flex flex-col gap-2">
     <label class="text-sm font-semibold">{{ label }}</label>
@@ -124,109 +230,3 @@
     </SelectRoot>
   </fieldset>
 </template>
-
-<script setup lang="ts">
-import {
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectItemIndicator,
-  SelectItemText,
-  SelectLabel,
-  SelectPortal,
-  SelectRoot,
-  SelectScrollDownButton,
-  SelectScrollUpButton,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-  SelectViewport,
-} from 'reka-ui'
-
-import { cva, type VariantProps } from 'class-variance-authority'
-
-const selectTrigger = cva('selectTrigger', {
-  variants: {
-    intent: {
-      primary: 'border border-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent',
-    },
-    size: {
-      sm: 'px-2 py-1 rounded text-xs',
-      md: 'px-4 py-2 rounded text-sm',
-      lg: 'px-6 py-3 rounded text-md',
-    },
-    disabled: {
-      true: 'opacity-50 cursor-not-allowed',
-      false: 'cursor-pointer',
-    },
-  },
-})
-
-type SelectTriggerProps = VariantProps<typeof selectTrigger>
-
-const selectContent = cva('selectContent', {
-  variants: {
-    intent: {
-      primary: 'bg-white border border-gray-400',
-    },
-    size: {
-      sm: 'px-2 py-1 rounded text-xs',
-      md: 'px-4 py-2 rounded text-sm',
-      lg: 'px-6 py-3 rounded text-md',
-    },
-  },
-})
-
-const selectGroupLabel = cva('selectGroupLabel', {
-  variants: {
-    intent: {
-      primary: 'font-semibold',
-    },
-    size: {
-      sm: 'px-2 py-1 rounded text-xs',
-      md: 'px-4 py-2 rounded text-sm',
-      lg: 'px-6 py-3 rounded text-md',
-    },
-  },
-})
-
-const selectItem = cva('selectItem', {
-  variants: {
-    intent: {
-      primary: 'hover:bg-gray-100',
-    },
-    size: {
-      sm: 'px-2 py-1 rounded text-xs',
-      md: 'px-4 py-2 rounded text-sm',
-      lg: 'px-6 py-3 rounded text-md',
-    },
-    disabled: {
-      true: 'opacity-50 cursor-not-allowed',
-      false: 'cursor-pointer',
-    },
-  },
-})
-
-type Option = { label: string; value: string | number | null; disabled?: boolean }
-type OptionGroup = { label: string; options: Option[] }
-
-// TODO multiple values
-withDefaults(
-  defineProps<{
-    label: string
-    placeholder?: string
-    modelValue: Option['value']
-    options: Option[] | OptionGroup[]
-    intent?: SelectTriggerProps['intent']
-    size?: SelectTriggerProps['size']
-  }>(),
-  {
-    placeholder: 'Sélectionner une option',
-    intent: 'primary',
-    size: 'md',
-    disabled: false,
-  },
-)
-
-const emit = defineEmits(['update:modelValue'])
-</script>

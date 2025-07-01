@@ -1,3 +1,30 @@
+<script setup>
+useHead({
+  title: 'Connexion',
+})
+
+const type = ref('login')
+
+const { login, register } = extractStore(useUserStore())
+
+const form = ref({
+  email: '',
+  password: '',
+})
+
+const router = useRouter()
+
+const handleLogin = () => {
+  login(form.value)
+  router.push('/')
+}
+
+const handleRegister = () => {
+  register(form.value)
+  type.value = 'register'
+}
+</script>
+
 <template>
   <div class="h-screen flex justify-center items-center">
     <div class="w-full md:w-1/2 flex items-center justify-center">
@@ -27,30 +54,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-useHead({
-  title: 'Connexion',
-})
-
-const type = ref('login')
-
-const { login, register } = extractStore(useUserStore())
-
-const form = ref({
-  email: '',
-  password: '',
-})
-
-const router = useRouter()
-
-const handleLogin = () => {
-  login(form.value)
-  router.push('/')
-}
-
-const handleRegister = () => {
-  register(form.value)
-  type.value = 'register'
-}
-</script>

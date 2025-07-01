@@ -1,3 +1,7 @@
+<script setup>
+const { user } = extractStore(useUserStore())
+</script>
+
 <template>
   <div class="p-2 w-full flex justify-between items-center bg-white shadow">
     <uiButton intent="primary" size="md">
@@ -16,7 +20,3 @@
     </uiButton>
   </div>
 </template>
-
-<script setup>
-const { user } = extractStore(useUserStore())
-</script>

@@ -1,24 +1,3 @@
-<template>
-  <fieldset class="flex flex-col gap-2">
-    <label :for="id" class="text-sm font-semibold">{{ label }}</label>
-    <input
-      v-bind="$attrs"
-      :id="id"
-      :type="type"
-      :disabled="typeof $attrs['disabled'] !== 'undefined'"
-      :class="
-        input({
-          intent,
-          size,
-          disabled: typeof $attrs['disabled'] !== 'undefined',
-        })
-      "
-      :value="modelValue"
-      @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value)"
-    />
-  </fieldset>
-</template>
-
 <script setup lang="ts">
 import { cva, type VariantProps } from 'class-variance-authority'
 
@@ -59,3 +38,24 @@ withDefaults(
 
 defineEmits(['update:modelValue'])
 </script>
+
+<template>
+  <fieldset class="flex flex-col gap-2">
+    <label :for="id" class="text-sm font-semibold">{{ label }}</label>
+    <input
+      v-bind="$attrs"
+      :id="id"
+      :type="type"
+      :disabled="typeof $attrs['disabled'] !== 'undefined'"
+      :class="
+        input({
+          intent,
+          size,
+          disabled: typeof $attrs['disabled'] !== 'undefined',
+        })
+      "
+      :value="modelValue"
+      @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value)"
+    />
+  </fieldset>
+</template>
