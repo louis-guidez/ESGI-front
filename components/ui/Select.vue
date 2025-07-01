@@ -83,12 +83,12 @@ const selectItem = cva('selectItem', {
 type Option = { label: string; value: string | number | null; disabled?: boolean }
 type OptionGroup = { label: string; options: Option[] }
 
-// TODO multiple values
 withDefaults(
   defineProps<{
     label: string
     placeholder?: string
     modelValue: Option['value']
+    multiple?: boolean
     options: Option[] | OptionGroup[]
     intent?: SelectTriggerProps['intent']
     size?: SelectTriggerProps['size']
@@ -107,7 +107,7 @@ const emit = defineEmits(['update:modelValue'])
 <template>
   <fieldset class="flex flex-col gap-2">
     <label class="text-sm font-semibold">{{ label }}</label>
-    <SelectRoot :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)">
+    <SelectRoot :model-value="modelValue" :multiple="multiple" @update:model-value="$emit('update:modelValue', $event)">
       <SelectTrigger
         class="group relative flex items-center justify-between gap-2"
         :class="
