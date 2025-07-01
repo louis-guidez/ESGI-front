@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { cva, type VariantProps } from 'class-variance-authority'
 
-const input = cva('button', {
+const input = cva('input', {
   variants: {
     intent: {
       primary: 'border border-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent',
