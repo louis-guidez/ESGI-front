@@ -1,6 +1,8 @@
 <script setup>
+const { t } = useI18n()
+
 useHead({
-  title: 'Connexion',
+  title: t('connection'),
 })
 
 const type = ref('login')
@@ -33,15 +35,15 @@ const handleRegister = () => {
         class="p-8 md:p-16 w-full max-w-xl flex flex-col items-center justify-center gap-4"
         @submit.prevent="type === 'login' ? handleLogin() : handleRegister()"
       >
-        <uiInput v-model="form.email" class="w-full" label="Email" type="email" />
-        <uiInput v-model="form.password" class="w-full" label="Mot de passe" type="password" />
+        <uiInput v-model="form.email" class="w-full" :label="$t('email')" type="email" />
+        <uiInput v-model="form.password" class="w-full" :label="$t('password')" type="password" />
         <uiButton type="submit" class="w-full font-bold">
-          <span v-if="type === 'login'">Se connecter</span>
-          <span v-else>Créer un compte</span>
+          <span v-if="type === 'login'">{{ $t('login') }}</span>
+          <span v-else>{{ $t('createAnAccount') }}</span>
         </uiButton>
         <uiButton intent="ghost" class="w-full" @click="type = type === 'login' ? 'register' : 'login'">
-          <span v-if="type === 'login'">Créer un compte</span>
-          <span v-else>Se connecter</span>
+          <span v-if="type === 'login'">{{ $t('createAnAccount') }}</span>
+          <span v-else>{{ $t('login') }}</span>
         </uiButton>
       </form>
     </div>

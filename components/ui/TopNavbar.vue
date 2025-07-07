@@ -8,7 +8,7 @@ const { user } = extractStore(useUserStore())
       <NuxtLink to="/login" class="flex items-center gap-2">
         <Icon :size="16" name="fluent:add-12-filled" />
         <!-- TODO use i18n -->
-        <span class="font-semibold leading-0">Déposer une annonce</span>
+        <span class="font-semibold leading-0">{{ $t('createAnAd') }}</span>
       </NuxtLink>
     </uiButton>
 
