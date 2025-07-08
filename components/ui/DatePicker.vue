@@ -102,7 +102,7 @@ defineEmits(['update:modelValue'])
 <template>
   <fieldset class="flex flex-col gap-2">
     <Label class="text-sm font-semibold" :for="id">{{ label }}</Label>
-    <DatePickerRoot :id="id" :locale="locale" :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value)">
+    <DatePickerRoot :id="id" :locale="locale" :model-value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value)">
       <DatePickerField
         v-slot="{ segments }"
         :disabled="typeof $attrs['disabled'] !== 'undefined'"
