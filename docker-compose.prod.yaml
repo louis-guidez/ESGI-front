@@ -1,0 +1,9 @@
+services:
+  front:
+    container_name: ESGI-front-prod
+    build:
+      context: .
+      target: prod
+    ports:
+      - "3000:3000"
+
