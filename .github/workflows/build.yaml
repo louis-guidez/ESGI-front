@@ -4,7 +4,7 @@ on:
     branches: ["main"]
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: "louis-guidez/esgi-front"
+  IMAGE_NAME: "louis-guidez/esgi-pa-front"
 
 jobs:
   arm64:
