@@ -1,9 +1,10 @@
 services:
   front:
-    container_name: ESGI-front-prod
-    build:
-      context: .
-      target: prod
+    container_name: ESGI-front
+    image: louis-guidez/esgi-front
     ports:
       - "3000:3000"
+    environment:
+      - API_BASE_URL=${API_BASE_URL}
+    restart: always
 
