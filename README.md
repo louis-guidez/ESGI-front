@@ -73,4 +73,11 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## API configuration
+
+The application uses the Nuxt runtime config variable `API_BASE_URL` to
+determine the backend API URL. By default it points to
+`http://localhost:8000/api`. Set the environment variable `API_BASE_URL`
+locally if you need to override this value.
 # ESGI-front

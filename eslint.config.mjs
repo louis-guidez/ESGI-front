@@ -12,5 +12,13 @@ export default withNuxt({
     ...eslintConfigPrettier.rules,
     ...eslintPluginPrettierRecommended.rules,
     'prettier/prettier': 'warn',
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'variable',
+        format: ['camelCase', 'UPPER_CASE', 'snake_case', 'PascalCase'],
+        leadingUnderscore: 'allow',
+      },
+    ],
   },
 })
