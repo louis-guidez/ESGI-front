@@ -1,7 +1,7 @@
 services:
   front:
     container_name: ESGI-pa-front
-    image: louis-guidez/esgi-pa-front
+    image: ghcr.io/louis-guidez/esgi-pa-front
     ports:
       - "3000:3000"
     environment:
