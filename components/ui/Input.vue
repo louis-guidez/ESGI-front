@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useFocus } from '@vueuse/core'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 const input = cva('input', {
@@ -36,7 +37,11 @@ withDefaults(
   },
 )
 
+const inputRef = shallowRef()
+const { focused } = useFocus(inputRef)
+
 defineEmits(['update:modelValue'])
+defineExpose({ focused })
 </script>
 
 <template>
@@ -45,6 +50,7 @@ defineEmits(['update:modelValue'])
     <input
       v-bind="$attrs"
       :id="id"
+      ref="inputRef"
       :type="type"
       :disabled="typeof $attrs['disabled'] !== 'undefined'"
       :class="

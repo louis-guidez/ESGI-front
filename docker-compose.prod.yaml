@@ -6,5 +6,7 @@ services:
       - "3000:3000"
     environment:
       - API_BASE_URL=${API_BASE_URL}
+      - STRIPE_KEY=${STRIPE_KEY}
+      - GEOAPIFY_API_KEY=${GEOAPIFY_API_KEY}
     restart: always
 
