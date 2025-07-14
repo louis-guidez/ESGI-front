@@ -13,6 +13,7 @@
     "pre-commit": "lint-staged"
   },
   "dependencies": {
+    "@indoorequal/vue-maplibre-gl": "^8.4.0",
     "@internationalized/date": "^3.8.2",
     "@nuxt/eslint": "1.4.0",
     "@nuxt/icon": "1.14.0",
@@ -24,6 +25,7 @@
     "@vueuse/core": "^13.5.0",
     "class-variance-authority": "^0.7.1",
     "eslint": "^9.0.0",
+    "maplibre-gl": "^5.6.1",
     "nuxt": "^3.15.2",
     "pinia": "^3.0.3",
     "reka-ui": "^2.3.1",

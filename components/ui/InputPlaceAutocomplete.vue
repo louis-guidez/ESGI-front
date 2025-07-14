@@ -41,6 +41,7 @@ const props = withDefaults(
     minLengthAutocomplete?: number
     intent?: ListProps['intent']
     size?: ListProps['size']
+    map?: boolean
   }>(),
   {
     label: 'address',
@@ -111,68 +112,80 @@ watch(selectedPlace, () => {
 </script>
 
 <template>
-  <div class="relative">
-    <UiInput
-      :id="props.id"
-      ref="inputRef"
-      v-model="query"
-      type="text"
-      :label="$te(props.label) ? $t(props.label) : props.label"
-      :placeholder="$te(props.placeholder) ? $t(props.placeholder) : props.placeholder"
-      class="mb-1"
+  <div class="flex flex-col gap-4">
+    <UiMap
+      :center="
+        selectedPlace?.properties.lon && selectedPlace?.properties.lat ? { lng: selectedPlace?.properties.lon, lat: selectedPlace?.properties.lat } : undefined
+      "
+      :marker="
+        selectedPlace?.properties.lon && selectedPlace?.properties.lat ? { lng: selectedPlace?.properties.lon, lat: selectedPlace?.properties.lat } : undefined
+      "
+      :popup="!!selectedPlace"
+      :popup-text="selectedPlace?.properties.formatted"
     />
-    <template v-if="(inputRef?.focused || hoveringList) && !(query.length < props.minLengthAutocomplete)">
-      <div ref="listRef" class="absolute w-full" @mouseenter="hoveringList = true" @mouseleave="hoveringList = false">
-        <ul
-          v-if="data?.features && data.features.length > 0"
-          class="absolute w-full"
-          :class="
-            list({
-              intent,
-              size,
-            })
-          "
-        >
-          <li
-            v-for="place in data.features"
-            :key="`${place.properties.lat}-${place.properties.lon}`"
-            class="cursor-pointer"
+    <div class="relative">
+      <UiInput
+        :id="props.id"
+        ref="inputRef"
+        v-model="query"
+        type="text"
+        :label="$te(props.label) ? $t(props.label) : props.label"
+        :placeholder="$te(props.placeholder) ? $t(props.placeholder) : props.placeholder"
+        class="mb-1"
+      />
+      <template v-if="(inputRef?.focused || hoveringList) && !(query.length < props.minLengthAutocomplete)">
+        <div ref="listRef" class="absolute w-full" @mouseenter="hoveringList = true" @mouseleave="hoveringList = false">
+          <ul
+            v-if="data?.features && data.features.length > 0"
+            class="absolute w-full"
             :class="
-              item({
+              list({
                 intent,
                 size,
               })
             "
-            @click="((inputRef.focused = true), handleSelect(place))"
           >
-            {{ place.properties.formatted }}
-          </li>
-        </ul>
-        <span
-          v-else-if="status === 'pending'"
-          class="absolute w-full"
-          :class="
-            list({
-              intent,
-              size,
-            })
-          "
-        >
-          {{ $t('loading') }}...
-        </span>
-        <span
-          v-else
-          class="absolute w-full"
-          :class="
-            list({
-              intent,
-              size,
-            })
-          "
-        >
-          {{ $t('noResult') }}
-        </span>
-      </div>
-    </template>
+            <li
+              v-for="place in data.features"
+              :key="`${place.properties.lat}-${place.properties.lon}`"
+              class="cursor-pointer"
+              :class="
+                item({
+                  intent,
+                  size,
+                })
+              "
+              @click="((inputRef.focused = true), handleSelect(place))"
+            >
+              {{ place.properties.formatted }}
+            </li>
+          </ul>
+          <span
+            v-else-if="status === 'pending'"
+            class="absolute w-full"
+            :class="
+              list({
+                intent,
+                size,
+              })
+            "
+          >
+            {{ $t('loading') }}...
+          </span>
+          <span
+            v-else
+            class="absolute w-full"
+            :class="
+              list({
+                intent,
+                size,
+              })
+            "
+          >
+            {{ $t('noResult') }}
+          </span>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
