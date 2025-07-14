@@ -6,5 +6,6 @@ services:
       - "3000:3000"
     environment:
       - API_BASE_URL=${API_BASE_URL}
+      - NUXT_PUBLIC_STRIPE_KEY=${NUXT_PUBLIC_STRIPE_KEY}
     restart: always
 
