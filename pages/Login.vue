@@ -25,7 +25,6 @@ const handleLogin = async () => {
     if (!user) {
       throw new Error('Login failed')
     }
-
     router.push('/')
   } catch {
     //
@@ -34,8 +33,8 @@ const handleLogin = async () => {
 
 const handleRegister = async () => {
   try {
-    const user = await register(form.value)
-    if (!user) {
+    const request = await register(form.value)
+    if (!request) {
       throw new Error('register failed')
     }
     type.value = 'login'

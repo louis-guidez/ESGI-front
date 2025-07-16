@@ -43,6 +43,7 @@ export const useUserStore = defineStore('user', () => {
       user.value = foundUser
 
       toast.success('Connexion reussie !')
+      return foundUser
     } catch {
       toast.error('Erreur lors de la connexion')
     }
@@ -56,6 +57,7 @@ export const useUserStore = defineStore('user', () => {
       })
 
       toast.success('Création de compte reussie ! Veuillez vous connecter.')
+      return true
     } catch {
       toast.error('Erreur lors de la création de compte')
     }
