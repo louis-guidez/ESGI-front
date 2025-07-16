@@ -29,11 +29,15 @@ withDefaults(
     modelValue: string
     intent?: InputProps['intent']
     size?: InputProps['size']
+    errorMessage?: string
   }>(),
   {
+    id: '',
+    type: 'text',
     intent: 'primary',
     size: 'md',
     disabled: false,
+    errorMessage: '',
   },
 )
 
@@ -63,5 +67,8 @@ defineExpose({ focused })
       :value="modelValue"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value)"
     />
+    <slot name="error" v-bind="{ errorMessage }">
+      <span class="text-red-500">{{ $te(errorMessage) ? $t(errorMessage) : errorMessage }}</span>
+    </slot>
   </fieldset>
 </template>
