@@ -7,7 +7,6 @@ const { user } = extractStore(useUserStore())
     <uiButton intent="primary" size="md">
       <NuxtLink to="/login" class="flex items-center gap-2">
         <Icon :size="16" name="fluent:add-12-filled" />
-        <!-- TODO use i18n -->
         <span class="font-semibold leading-0">{{ $t('createAnAd') }}</span>
       </NuxtLink>
     </uiButton>

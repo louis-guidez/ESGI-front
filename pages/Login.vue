@@ -3,6 +3,7 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
 const { t } = useI18n()
+const route = useRoute()
 
 useHead({
   title: t('connection'),
@@ -11,6 +12,8 @@ useHead({
 const type = ref('login')
 
 const { login, register } = extractStore(useUserStore())
+
+const redirectURL = route.query.redirect ? decodeURIComponent(route.query.redirect) : '/'
 
 const form = ref({
   email: '',
@@ -25,7 +28,7 @@ const handleLogin = async () => {
     if (!user) {
       throw new Error('Login failed')
     }
-    router.push('/')
+    router.push(redirectURL)
   } catch {
     //
   }

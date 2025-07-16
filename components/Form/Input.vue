@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { UiInput } from '#components'
 import { useField } from 'vee-validate'
 
 const props = defineProps<{
-  type: string
+  type?: string
   name: string
   label: string
 }>()

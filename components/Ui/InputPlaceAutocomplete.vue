@@ -32,20 +32,33 @@ type ListProps = VariantProps<typeof list>
 
 const { locale } = useI18n()
 
+export interface InputPlaceAutocompleteValue {
+  features: {
+    properties: {
+      place_id: string
+      formatted: string
+      lat: number
+      lon: number
+    }
+  }[]
+}
+
 const props = withDefaults(
   defineProps<{
     id?: string
-    label: string
+    label?: string
     placeholder?: string
-    modelValue?: Data['features'][0] | null
+    modelValue?: InputPlaceAutocompleteValue['features'][0] | null
     minLengthAutocomplete?: number
     intent?: ListProps['intent']
     size?: ListProps['size']
     map?: boolean
   }>(),
   {
+    id: '',
     label: 'address',
-    placeholder: 'adressPlaceholder',
+    placeholder: 'addressPlaceholder',
+    modelValue: null,
     minLengthAutocomplete: 3,
     intent: 'primary',
     size: 'md',
@@ -60,23 +73,12 @@ const geoapifyAutocompleteBaseUrl = 'https://api.geoapify.com/v1/geocode/autocom
 const query = ref(props.modelValue?.properties.formatted || '')
 const debouncedQuery = useDebounce(query, 500)
 
-const selectedPlace = ref<Data['features'][0] | null>(props.modelValue || null)
+const selectedPlace = ref<InputPlaceAutocompleteValue['features'][0] | null>(props.modelValue || null)
 
 const inputRef = ref()
 const hoveringList = ref(false)
 
-interface Data {
-  features: {
-    properties: {
-      place_id: string
-      formatted: string
-      lat: number
-      lon: number
-    }
-  }[]
-}
-
-const { data, status, clear } = await useAsyncData<Data | null>(
+const { data, status, clear } = await useAsyncData<InputPlaceAutocompleteValue | null>(
   'places',
   async () => {
     if (query.value.length < props.minLengthAutocomplete) {
@@ -97,7 +99,7 @@ const { data, status, clear } = await useAsyncData<Data | null>(
   },
 )
 
-const handleSelect = (place: Data['features'][0]) => {
+const handleSelect = (place: InputPlaceAutocompleteValue['features'][0]) => {
   selectedPlace.value = place
   query.value = place.properties.formatted
   clear()
