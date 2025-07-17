@@ -2,9 +2,9 @@
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import Account from '~/components/Profile/Account.vue'
 
-// definePageMeta({
-//   middleware: ['auth'],
-// })
+definePageMeta({
+  middleware: ['auth'],
+})
 
 const { t } = useI18n()
 

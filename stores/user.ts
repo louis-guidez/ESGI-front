@@ -19,25 +19,19 @@ export interface User {
 export const useUserStore = defineStore('user', () => {
   const user = ref<(User & { token: string }) | null>(null)
 
-  const getUsers = async () => (await apiFetch<User[]>('/utilisateurs'))._data
+  const getUsers = async () => await apiFetch<User[]>('/utilisateurs')
 
   const login = async ({ email, password }: Partial<User>) => {
     try {
-      const response = await apiFetch<{ token: string; user: User }>('/login', {
+      const {
+        token,
+        user: { id: userId },
+      } = await apiFetch<{ token: string; user: User }>('/login', {
         method: 'POST',
         body: { email, password },
       })
 
-      if (!response.ok || !response._data) {
-        throw response
-      }
-
       const users = await getUsers()
-      const {
-        token,
-        user: { id: userId },
-      } = response._data
-
       if (!users) {
         throw new Error('No users found')
       }
@@ -90,33 +84,24 @@ export const useUserStore = defineStore('user', () => {
         ignoreResponseError: true,
       })
 
-      if (!response.ok) {
-        throw response
-      }
-
       // TODO: update user in store and localstorage
 
       toast.success(t('userUpdated'))
-
-      return response._data
-    } catch (error) {
+      return response
+    } catch {
       toast.error(t('errorWhileUpdatingUser'))
-      handleTokenValidity(error as { _data: { code?: number; message: string } })
     }
   }
 
-  const handleTokenValidity = (error: { _data: { code?: number; message: string } }) => {
+  const logout = () => {
     const router = useRouter()
+    const { currentRoute } = router
 
-    const { code, message } = error._data
+    if ([currentRoute.value.meta.middleware].flat().includes('auth')) router.push('/')
 
-    if (code === 401) {
-      if (message === 'Invalid JWT Token' || message === 'Expired JWT Token') {
-        toast.error('Votre session a expiré, veuillez vous reconnecter.')
-        router.push('/login')
-      }
-    }
+    user.value = null
+    localStorage.removeItem('user')
   }
 
-  return { user, login, register, updateUser, getUsers }
+  return { user, login, logout, register, getUsers, updateUser }
 })
