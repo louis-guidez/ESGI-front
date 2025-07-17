@@ -8,13 +8,14 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  modules: ['@nuxt/eslint', '@nuxt/icon', '@pinia/nuxt', '@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/seo', '@vee-validate/nuxt'],
+  modules: ['@nuxt/eslint', '@nuxt/icon', '@pinia/nuxt', '@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/seo', '@vee-validate/nuxt', 'nuxt-nodemailer'],
   runtimeConfig: {
     public: {
       API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:8000/api',
       // TODO need to move this to private variable => only accessible on the server-side
       STRIPE_KEY: process.env.NUXT_PUBLIC_STRIPE_KEY,
       GEOAPIFY_API_KEY: process.env.GEOAPIFY_API_KEY,
+      NODEMAILER_USER: process.env.NODEMAILER_USER,
     },
   },
   i18n: {
@@ -43,4 +44,34 @@ export default defineNuxtConfig({
       ErrorMessage: 'VeeErrorMessage',
     },
   },
+  // nodemailer: {
+  //   from: '"Lendo App" <lendo.app.esgi@gmail.com>',
+  //   host: 'smtp.gmail.com',
+  //   port: 587,
+  //   secure: false,
+  //   auth: {
+  //     user: 'lendo.app.esgi@gmail.com',
+  //     pass: 'vsmyodmqgznddloi',
+  //   },
+  // },
+  nodemailer: {
+    from: `"Lendo App" <${process.env.NODEMAILER_USER || 'lendo.app.esgi@gmail.com'}>`,
+    host: process.env.NODEMAILER_HOST,
+    port: process.env.NODEMAILER_PORT,
+    secure: false,
+    auth: {
+      user: process.env.NODEMAILER_USER || 'lendo.app.esgi@gmail.com',
+      pass: process.env.NODEMAILER_PASS,
+    },
+  },
+  //     nodemailer: {
+  //   from: `"Lendo App" <${process.env.NODEMAILER_USER}>`,
+  //   host: process.env.NODEMAILER_HOST,
+  //   port: process.env.NODEMAILER_PORT,
+  //   secure: process.env.NODEMAILER_SECURE,
+  //   auth: {
+  //     user: process.env.NODEMAILER_USER,
+  //     pass: process.env.NODEMAILER_PASS,
+  //   },
+  // },
 })

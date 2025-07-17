@@ -7,9 +7,9 @@ const textarea = cva('textarea', {
       primary: 'border border-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent',
     },
     size: {
-      sm: 'px-2 py-1 rounded text-xs',
-      md: 'px-4 py-2 rounded text-sm',
-      lg: 'px-6 py-3 rounded text-md',
+      sm: 'h-16 px-2 py-1 rounded text-xs',
+      md: 'h-32 px-4 py-2 rounded text-sm',
+      lg: 'h-64 px-6 py-3 rounded text-md',
     },
     disabled: {
       true: 'opacity-50 cursor-not-allowed',
