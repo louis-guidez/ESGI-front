@@ -35,10 +35,50 @@ const { locale } = useI18n()
 export interface InputPlaceAutocompleteValue {
   features: {
     properties: {
-      place_id: string
-      formatted: string
-      lat: number
-      lon: number
+      country_code?: string
+      housenumber?: string
+      street?: string
+      country?: string
+      county?: string
+      datasource?: {
+        sourcename?: string
+        attribution?: string
+        license?: string
+      }
+      postcode?: string
+      state?: string
+      state_code?: string
+      district?: string
+      city?: string
+      county_code?: string
+      lon?: number
+      lat?: number
+      result_type?: string
+      department_COG?: string
+      formatted?: string
+      address_line1?: string
+      address_line2?: string
+      timezone?: {
+        name?: string
+        offset_STD?: string
+        offset_STD_seconds?: number
+        offset_DST?: string
+        offset_DST_seconds?: number
+        abbreviation_STD?: string
+        abbreviation_DST?: string
+      }
+      plus_code?: string
+      plus_code_short?: string
+      iso3166_2?: string
+      iso3166_2_sublevel?: string
+      rank?: {
+        confidence?: number
+        confidence_city_level?: number
+        confidence_street_level?: number
+        confidence_building_level?: number
+      }
+      match_type?: string
+      place_id?: string
     }
   }[]
 }
@@ -53,6 +93,7 @@ const props = withDefaults(
     intent?: ListProps['intent']
     size?: ListProps['size']
     map?: boolean
+    class?: string
   }>(),
   {
     id: '',
@@ -108,6 +149,32 @@ const handleSelect = (place: InputPlaceAutocompleteValue['features'][0]) => {
 
 const emit = defineEmits(['update:modelValue'])
 
+watch(
+  () => props.modelValue,
+  async (newValue) => {
+    if (!query.value) {
+      query.value = newValue?.properties.formatted || ''
+      selectedPlace.value = newValue
+
+      if (!newValue?.properties.place_id) {
+        const places = await $fetch<InputPlaceAutocompleteValue>(`${geoapifyAutocompleteBaseUrl}`, {
+          params: {
+            apiKey: geoapifyApiKey,
+            lang: locale.value,
+            type: 'amenity',
+            text: query.value,
+          },
+        })
+
+        const exact = places.features.find((feature) => feature.properties.formatted === newValue?.properties.formatted)
+        if (exact) {
+          selectedPlace.value = exact
+        }
+      }
+    }
+  },
+)
+
 watch(selectedPlace, () => {
   emit('update:modelValue', selectedPlace.value)
 })
@@ -127,6 +194,7 @@ watch(selectedPlace, () => {
     />
     <div class="relative">
       <UiInput
+        v-bind="$attrs"
         :id="props.id"
         ref="inputRef"
         v-model="query"

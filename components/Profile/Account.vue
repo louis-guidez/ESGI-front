@@ -1,35 +1,40 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
+import type { InputPlaceAutocompleteValue } from '../Ui/InputPlaceAutocomplete.vue'
 
 const { t } = useI18n()
 
 const { user, updateUser } = extractStore(useUserStore())
 
-const formInfos = ref({
+const formInfos = ref<{ email: string; name: string; lastname: string; address?: InputPlaceAutocompleteValue['features'][0] }>({
   email: user.value?.email || '',
   name: user.value?.nom || '',
   lastname: user.value?.prenom || '',
   address: {
     properties: {
-      place_id: undefined,
-      formatted: user.value?.adresse || '',
-      lat: undefined,
-      lon: undefined,
+      formatted: user.value?.adresse ?? '',
     },
   },
 })
 
 const formPassword = ref({
-  password: '',
   newPassword: '',
+  newPasswordConfirmation: '',
 })
 
 const { handleSubmit: handleSubmitInfos, setValues: setValuesInfos } = useForm({
   validationSchema: yup.object({
     email: yup.string().required(t('emailRequired')).email(t('emailInvalid')),
-    name: yup.string().required(t('nameRequired')),
-    lastname: yup.string().required(t('lastnameRequired')),
+    name: yup
+      .string()
+      .required(t('nameRequired'))
+      .min(2, t('fieldMinLength', { length: 2 })),
+    lastname: yup
+      .string()
+      .required(t('lastnameRequired'))
+      .min(2, t('fieldMinLength', { length: 2 })),
+    address: yup.object(),
   }),
 })
 
@@ -51,10 +56,23 @@ const onSubmitInfos = handleSubmitInfos(async () => {
     throw new Error('No user found')
   }
 
+  const addressData = {}
+  if (formInfos.value.address) {
+    const { formatted, postcode, country, city } = formInfos.value.address.properties
+
+    Object.assign(addressData, {
+      adresse: formatted,
+      postalCode: Number(postcode) || null,
+      pays: country,
+      ville: city,
+    })
+  }
+
   await updateUser(user.value.id, {
     email: formInfos.value.email,
     nom: formInfos.value.name,
     prenom: formInfos.value.lastname,
+    ...addressData,
   })
 })
 
@@ -64,7 +82,7 @@ const onSubmitPassword = handleSubmitPassword(async () => {
   }
 
   await updateUser(user.value.id, {
-    password: formPassword.value.password,
+    password: formPassword.value.newPassword,
   })
 })
 
@@ -75,16 +93,20 @@ onMounted(() => {
     lastname: user.value?.prenom || '',
     address: {
       properties: {
-        place_id: undefined,
         formatted: user.value?.adresse || '',
-        lat: undefined,
-        lon: undefined,
       },
     },
   }
-
   setValuesInfos(formInfos.value)
 })
+
+watch(
+  formInfos,
+  () => {
+    setValuesInfos(formInfos.value)
+  },
+  { deep: true },
+)
 </script>
 
 <template>
@@ -110,10 +132,10 @@ onMounted(() => {
       <div class="min-w-1/2 w-fit flex flex-col items-center gap-2">
         <h2 class="w-full text-left text-xl font-semibold">{{ $t('password') }}</h2>
         <form class="w-full" @submit.prevent="onSubmitPassword">
-          <FormInput id="password" v-model="formPassword.password" name="password" class="w-full" :label="$t('newPasswordConfirmation')" type="password" />
+          <FormInput id="newPassword" v-model="formPassword.newPassword" name="newPassword" class="w-full" :label="$t('newPassword')" type="password" />
           <FormInput
-            id="newPassword"
-            v-model="formPassword.newPassword"
+            id="newPasswordConfirmation"
+            v-model="formPassword.newPasswordConfirmation"
             name="newPassword"
             class="w-full"
             :label="$t('newPasswordConfirmation')"
