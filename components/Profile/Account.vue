@@ -70,8 +70,8 @@ const onSubmitInfos = handleSubmitInfos(async () => {
 
   await updateUser(user.value.id, {
     email: formInfos.value.email,
-    nom: formInfos.value.name,
-    prenom: formInfos.value.lastname,
+    nom: formInfos.value.lastname,
+    prenom: formInfos.value.name,
     ...addressData,
   })
 })
@@ -89,8 +89,8 @@ const onSubmitPassword = handleSubmitPassword(async () => {
 onMounted(() => {
   formInfos.value = {
     email: user.value?.email || '',
-    name: user.value?.nom || '',
-    lastname: user.value?.prenom || '',
+    name: user.value?.prenom || '',
+    lastname: user.value?.nom || '',
     address: {
       properties: {
         formatted: user.value?.adresse || '',

@@ -38,7 +38,7 @@ const selectedMenuOption = ref(menuOptions[0])
 
 <template>
   <div class="relative flex h-[calc(100vh-48px)] overflow-hidden">
-    <UiButton intent="ghost" class="fixed top-14 left-2 !p-2 z-[999] !bg-white shadow" @click="menuOpen = !menuOpen">
+    <UiButton intent="ghost" class="fixed top-16 left-2 !p-2 z-[999] !bg-white shadow" @click="menuOpen = !menuOpen">
       <Icon :size="24" name="fluent:list-16-filled" />
     </UiButton>
 
@@ -60,7 +60,7 @@ const selectedMenuOption = ref(menuOptions[0])
     </Transition>
 
     <div class="size-full">
-      <div class="h-14 inline-flex justify-end items-center px-4">
+      <div class="h-14 w-full inline-flex justify-end items-center px-4">
         <span class="font-semibold">{{ `${user?.prenom ?? ''} ${user?.nom ?? ''}` }}</span>
       </div>
 
