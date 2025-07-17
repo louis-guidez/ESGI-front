@@ -38,7 +38,7 @@ const selectedMenuOption = ref(menuOptions[0])
 
 <template>
   <div class="relative flex h-[calc(100vh-4rem)] overflow-hidden">
-    <UiButton intent="ghost" class="fixed top-16 left-2 !p-2 z-[999] !bg-white shadow" @click="menuOpen = !menuOpen">
+    <UiButton intent="ghost" class="fixed top-[4.5rem] left-2 !p-2 z-[999] !bg-white shadow" @click="menuOpen = !menuOpen">
       <Icon :size="24" name="fluent:list-16-filled" />
     </UiButton>
 
