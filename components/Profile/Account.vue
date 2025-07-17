@@ -102,8 +102,8 @@ onMounted(() => {
 
 watch(
   formInfos,
-  () => {
-    setValuesInfos(formInfos.value)
+  (newValue) => {
+    setValuesInfos(newValue)
   },
   { deep: true },
 )
