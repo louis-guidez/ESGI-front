@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import Account from '~/components/Profile/Account.vue'
+import Settings from '~/components/Profile/Settings.vue'
 
 definePageMeta({
   middleware: ['auth'],
@@ -30,7 +31,7 @@ const menuOptions = [
   },
   {
     label: t('settings'),
-    component: shallowRef(Account),
+    component: shallowRef(Settings),
   },
 ]
 const selectedMenuOption = ref(menuOptions[0])

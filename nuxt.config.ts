@@ -19,7 +19,16 @@ export default defineNuxtConfig({
   },
   i18n: {
     defaultLocale: 'fr',
-    locales: [{ code: 'fr', name: 'Français', file: 'fr.yaml' }],
+    locales: [
+      { code: 'fr', name: 'Français', file: 'fr.yaml' },
+      { code: 'en', name: 'English' },
+    ],
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      alwaysRedirect: true,
+      fallbackLocale: 'fr',
+    },
   },
   site: {
     url: 'https://lendo.fr',

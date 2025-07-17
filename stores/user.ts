@@ -21,6 +21,10 @@ export const useUserStore = defineStore('user', () => {
     default: () => null,
   })
 
+  const settings = useCookie('settings', {
+    default: () => ({}),
+  })
+
   const getUsers = async () => await apiFetch<User[]>('/utilisateurs')
 
   const login = async ({ email, password }: Partial<User>) => {
@@ -104,5 +108,5 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('user')
   }
 
-  return { user, login, logout, register, getUsers, updateUser }
+  return { user, settings, login, logout, register, getUsers, updateUser }
 })
