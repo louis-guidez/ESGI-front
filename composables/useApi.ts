@@ -12,7 +12,6 @@ const handleTokenValidity = ({ code, message }: { code?: number; message?: strin
     if (message === 'Invalid JWT Token' || message === 'Expired JWT Token') {
       if (user.value) {
         user.value = null
-        localStorage.removeItem('user')
       }
 
       toast.error(t('expiredSession'))
