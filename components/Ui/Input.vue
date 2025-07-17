@@ -25,7 +25,7 @@ withDefaults(
   defineProps<{
     id?: string
     type?: string
-    label: string
+    label?: string
     modelValue: string
     intent?: InputProps['intent']
     size?: InputProps['size']
@@ -33,6 +33,7 @@ withDefaults(
   }>(),
   {
     id: '',
+    label: undefined,
     type: 'text',
     intent: 'primary',
     size: 'md',
@@ -50,7 +51,7 @@ defineExpose({ focused })
 
 <template>
   <fieldset class="flex flex-col gap-2">
-    <label :for="id" class="text-sm font-semibold">{{ label }}</label>
+    <label v-if="label" :for="id" class="text-sm font-semibold">{{ label }}</label>
     <input
       v-bind="$attrs"
       :id="id"
@@ -67,7 +68,7 @@ defineExpose({ focused })
       :value="modelValue"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value)"
     />
-    <slot name="error" v-bind="{ errorMessage }">
+    <slot v-if="errorMessage" name="error" v-bind="{ errorMessage }">
       <span class="text-red-500">{{ $te(errorMessage) ? $t(errorMessage) : errorMessage }}</span>
     </slot>
   </fieldset>

@@ -20,7 +20,7 @@
 
     <div v-if="annonces.length">
       <h3>Toutes les annonces :</h3>
-      <div v-for="annonce in annonces" :key="annonce.id" style="border: 1px solid #ccc; margin: 1em; padding: 1em;">
+      <div v-for="annonce in annonces" :key="annonce.id" style="border: 1px solid #ccc; margin: 1em; padding: 1em">
         <h4>{{ annonce.titre }}</h4>
         <p>{{ annonce.description }}</p>
         <p>Prix : {{ annonce.prix }} €</p>
@@ -28,14 +28,8 @@
 
         <div v-if="annonce.photos.length">
           <p>Photos :</p>
-          <div style="display: flex; gap: 1em;">
-            <img
-              v-for="(photo, i) in annonce.photos"
-              :key="i"
-              :src="photo"
-              alt="photo"
-              style="width: 150px; height: auto; object-fit: cover;"
-            />
+          <div style="display: flex; gap: 1em">
+            <img v-for="(photo, i) in annonce.photos" :key="i" :src="photo" alt="photo" style="width: 150px; height: auto; object-fit: cover" />
           </div>
         </div>
       </div>
@@ -72,7 +66,7 @@ const form = ref({
   titre: '',
   description: '',
   prix: 0,
-  statut: ''
+  statut: '',
 })
 
 const files = ref([])
@@ -91,14 +85,14 @@ const submitForm = async () => {
   }
 
   // fichiers
-  files.value.forEach(file => {
+  files.value.forEach((file) => {
     formData.append('photos[]', file)
   })
 
   try {
     const res = await $fetch('http://localhost:8000/api/annonces', {
       method: 'POST',
-      body: formData
+      body: formData,
     })
 
     response.value = res

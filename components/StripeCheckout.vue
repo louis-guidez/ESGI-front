@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div ref="cardElement" class="card-element"></div>
-    <button @click="handleSubmit" :disabled="loading">
+    <div ref="cardElement" class="card-element" />
+    <button :disabled="loading" @click="handleSubmit">
       {{ loading ? 'Paiement...' : 'Payer 20 €' }}
     </button>
     <p v-if="message">{{ message }}</p>
@@ -34,13 +34,13 @@ const handleSubmit = async () => {
   const res = await fetch('http://localhost:8000/api/create-payment-intent', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ amount: 2000 }) // 20 €
+    body: JSON.stringify({ amount: 2000 }), // 20 €
   })
 
   const { clientSecret } = await res.json()
 
   const result = await stripe.confirmCardPayment(clientSecret, {
-    payment_method: { card }
+    payment_method: { card },
   })
 
   if (result.error) {

@@ -16,13 +16,17 @@ const isMobile = breakpoints.smaller('xl')
 
 const menuOpen = ref(true)
 
-watch(isMobile, (isMobile) => {
-  if (isMobile) {
-    menuOpen.value = false
-  } else {
-    menuOpen.value = true
-  }
-})
+watch(
+  isMobile,
+  (isMobile) => {
+    if (isMobile) {
+      menuOpen.value = false
+    } else {
+      menuOpen.value = true
+    }
+  },
+  { immediate: true },
+)
 
 const menuOptions = [
   {
