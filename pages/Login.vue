@@ -1,4 +1,5 @@
 <script setup>
+import { UiLogo } from '#components'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
@@ -62,9 +63,11 @@ const onSubmit = handleSubmit(() => {
 </script>
 
 <template>
-  <div class="h-screen flex justify-center items-center">
-    <div class="w-full md:w-1/2 flex items-center justify-center">
-      <div class="p-8 md:p-16 w-full max-w-xl flex flex-col items-center justify-center gap-2">
+  <div class="h-[calc(100vh-4rem)] flex flex-col-reverse lg:flex-row justify-end lg:justify-center items-center">
+    <div class="size-full lg:w-2/3 flex flex-col items-center justify-center">
+      <UiLogo class="text-[5rem]" />
+
+      <div class="p-8 lg:p-16 w-full max-w-xl flex flex-col items-center justify-center gap-2">
         <form class="w-full flex flex-col items-center justify-center gap-4" @submit.prevent="onSubmit">
           <FormInput id="email" v-model="form.email" name="email" class="w-full" :label="$t('email')" type="email" />
           <FormInput id="password" v-model="form.password" name="password" class="w-full" :label="$t('password')" type="password" />
@@ -80,11 +83,12 @@ const onSubmit = handleSubmit(() => {
         </UiButton>
       </div>
     </div>
-    <div class="size-full md:w-1/2 hidden md:flex items-center justify-center overflow-hidden">
+
+    <div class="size-full lg:w-1/3 flex items-center justify-center overflow-hidden">
       <NuxtImg
-        class="w-full h-full object-cover"
+        class="size-full object-cover"
         format="webp"
-        src="https://plus.unsplash.com/premium_photo-1663097421630-a9dd4d2b1bf1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D "
+        src="https://images.unsplash.com/photo-1578357078586-491adf1aa5ba?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
       />
     </div>
   </div>
