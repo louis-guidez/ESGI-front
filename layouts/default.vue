@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import UiTopNavbar from '~/components/Ui/TopNavbar.vue'
 const topNavbarRef = ref<InstanceType<typeof UiTopNavbar> | null>(null)
-
-onMounted(() => {
-  if (!topNavbarRef.value) return
-  topNavbarRef.value.searchRef.focused = true
-})
 </script>
 
 <template>
