@@ -32,7 +32,7 @@ const menuOptions: { label: string; to: string }[] = [
   },
   {
     label: t('aboutUs'),
-    to: '/aboutus',
+    to: '/about',
   },
 ]
 </script>
