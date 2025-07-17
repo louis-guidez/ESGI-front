@@ -17,7 +17,9 @@ export interface User {
 }
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref<(User & { token: string }) | null>(null)
+  const user = useCookie<(User & { token: string }) | null>('user', {
+    default: () => null,
+  })
 
   const getUsers = async () => await apiFetch<User[]>('/utilisateurs')
 
@@ -42,7 +44,6 @@ export const useUserStore = defineStore('user', () => {
       }
 
       user.value = { ...foundUser, token }
-      localStorage.setItem('user', JSON.stringify(user.value))
 
       toast.success('Connexion reussie !')
       return foundUser
