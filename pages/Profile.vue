@@ -37,7 +37,7 @@ const selectedMenuOption = ref(menuOptions[0])
 </script>
 
 <template>
-  <div class="relative flex h-[calc(100vh-48px)] overflow-hidden">
+  <div class="relative flex h-[calc(100vh-64px)] overflow-hidden">
     <UiButton intent="ghost" class="fixed top-16 left-2 !p-2 z-[999] !bg-white shadow" @click="menuOpen = !menuOpen">
       <Icon :size="24" name="fluent:list-16-filled" />
     </UiButton>
