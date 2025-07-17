@@ -157,6 +157,8 @@ watch(
       selectedPlace.value = newValue
 
       if (!newValue?.properties.place_id) {
+        if (!query.value || query.value.length < props.minLengthAutocomplete) return
+
         const places = await $fetch<InputPlaceAutocompleteValue>(`${geoapifyAutocompleteBaseUrl}`, {
           params: {
             apiKey: geoapifyApiKey,
