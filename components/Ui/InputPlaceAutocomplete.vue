@@ -191,6 +191,8 @@ watch(selectedPlace, () => {
       "
       :popup="!!selectedPlace"
       :popup-text="selectedPlace?.properties.formatted"
+
+      class="mt-4 mb-2"
     />
     <div class="relative">
       <UiInput
