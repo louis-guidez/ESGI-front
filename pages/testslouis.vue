@@ -12,6 +12,21 @@
 
       <button type="submit">Envoyer</button>
     </form>
+    <div>
+      <h2>Chat privé</h2>
+
+      <div>
+        <input v-model="messageText" placeholder="Votre message..." />
+        <button @click="envoyerMessage">Envoyer</button>
+      </div>
+
+      <div>
+        <h3>📨 Messages :</h3>
+        <div v-for="(msg, index) in messages" :key="index">
+          <strong>{{ msg.from }} ➡️ {{ msg.to }} :</strong> {{ msg.contenu }}
+        </div>
+      </div>
+    </div>
 
     <div class="container">
       <h1>Paiement sécurisé</h1>
@@ -50,6 +65,64 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import StripeCheckout from '~/components/StripeCheckout.vue'
+
+const messages = ref([])
+const messageText = ref('')
+const currentUserId = 2        // à remplacer dynamiquement
+const contactUserId = 1        // destinataire
+
+const topicId = currentUserId < contactUserId
+  ? `${currentUserId}-${contactUserId}`
+  : `${contactUserId}-${currentUserId}`
+
+const topicUrl = `https://chat.mercure/conversation/${topicId}`
+
+onMounted(() => {
+  const url = new URL('http://localhost:3001/.well-known/mercure')
+  url.searchParams.append('topic', topicUrl)
+
+  const eventSource = new EventSource(url)
+
+  eventSource.onmessage = (event) => {
+    const data = JSON.parse(event.data)
+    messages.value.push(data)
+    console.log('📩 Message reçu:', data)
+  }
+
+  eventSource.onerror = (err) => {
+    console.error('⚠️ Mercure error:', err)
+  }
+})
+
+const envoyerMessage = async () => {
+  if (!messageText.value) return
+
+  try {
+    const res = await fetch('http://localhost:8000/api/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/ld+json',
+        // 'Authorization': 'Bearer VOTRE_TOKEN_JWT_ICI', // si besoin
+      },
+      body: JSON.stringify({
+        contenu: messageText.value,
+        to: contactUserId,
+      }),
+    })
+
+    if (!res.ok) {
+      const error = await res.json()
+      console.error('❌ Erreur backend:', error)
+    } else {
+      const responseData = await res.json()
+      console.log('✅ Message envoyé:', responseData)
+      messageText.value = ''
+    }
+  } catch (err) {
+    console.error('❌ Erreur réseau:', err)
+  }
+}
+
 
 const annonces = ref([])
 
