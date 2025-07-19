@@ -88,10 +88,10 @@ watch(
     <div class="min-w-1/2 w-fit flex flex-col items-center gap-2">
       <h2 class="w-full text-left text-xl font-semibold">{{ $t('personalInformations') }}</h2>
       <form v-if="user" class="w-full flex flex-col gap-4" @submit.prevent="onSubmitInfos">
-        <FormInput id="email" v-model="formInfos.email" name="email" class="w-full" :label="$t('email')" type="email" />
-        <FormInput id="name" v-model="formInfos.name" name="name" class="w-full" :label="$t('name')" />
-        <FormInput id="lastname" v-model="formInfos.lastname" name="lastname" class="w-full" :label="$t('lastname')" />
-        <FormInputPlaceAutocomplete id="address" v-model="formInfos.address" name="address" class="w-full" :label="$t('address')" />
+        <FormInput id="email" v-model="formInfos.email" name="email" class="w-full" :label="$t('email')" type="email" :required="true" />
+        <FormInput id="name" v-model="formInfos.name" name="name" class="w-full" :label="$t('name')" :required="true" />
+        <FormInput id="lastname" v-model="formInfos.lastname" name="lastname" class="w-full" :label="$t('lastname')" :required="true" />
+        <FormInputPlaceAutocomplete id="address" v-model="formInfos.address" name="address" class="w-full" :label="$t('address')" :required="true" />
 
         <UiButton type="submit" class="w-full font-bold">
           <span>{{ $t('save') }}</span>

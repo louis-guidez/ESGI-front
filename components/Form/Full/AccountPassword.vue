@@ -43,7 +43,15 @@ const onSubmitPassword = handleSubmitPassword(async () => {
     <div class="min-w-1/2 w-fit flex flex-col items-center gap-2">
       <h2 class="w-full text-left text-xl font-semibold">{{ $t('password') }}</h2>
       <form class="w-full flex flex-col gap-4" @submit.prevent="onSubmitPassword">
-        <FormInput id="newPassword" v-model="formPassword.newPassword" name="newPassword" class="w-full" :label="$t('newPassword')" type="password" />
+        <FormInput
+          id="newPassword"
+          v-model="formPassword.newPassword"
+          name="newPassword"
+          class="w-full"
+          :label="$t('newPassword')"
+          type="password"
+          :required="true"
+        />
         <FormInput
           id="newPasswordConfirmation"
           v-model="formPassword.newPasswordConfirmation"
@@ -51,6 +59,7 @@ const onSubmitPassword = handleSubmitPassword(async () => {
           class="w-full"
           :label="$t('newPasswordConfirmation')"
           type="password"
+          :required="true"
         />
 
         <UiButton type="submit" class="w-full font-bold">

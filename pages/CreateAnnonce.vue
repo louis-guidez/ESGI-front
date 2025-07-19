@@ -32,16 +32,16 @@ const onSubmit = handleSubmit(() => {
       <h1 class="text-2xl font-semibold">{{ $t('createAnAd') }}</h1>
 
       <form class="my-8 flex flex-col gap-4" @submit.prevent="onSubmit">
-        <FormInput v-model="form.title" name="title" type="text" :label="$t('adTitle')" />
+        <FormInput v-model="form.title" name="title" type="text" :label="$t('adTitle')" :required="true" />
 
-        <FormTextarea v-model="form.description" name="description" :label="$t('adDescription')" />
+        <FormTextarea v-model="form.description" name="description" :label="$t('adDescription')" :required="true" />
 
         <!-- TODO add categories -->
         <!-- <FormSelect v-model="form.categories" name="categories" :label="$t('adCategories')" :options="[]" /> -->
 
-        <FormInput v-model="form.price" name="price" type="number" min="0" :label="$t('adPrice')" />
+        <FormInput v-model="form.price" name="price" type="number" min="0" :label="$t('adPrice')" :required="true" />
 
-        <FormInput v-model="form.pictures" name="pictures" type="file" multiple :label="$t('adPictures')" />
+        <FormInput v-model="form.pictures" name="pictures" type="file" multiple :label="$t('adPictures')" :required="true" />
 
         <UiButton type="submit" class="w-full">{{ $t('createAnAd') }}</UiButton>
       </form>

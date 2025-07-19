@@ -7,6 +7,7 @@ const props = defineProps<{
   name: string
   label: string
   modelValue?: string | { value: string; files: FileList }
+  required?: boolean
 }>()
 
 const setInitialValue = (type: string) => {
@@ -25,6 +26,13 @@ defineEmits(['update:modelValue'])
 
 <template>
   <div>
-    <UiInput v-bind="$props" v-model="value" :error-message="errorMessage" class="w-full" @update:model-value="$emit('update:modelValue', $event)" />
+    <UiInput
+      v-bind="$props"
+      v-model="value"
+      :error-message="errorMessage"
+      class="w-full"
+      :required="required"
+      @update:model-value="$emit('update:modelValue', $event)"
+    />
   </div>
 </template>

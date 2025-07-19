@@ -8,6 +8,7 @@ const props = defineProps<{
   name: string
   label: string
   modelValue?: InputPlaceAutocompleteValue['features'][0]
+  required?: boolean
 }>()
 
 const { value, errorMessage }: { value: Ref<InputPlaceAutocompleteValue['features'][0]>; errorMessage: Ref<string | undefined> } = useField(() => props.name, {
@@ -31,6 +32,7 @@ onMounted(() => {
       v-model="value"
       :error-message="errorMessage"
       class="w-full"
+      :required="required"
       @update:model-value="(place: InputPlaceAutocompleteValue['features'][0]) => emit('update:modelValue', place)"
     />
   </div>

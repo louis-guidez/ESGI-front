@@ -30,6 +30,7 @@ const props = withDefaults(
     intent?: InputProps['intent']
     size?: InputProps['size']
     errorMessage?: string
+    required?: boolean
   }>(),
   {
     id: '',
@@ -52,7 +53,10 @@ defineExpose({ focused })
 
 <template>
   <fieldset class="flex flex-col gap-2">
-    <label v-if="label" :for="id" class="text-sm font-semibold">{{ label }}</label>
+    <span v-if="label || required" class="flex items-center gap-1">
+      <label v-if="label" :for="id" class="text-sm font-semibold">{{ label }}</label>
+      <span v-if="required" class="text-red-500">*</span>
+    </span>
     <input
       v-bind="$attrs"
       :id="id"
