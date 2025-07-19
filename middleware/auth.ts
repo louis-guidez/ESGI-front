@@ -9,10 +9,21 @@
  *
  */
 
-export default defineNuxtRouteMiddleware(() => {
+import { toast } from 'vue-sonner'
+
+export default defineNuxtRouteMiddleware(({ meta, fullPath }) => {
+  const { $i18n } = useNuxtApp()
   const { user } = extractStore(useUserStore())
 
-  if (!user) {
-    return navigateTo('/login')
+  const abort = (meta.props as { abortNavigation?: boolean })?.abortNavigation
+
+  if (!user.value) {
+    toast.error($i18n.t('notLoggedIn'))
+
+    if (abort) {
+      return abortNavigation()
+    }
+
+    return navigateTo(`/login?redirect=${fullPath}`)
   }
 })

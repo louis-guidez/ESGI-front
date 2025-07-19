@@ -1,7 +1,15 @@
 <script setup>
 import { ref } from 'vue'
 
-import AnnonceCard from '@/components/ui/AnnonceCard.vue'
+import AnnonceCard from '@/components/Ui/AnnonceCard.vue'
+
+defineOgImageComponent('Lendo', {
+  headline: '🛒',
+  title: 'Lendo',
+  description: 'Lendo',
+  theme: 'green',
+  colorMode: 'dark',
+})
 
 const categories = ref([
   {
@@ -108,6 +116,15 @@ function isFavorite(annonce) {
     </section>
   </div>
 </template>
+
+<!-- <template>
+  <div>
+    <h1>Index</h1>
+    <NuxtLink :to="'/profile'" class="flex items-center gap-2">
+      <Icon :size="24" name="fluent:person-12-filled" />
+    </NuxtLink>
+  </div>
+</template> -->
 
 <style scoped>
 .page {

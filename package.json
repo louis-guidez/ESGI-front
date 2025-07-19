@@ -13,23 +13,30 @@
     "pre-commit": "lint-staged"
   },
   "dependencies": {
+    "@indoorequal/vue-maplibre-gl": "^8.4.0",
     "@internationalized/date": "^3.8.2",
     "@nuxt/eslint": "1.4.0",
     "@nuxt/icon": "1.14.0",
     "@nuxt/image": "1.10.0",
     "@nuxtjs/i18n": "9.5.6",
+    "@nuxtjs/seo": "3.1.0",
     "@pinia/nuxt": "0.11.1",
     "@stripe/stripe-js": "^7.4.0",
     "@tailwindcss/vite": "^4.1.8",
+    "@vee-validate/nuxt": "^4.15.1",
+    "@vueuse/core": "^13.5.0",
     "class-variance-authority": "^0.7.1",
     "eslint": "^9.0.0",
+    "maplibre-gl": "^5.6.1",
     "nuxt": "^3.15.2",
+    "nuxt-nodemailer": "^1.1.2",
     "pinia": "^3.0.3",
     "reka-ui": "^2.3.1",
     "tailwindcss": "^4.1.8",
     "vue": "latest",
     "vue-router": "latest",
-    "vue-sonner": "^2.0.0"
+    "vue-sonner": "^2.0.0",
+    "yup": "^1.6.1"
   },
   "packageManager": "pnpm@9.6.0+sha512.38dc6fba8dba35b39340b9700112c2fe1e12f10b17134715a4aa98ccf7bb035e76fd981cf0bb384dfa98f8d6af5481c2bef2f4266a24bfa20c34eb7147ce0b5e",
   "devDependencies": {

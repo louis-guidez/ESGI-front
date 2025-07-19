@@ -92,6 +92,7 @@ withDefaults(
     options: Option[] | OptionGroup[]
     intent?: SelectTriggerProps['intent']
     size?: SelectTriggerProps['size']
+    clearable?: boolean
   }>(),
   {
     placeholder: 'Sélectionner une option',
@@ -170,7 +171,7 @@ const emit = defineEmits(['update:modelValue'])
                     :disabled="!!disabled"
                     @select="
                       (e) => {
-                        if (e.detail.value === modelValue) {
+                        if (e.detail.value === modelValue && !clearable) {
                           e.preventDefault()
                           return emit('update:modelValue', null)
                         }
@@ -203,7 +204,6 @@ const emit = defineEmits(['update:modelValue'])
                 :disabled="!!disabled"
                 @select="
                   (e) => {
-                    console.log(e.detail.value, modelValue, e.detail.value === modelValue)
                     if (e.detail.value === modelValue) {
                       e.preventDefault()
                       return emit('update:modelValue', null)
