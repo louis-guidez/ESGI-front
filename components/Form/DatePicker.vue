@@ -6,9 +6,12 @@ const props = defineProps<{
   type?: string
   name: string
   label: string
+  modelValue?: Date
 }>()
 
-const { value, errorMessage }: { value: Ref<DateValue>; errorMessage: Ref<string | undefined> } = useField(() => props.name)
+const { value, errorMessage }: { value: Ref<DateValue>; errorMessage: Ref<string | undefined> } = useField(() => props.name, {
+  initialValue: props.modelValue ?? '',
+})
 
 defineEmits(['update:modelValue'])
 </script>

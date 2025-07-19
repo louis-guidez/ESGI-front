@@ -10,7 +10,9 @@ const props = defineProps<{
   modelValue?: InputPlaceAutocompleteValue['features'][0]
 }>()
 
-const { value, errorMessage }: { value: Ref<InputPlaceAutocompleteValue['features'][0]>; errorMessage: Ref<string | undefined> } = useField(() => props.name)
+const { value, errorMessage }: { value: Ref<InputPlaceAutocompleteValue['features'][0]>; errorMessage: Ref<string | undefined> } = useField(() => props.name, {
+  initialValue: props.modelValue ?? '',
+})
 
 const emit = defineEmits(['update:modelValue'])
 

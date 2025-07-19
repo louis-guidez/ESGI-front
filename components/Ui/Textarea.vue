@@ -29,7 +29,7 @@ withDefaults(
     id?: string
     type?: string
     label: string
-    modelValue: string
+    modelValue?: string
     errorMessage?: string
     intent?: TextareaProps['intent']
     size?: TextareaProps['size']
@@ -39,6 +39,7 @@ withDefaults(
     id: undefined,
     type: 'text',
     errorMessage: '',
+    modelValue: '',
     intent: 'primary',
     size: 'md',
     disabled: false,

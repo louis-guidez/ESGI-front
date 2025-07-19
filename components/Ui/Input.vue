@@ -26,7 +26,7 @@ const props = withDefaults(
     id?: string
     type?: string
     label?: string
-    modelValue: string | { value: string; files: FileList }
+    modelValue?: string | { value: string; files: FileList }
     intent?: InputProps['intent']
     size?: InputProps['size']
     errorMessage?: string
@@ -34,6 +34,7 @@ const props = withDefaults(
   {
     id: '',
     label: undefined,
+    modelValue: '',
     type: 'text',
     intent: 'primary',
     size: 'md',
