@@ -24,7 +24,7 @@ const menuOptions: { label: string; to: string }[] = [
   },
   {
     label: t('createAnAd'),
-    to: '/login',
+    to: '/CreateAnnonce',
   },
   {
     label: t('contact'),
