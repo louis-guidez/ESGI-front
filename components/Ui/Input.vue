@@ -51,7 +51,6 @@ defineExpose({ focused })
 
 <template>
   <fieldset class="flex flex-col gap-2">
-    {{ console.log(modelValue) }}
     <label v-if="label" :for="id" class="text-sm font-semibold">{{ label }}</label>
     <input
       v-bind="$attrs"
