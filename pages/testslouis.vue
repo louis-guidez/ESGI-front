@@ -22,11 +22,14 @@
 
       <div>
         <h3>📨 Messages :</h3>
-        <div v-for="(msg, index) in messages" :key="index">
-          <strong>{{ msg.from }} ➡️ {{ msg.to }} :</strong> {{ msg.contenu }}
+        <div v-for="msg in messages" :key="msg.id" :class="{ 'me': msg.from === currentUserId }">
+          <strong>{{ msg.from === currentUserId ? 'Moi' : 'Lui' }} :</strong> {{ msg.contenu }}
         </div>
       </div>
     </div>
+
+
+
 
     <div class="container">
       <h1>Paiement sécurisé</h1>
@@ -66,12 +69,16 @@
 import { ref, onMounted } from 'vue'
 import StripeCheckout from '~/components/StripeCheckout.vue'
 
+
+const { user } = extractStore(useUserStore())
 const messages = ref([])
 const messageText = ref('')
-const currentUserId = 2 // à remplacer dynamiquement
-const contactUserId = 1 // destinataire
+const currentUserId = 4        // à remplacer dynamiquement
+const contactUserId = 5        // destinataire
 
-const topicId = currentUserId < contactUserId ? `${currentUserId}-${contactUserId}` : `${contactUserId}-${currentUserId}`
+const topicId = currentUserId < contactUserId
+  ? `${currentUserId}-${contactUserId}`
+  : `${contactUserId}-${currentUserId}`
 
 const topicUrl = `https://chat.mercure/conversation/${topicId}`
 
@@ -96,17 +103,19 @@ const envoyerMessage = async () => {
   if (!messageText.value) return
 
   try {
-    const res = await fetch('http://localhost:8000/api/messages', {
+    const res = await fetch('http://localhost:8000/api/secure/messages', {
       method: 'POST',
       headers: {
+        Authorization: `Bearer ${user.value.token}`,
         'Content-Type': 'application/ld+json',
-        // 'Authorization': 'Bearer VOTRE_TOKEN_JWT_ICI', // si besoin
       },
       body: JSON.stringify({
         contenu: messageText.value,
         to: contactUserId,
       }),
     })
+
+
 
     if (!res.ok) {
       const error = await res.json()
@@ -120,6 +129,7 @@ const envoyerMessage = async () => {
     console.error('❌ Erreur réseau:', err)
   }
 }
+
 
 const annonces = ref([])
 
