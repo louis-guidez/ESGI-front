@@ -5,7 +5,7 @@ const footerLinks = [
   [
     { label: t('home'), to: '/' },
     { label: t('profile'), to: '/profile' },
-    { label: t('createAnAd'), to: '/' },
+    { label: t('createAnAd'), to: '/CreateAnnonce' },
     { label: t('login'), to: '/login' },
   ],
   [

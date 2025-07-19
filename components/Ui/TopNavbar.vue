@@ -24,7 +24,7 @@ defineExpose({ search, searchRef })
 
     <div class="inline-flex gap-2 items-center justify-center">
       <uiButton intent="primary" size="md" class="lg:block hidden">
-        <NuxtLink to="/login" class="flex items-center gap-2">
+        <NuxtLink to="/CreateAnnonce" class="flex items-center gap-2">
           <Icon :size="16" name="fluent:add-12-filled" />
           <span class="font-semibold leading-0">{{ $t('createAnAd') }}</span>
         </NuxtLink>

@@ -68,12 +68,10 @@ import StripeCheckout from '~/components/StripeCheckout.vue'
 
 const messages = ref([])
 const messageText = ref('')
-const currentUserId = 2        // à remplacer dynamiquement
-const contactUserId = 1        // destinataire
+const currentUserId = 2 // à remplacer dynamiquement
+const contactUserId = 1 // destinataire
 
-const topicId = currentUserId < contactUserId
-  ? `${currentUserId}-${contactUserId}`
-  : `${contactUserId}-${currentUserId}`
+const topicId = currentUserId < contactUserId ? `${currentUserId}-${contactUserId}` : `${contactUserId}-${currentUserId}`
 
 const topicUrl = `https://chat.mercure/conversation/${topicId}`
 
@@ -122,7 +120,6 @@ const envoyerMessage = async () => {
     console.error('❌ Erreur réseau:', err)
   }
 }
-
 
 const annonces = ref([])
 
