@@ -86,10 +86,14 @@ withDefaults(
     type?: string
     label: string
     modelValue: DateValue
+    errorMessage?: string
     intent?: DatePickerFieldProps['intent']
     size?: DatePickerFieldProps['size']
   }>(),
   {
+    id: undefined,
+    type: 'text',
+    errorMessage: '',
     intent: 'primary',
     size: 'md',
     disabled: false,
@@ -101,8 +105,19 @@ defineEmits(['update:modelValue'])
 
 <template>
   <fieldset class="flex flex-col gap-2">
-    <Label class="text-sm font-semibold" :for="id">{{ label }}</Label>
-    <DatePickerRoot :id="id" :locale="locale" :model-value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value)">
+    {{ console.log(modelValue) }}
+    <Label v-if="label" class="text-sm font-semibold" :for="id">{{ label }}</Label>
+    <DatePickerRoot
+      :id="id"
+      :locale="locale"
+      :model-value="modelValue"
+      @update:model-value="
+        (dateValue) => {
+          $emit('update:modelValue', dateValue)
+          console.log(modelValue, dateValue)
+        }
+      "
+    >
       <DatePickerField
         v-slot="{ segments }"
         :disabled="typeof $attrs['disabled'] !== 'undefined'"
@@ -116,7 +131,7 @@ defineEmits(['update:modelValue'])
         "
       >
         <div
-          class="flex items-center"
+          class="w-full flex items-center"
           :class="
             datePickerInput({
               intent,
@@ -143,6 +158,10 @@ defineEmits(['update:modelValue'])
           <Icon name="radix-icons:calendar" class="size-full" />
         </DatePickerTrigger>
       </DatePickerField>
+
+      <slot v-if="errorMessage" name="error" v-bind="{ errorMessage }">
+        <span class="text-red-500">{{ $te(errorMessage) ? $t(errorMessage) : errorMessage }}</span>
+      </slot>
 
       <DatePickerContent
         :side-offset="4"
