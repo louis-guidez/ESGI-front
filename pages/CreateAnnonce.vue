@@ -1,6 +1,13 @@
 <script setup>
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
+import { apiFetch } from '@/composables/useApi'
+import { useUserStore } from '@/stores/user'
+import { toast } from 'vue-sonner'
+
+definePageMeta({ middleware: ['auth'] })
+
+const { user } = extractStore(useUserStore())
 
 const form = ref({
   title: '',
@@ -21,8 +28,36 @@ const { handleSubmit } = useForm({
   }),
 })
 
-const onSubmit = handleSubmit(() => {
-  console.log(form.value, 'TODO: handle form submission')
+const onSubmit = handleSubmit(async () => {
+  if (!user.value?.token) {
+    toast.error('User not logged in')
+    return
+  }
+
+  const formData = new FormData()
+  formData.append('titre', form.value.title)
+  formData.append('description', form.value.description)
+  formData.append('prix', String(form.value.price))
+  if (form.value.pictures.files) {
+    for (const file of Array.from(form.value.pictures.files)) {
+      formData.append('photos[]', file)
+    }
+  }
+
+  try {
+    await apiFetch('/secure/annonces', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${user.value.token}`,
+      },
+      body: formData,
+    })
+
+    toast.success('Annonce créée')
+  } catch (err) {
+    console.error(err)
+    toast.error('Erreur lors de la création')
+  }
 })
 </script>
 
