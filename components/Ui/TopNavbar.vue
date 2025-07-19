@@ -23,18 +23,18 @@ defineExpose({ search, searchRef })
     </form>
 
     <div class="inline-flex gap-2 items-center justify-center">
-      <uiButton intent="primary" size="md" class="lg:block hidden">
-        <NuxtLink to="/CreateAnnonce" class="flex items-center gap-2">
+      <NuxtLink to="/CreateAnnonce" class="flex items-center gap-2">
+        <uiButton intent="primary" size="md" class="lg:block hidden">
           <Icon :size="16" name="fluent:add-12-filled" />
           <span class="font-semibold leading-0">{{ $t('createAnAd') }}</span>
-        </NuxtLink>
-      </uiButton>
+        </uiButton>
+      </NuxtLink>
 
-      <uiButton intent="ghost" class="!p-2">
-        <NuxtLink :to="user ? '/profile' : '/login'" class="flex items-center gap-2">
+      <NuxtLink :to="user ? '/profile' : '/login'" class="flex items-center gap-2">
+        <uiButton intent="ghost" class="!p-2">
           <Icon :size="24" name="fluent:person-12-filled" />
-        </NuxtLink>
-      </uiButton>
+        </uiButton>
+      </NuxtLink>
 
       <uiButton v-if="user" intent="ghost" class="!p-2" @click="logout">
         <Icon :size="24" name="fluent:sign-out-20-regular" />
