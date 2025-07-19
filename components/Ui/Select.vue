@@ -80,14 +80,16 @@ const selectItem = cva('selectItem', {
   },
 })
 
-type Option = { label: string; value: string | number | null; disabled?: boolean }
-type OptionGroup = { label: string; options: Option[] }
+export type Option = { label: string; value: string | number | null; disabled?: boolean }
+export type OptionGroup = { label: string; options: Option[] }
 
 withDefaults(
   defineProps<{
-    label: string
+    id?: string
+    label?: string
     placeholder?: string
     modelValue: Option['value']
+    errorMessage?: string
     multiple?: boolean
     options: Option[] | OptionGroup[]
     intent?: SelectTriggerProps['intent']
@@ -95,7 +97,10 @@ withDefaults(
     clearable?: boolean
   }>(),
   {
-    placeholder: 'Sélectionner une option',
+    id: undefined,
+    label: undefined,
+    placeholder: undefined,
+    errorMessage: '',
     intent: 'primary',
     size: 'md',
     disabled: false,
@@ -107,7 +112,7 @@ const emit = defineEmits(['update:modelValue'])
 
 <template>
   <fieldset class="flex flex-col gap-2">
-    <label class="text-sm font-semibold">{{ label }}</label>
+    <label v-if="label" :for="id" class="text-sm font-semibold">{{ label }}</label>
     <SelectRoot :model-value="modelValue" :multiple="multiple" @update:model-value="$emit('update:modelValue', $event)">
       <SelectTrigger
         class="group relative flex items-center justify-between gap-2"
@@ -120,9 +125,13 @@ const emit = defineEmits(['update:modelValue'])
         "
         aria-label="Customise options"
       >
-        <SelectValue :placeholder="placeholder" />
+        <SelectValue :placeholder="placeholder || $t('selectOption')" />
         <Icon name="fluent:chevron-down-12-filled" :size="16" />
       </SelectTrigger>
+
+      <slot v-if="errorMessage" name="error" v-bind="{ errorMessage }">
+        <span class="text-red-500">{{ $te(errorMessage) ? $t(errorMessage) : errorMessage }}</span>
+      </slot>
 
       <SelectPortal>
         <SelectContent
