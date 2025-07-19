@@ -52,3 +52,7 @@ selectOption: "Sélectionner une option"
 sendUsAEmail: "Envoyez-nous un email!"
 settings: "Paramètres"
 userUpdated: "Votre compte a bien été mis à jour"
+conversations: 'Conversations'
+chooseUserToChat: 'Choisir un utilisateur pour discuter'
+conversationWith: 'Conversation avec {user}'
+noOtherUsers: 'Aucun autre utilisateur'
