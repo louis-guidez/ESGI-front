@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 import AnnonceCard from '@/components/ui/AnnonceCard.vue'
 
@@ -66,13 +66,6 @@ const categories = ref([
   },
 ]) // [{ categorie: "Mobilier", annonces: [...] }, ...]
 const favorites = ref([])
-
-onMounted(async () => {
-  // Si ton backend ne retourne pas directement groupé par catégorie,
-  // tu devras grouper manuellement ici. Supposons que le backend le fait déjà :
-  const { data } = await axios.get('/api/annonces-par-categorie')
-  categories.value = data
-})
 
 function toggleFavorite(annonce) {
   const exists = favorites.value.find((a) => a.id === annonce.id)

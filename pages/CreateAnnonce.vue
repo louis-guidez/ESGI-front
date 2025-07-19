@@ -27,10 +27,6 @@ async function submitForm() {
       formData.append('photos[' + i + ']', photo)
     })
 
-    const { data } = await axios.post('/api/secure/annonces', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-
     successMessage.value = 'Annonce créée avec succès (ID: ' + data.id + ')'
     errorMessage.value = ''
     // Optionnel : réinitialiser les champs
@@ -52,13 +48,13 @@ async function submitForm() {
 
     <form @submit.prevent="submitForm">
       <label>Titre</label>
-      <input type="text" v-model="titre" required />
+      <input v-model="titre" type="text" required />
 
       <label>Description</label>
       <textarea v-model="description" required></textarea>
 
       <label>Prix (€)</label>
-      <input type="number" v-model="prix" required min="0" />
+      <input v-model="prix" type="number" required min="0" />
 
       <label>Statut</label>
       <select v-model="statut">
@@ -67,10 +63,10 @@ async function submitForm() {
       </select>
 
       <label>Date de création</label>
-      <input type="datetime-local" v-model="dateCreation" />
+      <input v-model="dateCreation" type="datetime-local" />
 
       <label>Photos</label>
-      <input type="file" multiple @change="handleFileChange" accept="image/*" />
+      <input type="file" multiple accept="image/*" @change="handleFileChange" />
 
       <button type="submit">Publier</button>
     </form>
