@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { apiFetch } from '@/composables/useApi'
 
 import AnnonceCard from '@/components/Ui/AnnonceCard.vue'
 
@@ -11,69 +12,19 @@ defineOgImageComponent('Lendo', {
   colorMode: 'dark',
 })
 
-const categories = ref([
-  {
-    categorie: 'Mobilier',
-    annonces: [
-      {
-        id: 1,
-        titre: 'Tonnelle',
-        description: 'Tonnelle 3x3m en bon état',
-        prix: 36,
-        statut: 'disponible',
-        dateCreation: '2025-07-15 14:00:00',
-        photos: ['https://example.com/photos/tonnelle1.jpg'],
-      },
-      {
-        id: 2,
-        titre: 'Table en bois',
-        description: 'Table rustique avec 6 chaises',
-        prix: 120,
-        statut: 'disponible',
-        dateCreation: '2025-07-14 10:00:00',
-        photos: ['https://example.com/photos/table1.jpg'],
-      },
-    ],
-  },
-  {
-    categorie: 'Électroménager',
-    annonces: [
-      {
-        id: 3,
-        titre: 'Aspirateur Dyson',
-        description: 'Dyson V8 avec accessoires',
-        prix: 150,
-        statut: 'disponible',
-        dateCreation: '2025-07-13 09:00:00',
-        photos: ['https://example.com/photos/dyson.jpg'],
-      },
-      {
-        id: 4,
-        titre: 'Machine à café Krups',
-        description: 'Machine à café automatique',
-        prix: 80,
-        statut: 'disponible',
-        dateCreation: '2025-07-10 15:00:00',
-        photos: ['https://example.com/photos/cafe.jpg'],
-      },
-    ],
-  },
-  {
-    categorie: 'Bricolage',
-    annonces: [
-      {
-        id: 5,
-        titre: 'Scie circulaire Makita',
-        description: 'Scie en parfait état',
-        prix: 90,
-        statut: 'disponible',
-        dateCreation: '2025-07-12 11:00:00',
-        photos: ['https://example.com/photos/scie.jpg'],
-      },
-    ],
-  },
-])
+const annonces = ref([])
 const favorites = ref([])
+
+async function fetchAnnonces() {
+  try {
+    const res = await apiFetch('/annonces')
+    annonces.value = res
+  } catch (err) {
+    console.error('Erreur chargement annonces:', err)
+  }
+}
+
+onMounted(fetchAnnonces)
 
 function toggleFavorite(annonce) {
   const exists = favorites.value.find((a) => a.id === annonce.id)
@@ -100,13 +51,13 @@ function isFavorite(annonce) {
     </section>
 
     <!-- Affichage dynamique par catégorie -->
-    <section v-for="cat in categories" :key="cat.categorie">
+    <section v-if="annonces.length">
       <h2>
-        {{ cat.categorie }} <span class="count">{{ cat.annonces.length }} offres</span>
+        Toutes les annonces <span class="count">{{ annonces.length }} offres</span>
       </h2>
       <div class="card-list">
         <AnnonceCard
-          v-for="annonce in cat.annonces"
+          v-for="annonce in annonces"
           :key="annonce.id"
           :annonce="annonce"
           :is-favorite="isFavorite(annonce)"
