@@ -3,10 +3,13 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
 const form = ref({
-  select: undefined,
-  input: undefined,
-  datepicker: undefined,
-  file: undefined,
+  title: '',
+  description: '',
+  price: '',
+  pictures: {
+    value: '',
+    files: null,
+  },
 })
 
 const { handleSubmit } = useForm({
