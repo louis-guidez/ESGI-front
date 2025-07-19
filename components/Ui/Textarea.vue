@@ -30,11 +30,15 @@ withDefaults(
     type?: string
     label: string
     modelValue: string
+    errorMessage?: string
     intent?: TextareaProps['intent']
     size?: TextareaProps['size']
     resize?: TextareaProps['resize']
   }>(),
   {
+    id: undefined,
+    type: 'text',
+    errorMessage: '',
     intent: 'primary',
     size: 'md',
     disabled: false,
@@ -64,5 +68,8 @@ defineEmits(['update:modelValue'])
       :value="modelValue"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value)"
     />
+    <slot v-if="errorMessage" name="error" v-bind="{ errorMessage }">
+      <span class="text-red-500">{{ $te(errorMessage) ? $t(errorMessage) : errorMessage }}</span>
+    </slot>
   </fieldset>
 </template>
