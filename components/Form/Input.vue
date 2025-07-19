@@ -11,5 +11,7 @@ const { value, errorMessage }: { value: Ref<string>; errorMessage: Ref<string | 
 </script>
 
 <template>
-  <UiInput v-bind="$props" v-model="value" :error-message="errorMessage" class="w-full" />
+  <div>
+    <UiInput v-bind="$props" v-model="value" :error-message="errorMessage" class="w-full" />
+  </div>
 </template>
