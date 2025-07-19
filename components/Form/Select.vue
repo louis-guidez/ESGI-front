@@ -10,8 +10,12 @@ const props = defineProps<{
 }>()
 
 const { value, errorMessage }: { value: Ref<Option['value']>; errorMessage: Ref<string | undefined> } = useField(() => props.name)
+
+defineEmits(['update:modelValue'])
 </script>
 
 <template>
-  <UiSelect v-bind="$props" v-model="value" :error-message="errorMessage" class="w-full" />
+  <div>
+    <UiSelect v-bind="$props" v-model="value" :error-message="errorMessage" class="w-full" @update:model-value="$emit('update:modelValue', $event)" />
+  </div>
 </template>

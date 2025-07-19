@@ -8,8 +8,12 @@ const props = defineProps<{
 }>()
 
 const { value, errorMessage }: { value: Ref<string>; errorMessage: Ref<string | undefined> } = useField(() => props.name)
+
+defineEmits(['update:modelValue'])
 </script>
 
 <template>
-  <UiTextarea v-bind="$props" v-model="value" :error-message="errorMessage" class="w-full" />
+  <div>
+    <UiTextarea v-bind="$props" v-model="value" :error-message="errorMessage" class="w-full" @update:model-value="$emit('update:modelValue', $event)" />
+  </div>
 </template>
