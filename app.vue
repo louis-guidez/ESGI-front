@@ -5,7 +5,7 @@ import 'vue-sonner/style.css'
 
 <template>
   <NuxtLayout>
-    <NuxtPage />
+    <NuxtPage class="min-h-screen" />
 
     <ClientOnly>
       <Toaster rich-colors />

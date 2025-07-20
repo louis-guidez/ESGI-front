@@ -17,20 +17,27 @@ export interface User {
 }
 
 export const useUserStore = defineStore('user', () => {
-  // JSON.parse(localStorage.getItem('user') || 'null')
-  const user = ref<User | null>(null)
+  const user = useCookie<(User & { token: string }) | null>('user', {
+    default: () => null,
+  })
 
-  const getUsers = async () => apiFetch<User[]>('/utilisateurs')
+  const settings = useCookie('settings', {
+    default: () => ({}),
+  })
+
+  const getUsers = async () => await apiFetch<User[]>('/utilisateurs')
 
   const login = async ({ email, password }: Partial<User>) => {
     try {
-      const { userId } = await apiFetch<{ message: string; userId: number }>('/login', {
+      const {
+        token,
+        user: { id: userId },
+      } = await apiFetch<{ token: string; user: User }>('/login', {
         method: 'POST',
         body: { email, password },
       })
 
       const users = await getUsers()
-
       if (!users) {
         throw new Error('No users found')
       }
@@ -40,9 +47,10 @@ export const useUserStore = defineStore('user', () => {
         throw new Error(`No user found with id ${userId}`)
       }
 
-      user.value = foundUser
+      user.value = { ...foundUser, token }
 
       toast.success('Connexion reussie !')
+      return foundUser
     } catch {
       toast.error('Erreur lors de la connexion')
     }
@@ -56,10 +64,50 @@ export const useUserStore = defineStore('user', () => {
       })
 
       toast.success('Création de compte reussie ! Veuillez vous connecter.')
+      return true
     } catch {
       toast.error('Erreur lors de la création de compte')
     }
   }
 
-  return { user, login, register }
+  const updateUser = async (userId: number, data: Partial<User>) => {
+    const {
+      $i18n: { t },
+    } = useNuxtApp()
+    if (!user.value?.token) {
+      throw new Error('No token available')
+    }
+
+    try {
+      const response = await apiFetch<User[]>(`http://localhost:8000/api/secure/utilisateurs/${userId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${user.value.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        ignoreResponseError: true,
+      })
+
+      const updatedUser = response[0]
+      user.value = { token: user.value.token, ...updatedUser }
+
+      toast.success(t('userUpdated'))
+      return response
+    } catch {
+      toast.error(t('errorWhileUpdatingUser'))
+    }
+  }
+
+  const logout = () => {
+    const router = useRouter()
+    const { currentRoute } = router
+
+    if ([currentRoute.value.meta.middleware].flat().includes('auth')) router.push('/')
+
+    user.value = null
+    localStorage.removeItem('user')
+  }
+
+  return { user, settings, login, logout, register, getUsers, updateUser }
 })
