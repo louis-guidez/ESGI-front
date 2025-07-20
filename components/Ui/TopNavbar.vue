@@ -23,28 +23,27 @@ defineExpose({ search, searchRef })
     </form>
 
     <div class="inline-flex gap-2 items-center justify-center">
-      <NuxtLink to="/CreateAnnonce" class="flex items-center gap-2">
-        <uiButton intent="primary" size="md" class="lg:block hidden">
+      <NuxtLink to="/CreateAnnonce" class="hidden lg:flex items-center gap-2">
+        <uiButton intent="primary" size="md" class="flex items-center gap-2">
           <Icon :size="16" name="fluent:add-12-filled" />
           <span class="font-semibold leading-0">{{ $t('createAnAd') }}</span>
         </uiButton>
       </NuxtLink>
 
       <NuxtLink :to="user ? '/conversations' : '/login'" class="flex items-center gap-2">
-        <uiButton intent="ghost" class="!p-2">
+        <uiButton intent="ghost" class="!p-2 flex items-center gap-2">
           <Icon :size="24" name="fluent:chat-20-filled" />
         </uiButton>
       </NuxtLink>
 
-
       <NuxtLink :to="user ? '/testslouis' : '/login'" class="flex items-center gap-2">
-        <uiButton intent="ghost" class="!p-2">
+        <uiButton intent="ghost" class="!p-2 flex items-center gap-2">
           <Icon :size="24" name="fluent:settings-20-filled" />
         </uiButton>
       </NuxtLink>
 
       <NuxtLink :to="user ? '/profile' : '/login'" class="flex items-center gap-2">
-        <uiButton intent="ghost" class="!p-2">
+        <uiButton intent="ghost" class="!p-2 flex items-center gap-2">
           <Icon :size="24" name="fluent:person-12-filled" />
         </uiButton>
       </NuxtLink>
