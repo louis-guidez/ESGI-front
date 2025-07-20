@@ -47,13 +47,13 @@ export default defineNuxtConfig({
   },
   // FIXME define a plugin for this, use the env inside the runtime config instead
   nodemailer: {
-    from: `"Lendo App" <${process.env.NODEMAILER_USER || 'lendo.app.esgi@gmail.com'}>`,
+    from: `"Lendo App" <${process.env.NODEMAILER_AUTH_USER || 'lendo.app.esgi@gmail.com'}>`,
     host: process.env.NODEMAILER_HOST,
     port: process.env.NODEMAILER_PORT,
     secure: false,
     auth: {
-      user: process.env.NODEMAILER_USER || 'lendo.app.esgi@gmail.com',
-      pass: process.env.NODEMAILER_PASS,
+      user: process.env.NODEMAILER_AUTH_USER || 'lendo.app.esgi@gmail.com',
+      pass: process.env.NODEMAILER_AUTH_PASS,
     },
   },
 })
