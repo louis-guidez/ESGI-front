@@ -43,6 +43,8 @@ name: "Prénom"
 nameRequired: "Le prénom est requis"
 newPassword: "Nouveau mot de passe"
 newPasswordConfirmation: "Confirmer le nouveau mot de passe"
+newUser: "Nouvel utilisateur"
+noConversation: "Aucune conversation"
 noOtherUsers: 'Aucun autre utilisateur'
 noResult: "Aucun resultat"
 notLoggedIn: "Vous devez être connecté(e) pour accéder à cette page"

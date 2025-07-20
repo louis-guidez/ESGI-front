@@ -107,9 +107,9 @@ watch(
         <ul class="flex flex-col gap-2 overflow-y-auto">
           <li v-if="newUser && newUserIdChat && !conversations?.some((c) => c.with.id === newUserIdChat)">
             <UiButton intent="primary" size="lg" class="w-full text-left justify-start font-semibold" @click="selectedConversation = newUserIdChat">
-              <span
-                >{{ newUser.prenom }} <b class="font-bold uppercase">{{ newUser.nom }}</b></span
-              >
+              <span>
+                {{ newUser.prenom || $t('newUser') }} <b class="font-bold uppercase">{{ newUser.nom }}</b>
+              </span>
             </UiButton>
           </li>
           <li v-for="conversation in conversations" :key="conversation.conversationId">
@@ -120,7 +120,7 @@ watch(
               @click="selectedConversation = conversation.with.id"
             >
               <span
-                >{{ conversation.with.prenom }} <b class="font-bold uppercase">{{ conversation.with.nom }}</b></span
+                >{{ conversation.with.prenom || $t('newUser') }} <b class="font-bold uppercase">{{ conversation.with.nom }}</b></span
               >
             </UiButton>
           </li>
@@ -134,7 +134,11 @@ watch(
       </div>
 
       <div class="w-full h-[90%] bg-white rounded-none md:rounded-l-2xl p-8 overflow-y-auto">
-        <UiChat v-if="selectedConversation" :contact-user-id="selectedConversation" />
+        <UiChat v-if="false" :contact-user-id="selectedConversation" />
+        <div v-else class="h-full flex flex-col justify-center items-center">
+          <Icon name="fluent:chat-16-regular" size="48" />
+          <span class="text-2xl font-semibold">{{ $t('noConversation') }}</span>
+        </div>
       </div>
     </div>
   </div>
