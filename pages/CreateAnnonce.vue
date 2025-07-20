@@ -1,21 +1,38 @@
-<script setup>
+<script setup lang="ts">
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
-import { apiFetch } from '@/composables/useApi'
-import { useUserStore } from '@/stores/user'
-import { toast } from 'vue-sonner'
+import { useAnnonceStore } from '@/stores/annonces'
+import { useRouter } from 'vue-router'
 
-definePageMeta({ middleware: ['auth'] })
+const router = useRouter()
+const { createAnnonce } = useAnnonceStore()
+const { fetchCategories, getAllCategories, getById } = useCategorieStore()
 
-const { user } = extractStore(useUserStore())
+onMounted(async () => {
+  await fetchCategories()
+
+  const toutes = getAllCategories()
+  console.log('📋 Toutes les catégories :', toutes)
+
+  const unique = getById(1)
+  console.log('🔎 Catégorie 1 :', unique)
+})
+
+const categoryOptions = computed(() =>
+  getAllCategories().map((cat) => ({
+    label: cat.label,
+    value: cat.id,
+  })),
+)
 
 const form = ref({
   title: '',
   description: '',
   price: '',
+  categories: [] as number[],
   pictures: {
     value: '',
-    files: null,
+    files: null as FileList | null,
   },
 })
 
@@ -24,39 +41,42 @@ const { handleSubmit } = useForm({
     title: yup.string().required(),
     description: yup.string().required(),
     price: yup.number().required(),
-    pictures: yup.object({ value: yup.string(), files: yup.mixed().required('Files is required') }).required('Files is required'),
+    categories: yup.array().min(1, 'Sélectionner au moins une catégorie'),
+    pictures: yup
+      .object({
+        value: yup.string(),
+        files: yup.mixed().required('Files is required'),
+      })
+      .required(),
   }),
 })
 
 const onSubmit = handleSubmit(async () => {
-  if (!user.value?.token) {
-    toast.error('User not logged in')
-    return
-  }
-
-  const formData = new FormData()
-  formData.append('titre', form.value.title)
-  formData.append('description', form.value.description)
-  formData.append('prix', String(form.value.price))
-  if (form.value.pictures.files) {
-    for (const file of Array.from(form.value.pictures.files)) {
-      formData.append('photos[]', file)
-    }
-  }
-
   try {
-    await apiFetch('/secure/annonces', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${user.value.token}`,
-      },
-      body: formData,
+    const formData = new FormData()
+    formData.append('titre', form.value.title)
+    formData.append('description', form.value.description)
+    formData.append('prix', form.value.price)
+    formData.append('statut', 'disponible')
+    formData.append('dateCreation', new Date().toISOString())
+
+    const files = form.value.pictures.files
+    if (files) {
+      Array.from(files).forEach((file, i) => {
+        formData.append(`photos[${i}]`, file)
+      })
+    }
+
+    form.value.categories.forEach((id, index) => {
+      formData.append(`categorieIds[${index}]`, id.toString())
     })
 
-    toast.success('Annonce créée')
-  } catch (err) {
-    console.error(err)
-    toast.error('Erreur lors de la création')
+    const response = await createAnnonce(formData)
+    if (response) {
+      router.push('/')
+    }
+  } catch (e) {
+    console.error(e)
   }
 })
 </script>
@@ -67,16 +87,15 @@ const onSubmit = handleSubmit(async () => {
       <h1 class="text-2xl font-semibold">{{ $t('createAnAd') }}</h1>
 
       <form class="my-8 flex flex-col gap-4" @submit.prevent="onSubmit">
-        <FormInput v-model="form.title" name="title" type="text" :label="$t('adTitle')" :required="true" />
+        <FormInput v-model="form.title" name="title" type="text" :label="$t('adTitle')" />
 
-        <FormTextarea v-model="form.description" name="description" :label="$t('adDescription')" :required="true" />
+        <FormTextarea v-model="form.description" name="description" :label="$t('adDescription')" />
 
-        <!-- TODO add categories -->
-        <!-- <FormSelect v-model="form.categories" name="categories" :label="$t('adCategories')" :options="[]" /> -->
+        <FormInput v-model="form.price" name="price" type="number" min="0" :label="$t('adPrice')" />
 
-        <FormInput v-model="form.price" name="price" type="number" min="0" :label="$t('adPrice')" :required="true" />
+        <FormInput v-model="form.pictures" name="pictures" type="file" multiple :label="$t('adPictures')" />
 
-        <FormInput v-model="form.pictures" name="pictures" type="file" multiple :label="$t('adPictures')" :required="true" />
+        <UiSelect v-model="form.categories" name="categories" multiple :options="categoryOptions" :label="$t('categories')" />
 
         <UiButton type="submit" class="w-full">{{ $t('createAnAd') }}</UiButton>
       </form>
