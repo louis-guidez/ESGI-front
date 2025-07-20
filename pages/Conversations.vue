@@ -134,8 +134,8 @@ watch(
       </div>
 
       <div class="w-full h-[90%] bg-white rounded-none md:rounded-l-2xl p-8 overflow-y-auto">
-        <UiChat v-if="selectedConversation" :contact-user-id="selectedConversation" />
-        <div v-else class="h-full flex flex-col justify-center items-center">
+        <UiChat v-if="selectedConversation" :contact-user-id="selectedConversation" class="w-full" />
+        <div v-else class="size-full flex flex-col justify-center items-center">
           <Icon name="fluent:chat-16-regular" size="48" />
           <span class="text-2xl font-semibold">{{ $t('noConversation') }}</span>
         </div>
