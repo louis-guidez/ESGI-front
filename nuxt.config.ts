@@ -16,6 +16,7 @@ export default defineNuxtConfig({
       // TODO need to move this to private variable => only accessible on the server-side
       STRIPE_KEY: process.env.STRIPE_KEY,
       GEOAPIFY_API_KEY: process.env.GEOAPIFY_API_KEY,
+      CONTACT_PHONE_NUMBER: process.env.CONTACT_PHONE_NUMBER || '+33 6 66 66 66 66',
       CONTACT_MAIL: process.env.CONTACT_MAIL || 'lendo.app.esgi@gmail.com',
     },
   },
