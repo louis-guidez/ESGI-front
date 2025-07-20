@@ -66,7 +66,7 @@ const onSubmit = handleSubmit(async () => {
         </div>
         <div class="flex items-center gap-2">
           <Icon name="fluent:mail-12-filled" />
-          <a :href="`mailto:${config.public.NODEMAILER_USER}`" class="font-semibold">{{ config.public.NODEMAILER_USER }}</a>
+          <a :href="`mailto:${config.public.NODEMAILER_AUTH_USER}`" class="font-semibold">{{ config.public.NODEMAILER_AUTH_USER }}</a>
         </div>
       </div>
     </div>

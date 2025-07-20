@@ -12,11 +12,11 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:8000/api',
-      MERCURE_BASE_URL: process.env.API_BASE_URL || 'http://localhost:3001/.well-known/mercure',
+      MERCURE_BASE_URL: process.env.MERCURE_BASE_URL || 'http://localhost:3001/.well-known/mercure',
       // TODO need to move this to private variable => only accessible on the server-side
-      STRIPE_KEY: process.env.NUXT_PUBLIC_STRIPE_KEY,
+      STRIPE_KEY: process.env.STRIPE_KEY,
       GEOAPIFY_API_KEY: process.env.GEOAPIFY_API_KEY,
-      NODEMAILER_USER: process.env.NODEMAILER_USER,
+      NODEMAILER_AUTH_USER: process.env.NODEMAILER_AUTH_USER,
     },
   },
   i18n: {
@@ -45,16 +45,7 @@ export default defineNuxtConfig({
       ErrorMessage: 'VeeErrorMessage',
     },
   },
-  // nodemailer: {
-  //   from: '"Lendo App" <lendo.app.esgi@gmail.com>',
-  //   host: 'smtp.gmail.com',
-  //   port: 587,
-  //   secure: false,
-  //   auth: {
-  //     user: 'lendo.app.esgi@gmail.com',
-  //     pass: 'vsmyodmqgznddloi',
-  //   },
-  // },
+  // FIXME define a plugin for this, use the env inside the runtime config instead
   nodemailer: {
     from: `"Lendo App" <${process.env.NODEMAILER_USER || 'lendo.app.esgi@gmail.com'}>`,
     host: process.env.NODEMAILER_HOST,
@@ -65,14 +56,4 @@ export default defineNuxtConfig({
       pass: process.env.NODEMAILER_PASS,
     },
   },
-  //     nodemailer: {
-  //   from: `"Lendo App" <${process.env.NODEMAILER_USER}>`,
-  //   host: process.env.NODEMAILER_HOST,
-  //   port: process.env.NODEMAILER_PORT,
-  //   secure: process.env.NODEMAILER_SECURE,
-  //   auth: {
-  //     user: process.env.NODEMAILER_USER,
-  //     pass: process.env.NODEMAILER_PASS,
-  //   },
-  // },
 })
