@@ -4,11 +4,12 @@ export interface Annonce {
   id: number
   titre: string
   description: string
-  categorie: string
+  categories: string
   prix: number
   statut: string
   dateCreation: Date
   photos: string[]
+  user: User
 }
 
 export const useAnnonceStore = defineStore('annonce', () => {
@@ -28,11 +29,22 @@ export const useAnnonceStore = defineStore('annonce', () => {
     }
   }
 
+  const getAnnonce = async (id: number) => {
+    try {
+      const data = await apiFetch<Annonce>(`/annonces/${id}`)
+      return data
+    } catch {
+      toast.error('Erreur lors du chargement de l’annonce')
+    } finally {
+      loading.value = false
+    }
+  }
+
   const groupedByCategory = computed(() => {
     const map = new Map<string, Annonce[]>()
 
     for (const annonce of annonces.value) {
-      const categorie = (annonce as Annonce).categorie || 'Autre' // adapte selon ton modèle
+      const categorie = (annonce as Annonce).categories || 'Autre' // adapte selon ton modèle
       if (!map.has(categorie)) map.set(categorie, [])
       map.get(categorie)!.push(annonce)
     }
@@ -53,7 +65,6 @@ export const useAnnonceStore = defineStore('annonce', () => {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
-        ignoreResponseError: true,
       })
 
       toast.success('Annonce créée avec succès')
@@ -111,6 +122,7 @@ export const useAnnonceStore = defineStore('annonce', () => {
     annonces,
     loading,
     fetchAnnonces,
+    getAnnonce,
     createAnnonce,
     updateAnnonce,
     deleteAnnonce,

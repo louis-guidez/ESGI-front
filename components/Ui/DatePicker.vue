@@ -66,7 +66,7 @@ type DatePickerInput = VariantProps<typeof datePickerInput>
 const datePickerContent = cva('datePickerContent', {
   variants: {
     intent: {
-      primary: 'border border-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent',
+      primary: 'border border-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white',
     },
     size: {
       sm: 'pr-1 rounded-lg text-xs',
@@ -89,6 +89,8 @@ withDefaults(
     errorMessage?: string
     intent?: DatePickerFieldProps['intent']
     size?: DatePickerFieldProps['size']
+    disabled?: boolean
+    required?: boolean
   }>(),
   {
     id: undefined,
@@ -105,8 +107,10 @@ defineEmits(['update:modelValue'])
 
 <template>
   <fieldset class="flex flex-col gap-2">
-    {{ console.log(modelValue) }}
-    <Label v-if="label" class="text-sm font-semibold" :for="id">{{ label }}</Label>
+    <span v-if="label || required" class="flex items-center gap-1">
+      <Label v-if="label" :for="id" class="text-sm font-semibold">{{ label }}</Label>
+      <span v-if="required" class="text-red-500">*</span>
+    </span>
     <DatePickerRoot
       :id="id"
       :locale="locale"

@@ -32,7 +32,7 @@ const seller = computed(() => {
 </script>
 
 <template>
-  <NuxtLink :to="{ path: '/ShowAnnonce', query: { id: annonce.id } }" class="block">
+  <NuxtLink :to="`/annonce/${annonce.id}`" class="block">
     <div class="card">
       <img :src="annonce.photos?.[0]" alt="photo" class="card-img" />
       <div class="card-body">
@@ -43,7 +43,7 @@ const seller = computed(() => {
           <div class="card-price">{{ annonce.prix }}€</div>
         </div>
       </div>
-      <div class="card-heart" @click.stop="$emit('toggle-favorite', annonce)">
+      <div class="card-heart" @click.prevent="$emit('toggle-favorite', annonce)">
         <span :class="{ active: isFavorite }">❤️</span>
       </div>
     </div>

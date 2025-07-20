@@ -7,6 +7,7 @@ const props = defineProps<{
   name: string
   label: string
   modelValue?: Date
+  required?: boolean
 }>()
 
 const { value, errorMessage }: { value: Ref<DateValue>; errorMessage: Ref<string | undefined> } = useField(() => props.name, {
@@ -18,6 +19,13 @@ defineEmits(['update:modelValue'])
 
 <template>
   <div>
-    <UiDatePicker v-bind="$props" v-model="value" :error-message="errorMessage" class="w-full" @update:model-value="$emit('update:modelValue', $event)" />
+    <UiDatePicker
+      v-bind="$props"
+      v-model="value"
+      :error-message="errorMessage"
+      class="w-full"
+      :required="required"
+      @update:model-value="$emit('update:modelValue', $event)"
+    />
   </div>
 </template>

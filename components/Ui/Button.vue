@@ -47,7 +47,7 @@ withDefaults(
         disabled: typeof $attrs['disabled'] !== 'undefined',
       })
     "
-    class="size-fit flex items-center justify-center"
+    class="size-fit flex items-center justify-center whitespace-nowrap"
   >
     <slot />
   </button>

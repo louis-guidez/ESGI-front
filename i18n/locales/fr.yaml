@@ -9,6 +9,7 @@ adPrice: "Prix de l'annonce"
 adTitle: "Titre de l'annonce"
 categories: "Catégories"
 cgu: "Conditions Générales d’Utilisation (CGU)"
+chooseUserToChat: 'Choisir un utilisateur pour discuter'
 connection: "Connexion"
 contact: "Contact"
 contactUs_description: "N'hesitez pas de nous contacter si vous avez des questions ou des suggestions. Nous nous ferons de notre mieux pour vous aider."
@@ -18,6 +19,9 @@ contactUs_physical: "Si vous souhaitez nous rencontrer, nous sommes localisés a
 contactUs_sendMail: "Envoyer"
 contactUs_subject: "Sujet"
 contactUs: "Contactez nous"
+contactVendor: 'Contacter le vendeur'
+conversations: 'Conversations'
+conversationWith: 'Conversation avec {user}'
 createAnAccount: "Créer un compte"
 createAnAd: "Déposer une annonce"
 email: "Email"
@@ -33,11 +37,13 @@ lastnameRequired: "Le nom est requis"
 loading: "Chargement"
 login: "Se connecter"
 messageNotSent: "Message non envoyé !"
+messagePlaceholder: 'Votre message…'
 messageSent: "Message envoyé !"
 name: "Prénom"
 nameRequired: "Le prénom est requis"
 newPassword: "Nouveau mot de passe"
 newPasswordConfirmation: "Confirmer le nouveau mot de passe"
+noOtherUsers: 'Aucun autre utilisateur'
 noResult: "Aucun resultat"
 notLoggedIn: "Vous devez être connecté(e) pour accéder à cette page"
 password: "Mot de passe"
@@ -47,15 +53,11 @@ passwordsDontMatch: "Les mots de passe ne correspondent pas"
 personalInformations: "Informations personnelles"
 profile: "Profil"
 register: "S'inscrire"
+reserve: 'Réserver'
 save: "Sauvegarder"
 search: "Rechercher"
 selectOption: "Sélectionner une option"
+send: 'Envoyer'
 sendUsAEmail: "Envoyez-nous un email!"
 settings: "Paramètres"
 userUpdated: "Votre compte a bien été mis à jour"
-conversations: 'Conversations'
-chooseUserToChat: 'Choisir un utilisateur pour discuter'
-conversationWith: 'Conversation avec {user}'
-noOtherUsers: 'Aucun autre utilisateur'
-send: 'Envoyer'
-messagePlaceholder: 'Votre message…'
