@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { apiFetch } from '@/composables/useApi'
 
 import AnnonceCard from '@/components/Ui/AnnonceCard.vue'
 
@@ -85,7 +86,19 @@ const categories = ref([
     ],
   },
 ])
+const annonces = ref([])
 const favorites = ref([])
+
+async function fetchAnnonces() {
+  try {
+    const res = await apiFetch('/annonces')
+    annonces.value = res
+  } catch (err) {
+    console.error('Erreur chargement annonces:', err)
+  }
+}
+
+onMounted(fetchAnnonces)
 
 function toggleFavorite(annonce) {
   const exists = favorites.value.find((a) => a.id === annonce.id)
@@ -112,13 +125,13 @@ function isFavorite(annonce) {
     </section>
 
     <!-- Affichage dynamique par catégorie -->
-    <section v-for="cat in categories" :key="cat.categorie">
+    <section v-if="annonces.length">
       <h2>
-        {{ cat.categorie }} <span class="count">{{ cat.annonces.length }} offres</span>
+        Toutes les annonces <span class="count">{{ annonces.length }} offres</span>
       </h2>
       <div class="card-list">
         <AnnonceCard
-          v-for="annonce in cat.annonces"
+          v-for="annonce in annonces"
           :key="annonce.id"
           :annonce="annonce"
           :is-favorite="isFavorite(annonce)"

@@ -79,7 +79,7 @@ export const useUserStore = defineStore('user', () => {
     }
 
     try {
-      const response = await apiFetch(`http://localhost:8000/api/secure/utilisateurs/${userId}`, {
+      const response = await apiFetch<User[]>(`http://localhost:8000/api/secure/utilisateurs/${userId}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${user.value.token}`,
@@ -89,7 +89,8 @@ export const useUserStore = defineStore('user', () => {
         ignoreResponseError: true,
       })
 
-      // TODO: update user in store and localstorage
+      const updatedUser = response[0]
+      user.value = { token: user.value.token, ...updatedUser }
 
       toast.success(t('userUpdated'))
       return response

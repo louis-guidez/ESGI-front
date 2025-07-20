@@ -29,13 +29,13 @@ fieldMinLength: "Doit contenir au moins {length} caractères"
 home: "Accueil"
 language: "Langue"
 lastname: "Nom"
-lastnameRequired: "Le prénom est requis"
+lastnameRequired: "Le nom est requis"
 loading: "Chargement"
 login: "Se connecter"
 messageNotSent: "Message non envoyé !"
 messageSent: "Message envoyé !"
 name: "Prénom"
-nameRequired: "Le nom est requis"
+nameRequired: "Le prénom est requis"
 newPassword: "Nouveau mot de passe"
 newPasswordConfirmation: "Confirmer le nouveau mot de passe"
 noResult: "Aucun resultat"
@@ -53,3 +53,9 @@ selectOption: "Sélectionner une option"
 sendUsAEmail: "Envoyez-nous un email!"
 settings: "Paramètres"
 userUpdated: "Votre compte a bien été mis à jour"
+conversations: 'Conversations'
+chooseUserToChat: 'Choisir un utilisateur pour discuter'
+conversationWith: 'Conversation avec {user}'
+noOtherUsers: 'Aucun autre utilisateur'
+send: 'Envoyer'
+messagePlaceholder: 'Votre message…'

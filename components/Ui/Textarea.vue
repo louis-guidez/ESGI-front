@@ -29,12 +29,18 @@ withDefaults(
     id?: string
     type?: string
     label: string
-    modelValue: string
+    modelValue?: string
+    errorMessage?: string
     intent?: TextareaProps['intent']
     size?: TextareaProps['size']
     resize?: TextareaProps['resize']
+    required?: boolean
   }>(),
   {
+    id: undefined,
+    type: 'text',
+    errorMessage: '',
+    modelValue: '',
     intent: 'primary',
     size: 'md',
     disabled: false,
@@ -47,7 +53,10 @@ defineEmits(['update:modelValue'])
 
 <template>
   <fieldset class="flex flex-col gap-2">
-    <label :for="id" class="text-sm font-semibold">{{ label }}</label>
+    <span v-if="label || required" class="flex items-center gap-1">
+      <label :for="id" class="text-sm font-semibold">{{ label }}</label>
+      <span v-if="required" class="text-red-500">*</span>
+    </span>
     <textarea
       v-bind="$attrs"
       :id="id"
@@ -64,5 +73,8 @@ defineEmits(['update:modelValue'])
       :value="modelValue"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value)"
     />
+    <slot v-if="errorMessage" name="error" v-bind="{ errorMessage }">
+      <span class="text-red-500">{{ $te(errorMessage) ? $t(errorMessage) : errorMessage }}</span>
+    </slot>
   </fieldset>
 </template>

@@ -152,6 +152,8 @@ const emit = defineEmits(['update:modelValue'])
 watch(
   () => props.modelValue,
   async (newValue) => {
+    if (JSON.stringify(newValue) === JSON.stringify(selectedPlace.value)) return
+
     if (!query.value) {
       query.value = newValue?.properties.formatted || ''
       selectedPlace.value = newValue

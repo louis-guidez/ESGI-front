@@ -69,7 +69,7 @@ const selectedMenuOption = ref(menuOptions[0])
         <span class="font-semibold">{{ `${user?.prenom ?? ''} ${user?.nom ?? ''}` }}</span>
       </div>
 
-      <div class="w-full h-[95%] bg-white rounded-none md:rounded-l-2xl p-8 overflow-y-auto">
+      <div class="w-full h-[90%] bg-white rounded-none md:rounded-l-2xl p-8 overflow-y-auto">
         <component :is="selectedMenuOption.component" />
       </div>
     </div>
