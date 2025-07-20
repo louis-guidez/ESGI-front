@@ -62,11 +62,11 @@ const onSubmit = handleSubmit(async () => {
       <div class="flex flex-col items-center justify-center gap-2">
         <div class="flex items-center gap-2">
           <Icon name="fluent:call-12-filled" />
-          <span class="font-semibold">+33 6 66 66 66 66</span>
+          <span class="font-semibold">{{ config.public.CONTACT_PHONE_NUMBER }}</span>
         </div>
         <div class="flex items-center gap-2">
           <Icon name="fluent:mail-12-filled" />
-          <a :href="`mailto:${config.public.NODEMAILER_AUTH_USER}`" class="font-semibold">{{ config.public.NODEMAILER_AUTH_USER }}</a>
+          <a :href="`mailto:${config.public.CONTACT_MAIL}`" class="font-semibold">{{ config.public.CONTACT_MAIL }}</a>
         </div>
       </div>
     </div>
