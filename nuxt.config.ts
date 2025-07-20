@@ -16,7 +16,7 @@ export default defineNuxtConfig({
       // TODO need to move this to private variable => only accessible on the server-side
       STRIPE_KEY: process.env.STRIPE_KEY,
       GEOAPIFY_API_KEY: process.env.GEOAPIFY_API_KEY,
-      NODEMAILER_AUTH_USER: process.env.NODEMAILER_FROM || 'lendo.app.esgi@gmail.com',
+      CONTACT_MAIL: process.env.CONTACT_MAIL || 'lendo.app.esgi@gmail.com',
     },
   },
   i18n: {
