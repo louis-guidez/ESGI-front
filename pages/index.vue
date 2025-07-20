@@ -3,6 +3,8 @@ import { ref } from 'vue'
 
 import AnnonceCard from '@/components/Ui/AnnonceCard.vue'
 
+import { useAnnonceStore } from '@/stores/annonces'
+
 defineOgImageComponent('Lendo', {
   headline: '🛒',
   title: 'Lendo',
@@ -10,6 +12,16 @@ defineOgImageComponent('Lendo', {
   theme: 'green',
   colorMode: 'dark',
 })
+
+const { groupedByCategory, fetchAnnonces } = useAnnonceStore()
+
+onMounted(async () => {
+  await fetchAnnonces()
+})
+
+console.log('📦 Annonces initialisées', groupedByCategory)
+
+//  console.log('Annonces chargées :', annonces.value)
 
 const categories = ref([
   {

@@ -17,7 +17,6 @@ import {
 } from 'reka-ui'
 
 import { cva, type VariantProps } from 'class-variance-authority'
-
 const selectTrigger = cva('selectTrigger', {
   variants: {
     intent: {
@@ -80,14 +79,14 @@ const selectItem = cva('selectItem', {
   },
 })
 
-type Option = { label: string; value: string | number | null; disabled?: boolean }
+type Option = { label: string; value: string | number; disabled?: boolean }
 type OptionGroup = { label: string; options: Option[] }
 
 withDefaults(
   defineProps<{
     label: string
     placeholder?: string
-    modelValue: Option['value']
+    modelValue: number | number[]
     multiple?: boolean
     options: Option[] | OptionGroup[]
     intent?: SelectTriggerProps['intent']
@@ -98,26 +97,24 @@ withDefaults(
     placeholder: 'Sélectionner une option',
     intent: 'primary',
     size: 'md',
-    disabled: false,
+    multiple: false,
+    clearable: false,
   },
 )
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+  'update:modelValue': [value: number | number[]]
+}>()
 </script>
 
 <template>
   <fieldset class="flex flex-col gap-2">
     <label class="text-sm font-semibold">{{ label }}</label>
-    <SelectRoot :model-value="modelValue" :multiple="multiple" @update:model-value="$emit('update:modelValue', $event)">
+
+    <SelectRoot :model-value="modelValue" :multiple="multiple" @update:model-value="emit('update:modelValue', $event)">
       <SelectTrigger
         class="group relative flex items-center justify-between gap-2"
-        :class="
-          selectTrigger({
-            intent,
-            size,
-            disabled: typeof $attrs['disabled'] !== 'undefined',
-          })
-        "
+        :class="selectTrigger({ intent, size, disabled: typeof $attrs['disabled'] !== 'undefined' })"
         aria-label="Customise options"
       >
         <SelectValue :placeholder="placeholder" />
@@ -125,62 +122,26 @@ const emit = defineEmits(['update:modelValue'])
       </SelectTrigger>
 
       <SelectPortal>
-        <SelectContent
-          class="will-change-[transform] z-[100] !p-0"
-          :class="
-            selectContent({
-              intent,
-              size,
-            })
-          "
-          :side-offset="5"
-        >
-          <!-- TODO -->
+        <SelectContent class="will-change-[transform] z-[100] !p-0" :class="selectContent({ intent, size })" :side-offset="5">
           <SelectScrollUpButton class="flex items-center justify-center h-[25px] cursor-default">
             <Icon name="fluent:chevron-up-12-filled" />
           </SelectScrollUpButton>
 
           <SelectViewport class="p-1">
-            <template v-if="Array.isArray(options) && options.every((option) => 'options' in option)">
+            <template v-if="Array.isArray(options) && options.every((o) => 'options' in o)">
               <template v-for="({ label: groupLabel, options: groupOptions }, i) in options" :key="groupLabel">
                 <SelectSeparator v-if="i > 0" class="h-[1px] bg-gray-300 m-1" />
-
-                <SelectLabel
-                  :class="
-                    selectGroupLabel({
-                      intent,
-                      size,
-                    })
-                  "
-                >
-                  {{ groupLabel }}
-                </SelectLabel>
+                <SelectLabel :class="selectGroupLabel({ intent, size })">{{ groupLabel }}</SelectLabel>
                 <SelectGroup>
                   <SelectItem
                     v-for="({ label: itemLabel, value, disabled }, j) in groupOptions"
                     :key="j"
-                    class="flex items-center justify-between data-[highlighted]:outline-none"
-                    :class="
-                      selectItem({
-                        intent,
-                        size,
-                        disabled: !!disabled,
-                      })
-                    "
                     :value="value"
                     :disabled="!!disabled"
-                    @select="
-                      (e) => {
-                        if (e.detail.value === modelValue && !clearable) {
-                          e.preventDefault()
-                          return emit('update:modelValue', null)
-                        }
-                      }
-                    "
+                    class="flex items-center justify-between data-[highlighted]:outline-none"
+                    :class="selectItem({ intent, size, disabled: !!disabled })"
                   >
-                    <SelectItemText>
-                      {{ itemLabel }}
-                    </SelectItemText>
+                    <SelectItemText>{{ itemLabel }}</SelectItemText>
                     <SelectItemIndicator class="inline-flex items-center justify-center">
                       <Icon name="fluent:checkmark-12-filled" class="!bg-green-500" />
                     </SelectItemIndicator>
@@ -192,28 +153,12 @@ const emit = defineEmits(['update:modelValue'])
               <SelectItem
                 v-for="({ label: itemLabel, value, disabled }, j) in options as Option[]"
                 :key="j"
-                class="flex items-center justify-between data-[highlighted]:outline-none"
-                :class="
-                  selectItem({
-                    intent,
-                    size,
-                    disabled: !!disabled,
-                  })
-                "
                 :value="value"
                 :disabled="!!disabled"
-                @select="
-                  (e) => {
-                    if (e.detail.value === modelValue) {
-                      e.preventDefault()
-                      return emit('update:modelValue', null)
-                    }
-                  }
-                "
+                class="flex items-center justify-between data-[highlighted]:outline-none"
+                :class="selectItem({ intent, size, disabled: !!disabled })"
               >
-                <SelectItemText>
-                  {{ itemLabel }}
-                </SelectItemText>
+                <SelectItemText>{{ itemLabel }}</SelectItemText>
                 <SelectItemIndicator class="inline-flex items-center justify-center">
                   <Icon name="fluent:checkmark-12-filled" class="!bg-green-500" />
                 </SelectItemIndicator>
@@ -221,7 +166,6 @@ const emit = defineEmits(['update:modelValue'])
             </template>
           </SelectViewport>
 
-          <!-- TODO -->
           <SelectScrollDownButton class="flex items-center justify-center h-[25px] cursor-default">
             <Icon name="fluent:chevron-down-12-filled" />
           </SelectScrollDownButton>

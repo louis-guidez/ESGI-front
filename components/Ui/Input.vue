@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFocus } from '@vueuse/core'
+import { isObject, useFocus } from '@vueuse/core'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 const input = cva('input', {
@@ -21,19 +21,21 @@ const input = cva('input', {
 
 type InputProps = VariantProps<typeof input>
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     id?: string
     type?: string
     label?: string
-    modelValue: string
+    modelValue?: string | { value: string; files: FileList }
     intent?: InputProps['intent']
     size?: InputProps['size']
     errorMessage?: string
+    required?: boolean
   }>(),
   {
     id: '',
     label: undefined,
+    modelValue: '',
     type: 'text',
     intent: 'primary',
     size: 'md',
@@ -51,7 +53,10 @@ defineExpose({ focused })
 
 <template>
   <fieldset class="flex flex-col gap-2">
-    <label v-if="label" :for="id" class="text-sm font-semibold">{{ label }}</label>
+    <span v-if="label || required" class="flex items-center gap-1">
+      <label v-if="label" :for="id" class="text-sm font-semibold">{{ label }}</label>
+      <span v-if="required" class="text-red-500">*</span>
+    </span>
     <input
       v-bind="$attrs"
       :id="id"
@@ -65,8 +70,15 @@ defineExpose({ focused })
           disabled: typeof $attrs['disabled'] !== 'undefined',
         })
       "
-      :value="modelValue"
-      @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value)"
+      :value="type === 'file' ? (isObject(modelValue) && 'value' in modelValue ? modelValue.value : '') : modelValue"
+      @input="
+        $emit(
+          'update:modelValue',
+          props.type === 'file'
+            ? { value: ($event?.target as HTMLInputElement)?.value, files: ($event?.target as HTMLInputElement)?.files }
+            : ($event?.target as HTMLInputElement)?.value,
+        )
+      "
     />
     <slot v-if="errorMessage" name="error" v-bind="{ errorMessage }">
       <span class="text-red-500">{{ $te(errorMessage) ? $t(errorMessage) : errorMessage }}</span>
