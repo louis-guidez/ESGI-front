@@ -30,7 +30,7 @@ const { handleSubmit: handleSubmitInfos, setValues: setValuesInfos } = useForm({
       .string()
       .required(t('lastnameRequired'))
       .min(2, t('fieldMinLength', { length: 2 })),
-    address: yup.object(),
+    address: yup.object().required(t('addressRequired')),
   }),
 })
 
