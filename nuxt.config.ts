@@ -16,7 +16,7 @@ export default defineNuxtConfig({
       // TODO need to move this to private variable => only accessible on the server-side
       STRIPE_KEY: process.env.STRIPE_KEY,
       GEOAPIFY_API_KEY: process.env.GEOAPIFY_API_KEY,
-      NODEMAILER_AUTH_USER: process.env.NODEMAILER_AUTH_USER,
+      NODEMAILER_AUTH_USER: process.env.NODEMAILER_FROM || 'lendo.app.esgi@gmail.com',
     },
   },
   i18n: {
@@ -47,7 +47,7 @@ export default defineNuxtConfig({
   },
   // FIXME define a plugin for this, use the env inside the runtime config instead
   nodemailer: {
-    from: `"Lendo App" <${process.env.NODEMAILER_AUTH_USER || 'lendo.app.esgi@gmail.com'}>`,
+    from: `"Lendo App" <${process.env.NODEMAILER_FROM || 'lendo.app.esgi@gmail.com'}>`,
     host: process.env.NODEMAILER_HOST,
     port: process.env.NODEMAILER_PORT,
     secure: false,
