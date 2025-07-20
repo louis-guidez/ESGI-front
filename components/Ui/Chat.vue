@@ -87,12 +87,8 @@ const envoyerMessage = async () => {
       }),
     })
 
-    if (!res.ok) {
-      const error = await res
-      console.error('❌ Erreur backend:', error)
-    } else {
-      messageText.value = ''
-    }
+    messageText.value = ''
+    return res
   } catch (err) {
     console.error('❌ Erreur réseau:', err)
   }
@@ -122,7 +118,6 @@ watch(
 
 <template>
   <div class="flex flex-col gap-2 h-full">
-    {{ messages }}
     <div ref="chatContainer" class="grow overflow-y-auto p-2 flex flex-col gap-2">
       <div v-for="msg in messages" :key="msg.id" class="flex flex-col" :class="msg.from === currentUserId ? 'items-end' : 'items-start'">
         <div class="max-w-[75%] px-3 py-2 rounded-lg text-sm" :class="msg.from === currentUserId ? 'bg-green-100' : 'bg-gray-200'">
@@ -132,9 +127,9 @@ watch(
       </div>
     </div>
 
-    <div class="flex gap-2 items-end">
-      <UiInput v-model="messageText" class="flex-grow" :placeholder="t('messagePlaceholder')" @keyup.enter="envoyerMessage" />
-      <UiButton @click="envoyerMessage">{{ t('send') }}</UiButton>
-    </div>
+    <form class="flex gap-2 items-end" @submit.prevent="envoyerMessage">
+      <UiInput v-model="messageText" class="flex-grow" :placeholder="t('messagePlaceholder')" />
+      <UiButton type="submit" intent="primary">{{ t('send') }}</UiButton>
+    </form>
   </div>
 </template>

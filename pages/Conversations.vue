@@ -1,73 +1,165 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import Chat from '~/components/Ui/Chat.vue'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
-import { useUserStore } from '@/stores/user'
+definePageMeta({
+  middleware: ['auth'],
+})
 
-definePageMeta({ middleware: ['auth'] })
+const route = useRoute()
 
-const { t } = useI18n()
-const { user } = extractStore(useUserStore())
+const newUserIdChat = computed(() => Number(route.query.newUserIdChat))
 
-const utilisateurs = ref<any[]>([])
-const contactUserId = ref<number | null>(null)
-const selectedUser = ref<any | null>(null)
-const loading = ref(false)
+// const { t } = useI18n()
 
-const fetchUtilisateurs = async () => {
+const { user, getUsers } = extractStore(useUserStore())
+
+const { data: newUser } = useAsyncData<User | undefined>(
+  'newUserIdChat',
+  async () => {
+    if (!newUserIdChat.value) return
+    const users = await getUsers()
+
+    return users.find((user) => user.id === newUserIdChat.value)
+  },
+  {
+    watch: [newUserIdChat],
+  },
+)
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smaller('xl')
+
+const menuOpen = ref(true)
+
+watch(
+  isMobile,
+  (isMobile) => {
+    if (isMobile) {
+      menuOpen.value = false
+    } else {
+      menuOpen.value = true
+    }
+  },
+  { immediate: true },
+)
+
+const fetchConversations = async (user: User & { token: string }) => {
+  if (!user?.token) return
+
   try {
-    loading.value = true
-    const res = await $fetch('http://localhost:8000/api/utilisateurs', {
+    const data = await apiFetch(`secure/conversations`, {
       headers: {
-        Authorization: `Bearer ${user.value.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     })
 
-    utilisateurs.value = res.filter((u: any) => u.id !== user.value.id)
+    return data
   } catch (err) {
-    console.error('Erreur chargement utilisateurs:', err)
-  } finally {
-    loading.value = false
+    console.error('❌ Erreur chargement historique:', err)
   }
 }
 
-const selectUser = (u: any) => {
-  contactUserId.value = u.id
-  selectedUser.value = u
+interface Conversation {
+  conversationId: number
+  with: {
+    id: number
+    nom: string
+    prenom: string
+  }
 }
 
-onMounted(fetchUtilisateurs)
+const { data: conversations } = useAsyncData<Conversation[]>(
+  'conversations',
+  async () => {
+    if (!user.value) return
+
+    return await fetchConversations(user.value)
+  },
+  { watch: [user] },
+)
+
+const selectedConversation = ref<number | null>(null)
+
+onMounted(async () => {
+  if (newUserIdChat.value) {
+    selectedConversation.value = newUserIdChat.value
+  }
+})
+
+watch(
+  conversations,
+  (newConv) => {
+    if (!newConv || selectedConversation.value) return
+    selectedConversation.value = newConv[0]?.with.id
+  },
+  { immediate: true, flush: 'post' },
+)
 </script>
 
 <template>
-  <div class="p-4 flex flex-col gap-4">
-    <h2 class="text-2xl font-semibold">{{ $t('conversations') }}</h2>
+  <div class="relative flex h-[calc(100vh-4rem)] overflow-hidden">
+    <UiButton intent="ghost" class="fixed top-[4.5rem] left-2 !p-2 z-[999] !bg-white shadow" @click="menuOpen = !menuOpen">
+      <Icon :size="24" name="fluent:list-16-filled" />
+    </UiButton>
 
-    <div v-if="loading" class="italic">{{ $t('loading') }}</div>
+    <Transition name="slide">
+      <div v-if="menuOpen" class="w-[90vw] xl:w-1/4 max-w-[400px] md:relative fixed bg-gray-100 z-10 h-full pt-16 px-4 overflow-hidden">
+        <ul class="flex flex-col gap-2 overflow-y-auto">
+          <li v-if="newUser && newUserIdChat && !conversations?.some((c) => c.with.id === newUserIdChat)">
+            <UiButton intent="primary" size="lg" class="w-full text-left justify-start font-semibold" @click="selectedConversation = newUserIdChat">
+              <span
+                >{{ newUser.prenom }} <b class="font-bold uppercase">{{ newUser.nom }}</b></span
+              >
+            </UiButton>
+          </li>
+          <li v-for="conversation in conversations" :key="conversation.conversationId">
+            <UiButton
+              :intent="selectedConversation === conversation.with.id ? 'primary' : 'ghost'"
+              size="lg"
+              class="w-full text-left justify-start font-semibold"
+              @click="selectedConversation = conversation.with.id"
+            >
+              <span
+                >{{ conversation.with.prenom }} <b class="font-bold uppercase">{{ conversation.with.nom }}</b></span
+              >
+            </UiButton>
+          </li>
+        </ul>
+      </div>
+    </Transition>
 
-    <div v-if="utilisateurs.length" class="flex flex-col gap-2">
-      <h2>{{ $t('chooseUserToChat') }}</h2>
-      <UiButton
-        v-for="u in utilisateurs"
-        :key="u.id"
-        intent="ghost"
-        class="justify-start"
-        :class="{ 'bg-green-100': contactUserId === u.id }"
-        @click="selectUser(u)"
-      >
-        {{ u.id }} {{ u.email }} {{ u.prenom }} {{ u.nom }}
-      </UiButton>
-    </div>
-    <div v-else-if="!loading" class="text-gray-500">{{ $t('noOtherUsers') }}</div>
-    <div v-if="contactUserId" class="p-4 mt-4 flex flex-col gap-4">
-      <h1 class="text-xl font-semibold">
-        {{
-          $t('conversationWith', {
-            user: selectedUser ? `${selectedUser.id} ${selectedUser.email} ${selectedUser.prenom} ${selectedUser.nom}` : '',
-          })
-        }}
-      </h1>
-      <Chat :contact-user-id="contactUserId" />
+    <div class="size-full">
+      <div class="h-14 w-full inline-flex justify-end items-center px-4">
+        <span class="font-semibold">{{ `${user?.prenom ?? ''} ${user?.nom ?? ''}` }}</span>
+      </div>
+
+      <div class="w-full h-[90%] bg-white rounded-none md:rounded-l-2xl p-8 overflow-y-auto">
+        <UiChat v-if="selectedConversation" :contact-user-id="selectedConversation" />
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+@media (max-width: 768px) {
+  .slide-enter-to,
+  .slide-leave-from {
+    width: 90vw;
+  }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: width 0.3s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  width: 0;
+}
+
+/* .slide-enter-to,
+.slide-leave-from {
+  width: 25%;
+} */
+</style>
