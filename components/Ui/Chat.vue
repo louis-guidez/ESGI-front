@@ -117,8 +117,8 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 h-full">
-    <div ref="chatContainer" class="grow overflow-y-auto p-2 flex flex-col gap-2">
+  <div class="flex flex-col gap-2 size-full">
+    <div ref="chatContainer" class="size-full grow overflow-y-auto p-2 flex flex-col gap-2">
       <div v-for="msg in messages" :key="msg.id" class="flex flex-col" :class="msg.from === currentUserId ? 'items-end' : 'items-start'">
         <div class="max-w-[75%] px-3 py-2 rounded-lg text-sm" :class="msg.from === currentUserId ? 'bg-green-100' : 'bg-gray-200'">
           {{ msg.contenu }}
@@ -127,7 +127,7 @@ watch(
       </div>
     </div>
 
-    <form class="flex gap-2 items-end" @submit.prevent="envoyerMessage">
+    <form class="w-full flex gap-2 items-end" @submit.prevent="envoyerMessage">
       <UiInput v-model="messageText" class="flex-grow" :placeholder="t('messagePlaceholder')" />
       <UiButton type="submit" intent="primary">{{ t('send') }}</UiButton>
     </form>
