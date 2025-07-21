@@ -31,13 +31,13 @@ const handleSubmit = async () => {
   loading.value = true
   message.value = null
 
-  const res = await fetch('http://localhost:8000/api/create-payment-intent', {
+  const res = await apiFetch('/create-payment-intent', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ amount: 2000 }), // 20 €
   })
 
-  const { clientSecret } = await res.json()
+  const { clientSecret } = res
 
   const result = await stripe.confirmCardPayment(clientSecret, {
     payment_method: { card },

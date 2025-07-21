@@ -79,7 +79,7 @@ export const useUserStore = defineStore('user', () => {
     }
 
     try {
-      const response = await apiFetch<User[]>(`http://localhost:8000/api/secure/utilisateurs/${userId}`, {
+      const response = await apiFetch<User[]>(`/secure/utilisateurs/${userId}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${user.value.token}`,
