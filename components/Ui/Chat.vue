@@ -43,7 +43,10 @@ const createTopicId = (id1: number, id2: number) => {
 }
 
 const startEventSource = () => {
+  console.log('📡 Mercure no contactUserId')
+
   if (!props.contactUserId) return
+  console.log('📡 Mercure start event source')
 
   const topicId = createTopicId(currentUserId, props.contactUserId)
   const topicUrl = `https://chat.mercure/conversation/${topicId}`
@@ -52,7 +55,10 @@ const startEventSource = () => {
   url.searchParams.append('topic', topicUrl)
 
   const source = new EventSource(url)
+  console.log('📡 Mercure source', source)
+
   source.onmessage = (event) => {
+    console.log('📡 Mercure message:', event.data)
     const data = JSON.parse(event.data)
     messages.value.push(data)
     scrollToBottom()
@@ -66,12 +72,16 @@ const startEventSource = () => {
 
 const stopEventSource = () => {
   if (eventSource.value) {
+    console.log('📡 Mercure closing event source')
+
     eventSource.value.close()
     eventSource.value = null
   }
 }
 
 const envoyerMessage = async () => {
+  console.log('📡 Mercure envoyerMessage messageText.value', messageText.value)
+
   if (!messageText.value) return
 
   try {
@@ -86,6 +96,8 @@ const envoyerMessage = async () => {
         to: props.contactUserId,
       }),
     })
+
+    console.log('📡 Mercure envoyerMessage res', res)
 
     messageText.value = ''
     return res
