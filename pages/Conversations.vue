@@ -80,7 +80,7 @@ const { data: conversations } = useAsyncData<Conversation[]>(
 
 const selectedConversation = ref<number | null>(null)
 
-onMounted(async () => {
+onMounted(() => {
   if (newUserIdChat.value) {
     selectedConversation.value = newUserIdChat.value
   }
@@ -92,7 +92,7 @@ watch(
     if (!newConv || selectedConversation.value) return
     selectedConversation.value = newConv[0]?.with.id
   },
-  { immediate: true, flush: 'post' },
+  { immediate: true, flush: 'sync' },
 )
 </script>
 

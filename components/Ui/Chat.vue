@@ -43,7 +43,10 @@ const createTopicId = (id1: number, id2: number) => {
 }
 
 const startEventSource = () => {
+  console.log('📡 Mercure no contactUserId')
+
   if (!props.contactUserId) return
+  console.log('📡 Mercure start event source')
 
   const topicId = createTopicId(currentUserId, props.contactUserId)
   const topicUrl = `https://chat.mercure/conversation/${topicId}`
@@ -52,7 +55,10 @@ const startEventSource = () => {
   url.searchParams.append('topic', topicUrl)
 
   const source = new EventSource(url)
+  console.log('📡 Mercure source', source)
+
   source.onmessage = (event) => {
+    console.log('📡 Mercure message:', event.data)
     const data = JSON.parse(event.data)
     messages.value.push(data)
     scrollToBottom()
@@ -66,12 +72,16 @@ const startEventSource = () => {
 
 const stopEventSource = () => {
   if (eventSource.value) {
+    console.log('📡 Mercure closing event source')
+
     eventSource.value.close()
     eventSource.value = null
   }
 }
 
 const envoyerMessage = async () => {
+  console.log('📡 Mercure envoyerMessage messageText.value', messageText.value)
+
   if (!messageText.value) return
 
   try {
@@ -86,6 +96,8 @@ const envoyerMessage = async () => {
         to: props.contactUserId,
       }),
     })
+
+    console.log('📡 Mercure envoyerMessage res', res)
 
     messageText.value = ''
     return res
@@ -117,8 +129,8 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 h-full">
-    <div ref="chatContainer" class="grow overflow-y-auto p-2 flex flex-col gap-2">
+  <div class="flex flex-col gap-2 size-full">
+    <div ref="chatContainer" class="size-full grow overflow-y-auto p-2 flex flex-col gap-2">
       <div v-for="msg in messages" :key="msg.id" class="flex flex-col" :class="msg.from === currentUserId ? 'items-end' : 'items-start'">
         <div class="max-w-[75%] px-3 py-2 rounded-lg text-sm" :class="msg.from === currentUserId ? 'bg-green-100' : 'bg-gray-200'">
           {{ msg.contenu }}
@@ -127,7 +139,7 @@ watch(
       </div>
     </div>
 
-    <form class="flex gap-2 items-end" @submit.prevent="envoyerMessage">
+    <form class="w-full flex gap-2 items-end" @submit.prevent="envoyerMessage">
       <UiInput v-model="messageText" class="flex-grow" :placeholder="t('messagePlaceholder')" />
       <UiButton type="submit" intent="primary">{{ t('send') }}</UiButton>
     </form>
