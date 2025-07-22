@@ -33,7 +33,7 @@ const seller = computed(() => {
         <div class="flex h-2/3 overflow-hidden bg-gray-200">
           <NuxtImg :src="annonce.photos?.[0]" alt="photo" class="size-full object-cover" />
         </div>
-        <div class="h-1/3 p-4 flex flex-col gap-2">
+        <div class="h-1/3 p-4 flex flex-col gap-2 justify-between">
           <span class="font-semibold text-lg">{{ annonce.titre }}</span>
 
           <div class="inline-flex w-full justify-between">

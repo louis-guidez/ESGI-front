@@ -16,12 +16,15 @@ export const useAnnonceStore = defineStore('annonce', () => {
   const annonces = ref<Annonce[]>([])
   const loading = ref(false)
 
-  const fetchAnnonces = async () => {
+  const search = ref('')
+
+  const fetchAnnonces = async (search?: string) => {
     try {
       loading.value = true
-      const data = await apiFetch<Annonce[]>('/annonces')
+      const data = await apiFetch<Annonce[]>('/annonces', { query: { q: search } })
       console.log('📦 Annonces chargées :', data)
-      annonces.value = data
+      // annonces.value = data
+      return data
     } catch {
       toast.error('Erreur lors du chargement des annonces')
     } finally {
@@ -126,5 +129,6 @@ export const useAnnonceStore = defineStore('annonce', () => {
     updateAnnonce,
     deleteAnnonce,
     groupedByCategory,
+    search,
   }
 })

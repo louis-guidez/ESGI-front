@@ -45,6 +45,7 @@ nameRequired: "Le prénom est requis"
 newPassword: "Nouveau mot de passe"
 newPasswordConfirmation: "Confirmer le nouveau mot de passe"
 newUser: "Nouvel utilisateur"
+noAnnonce: "Aucune annonce"
 noConversation: "Aucune conversation"
 noOtherUsers: 'Aucun autre utilisateur'
 noResult: "Aucun resultat"

@@ -8,9 +8,17 @@ defineOgImageComponent('Lendo', {
 })
 
 const { annonces, groupedByCategory, fetchAnnonces } = extractStore(useAnnonceStore())
+const { fetchCategories, getAllCategories } = useCategorieStore()
+
+const categories = ref([])
 
 onMounted(async () => {
-  await fetchAnnonces()
+  const response = await fetchAnnonces()
+  annonces.value = response
+
+  await fetchCategories()
+
+  categories.value = getAllCategories()
 })
 
 console.log('📦 Annonces initialisées', groupedByCategory)
@@ -113,13 +121,34 @@ function isFavorite(annonce) {
     <section v-if="annonces.length" class="flex flex-col gap-4">
       <div class="inline-flex gap-2 items-end">
         <h2 class="text-2xl font-semibold">Toutes les annonces</h2>
-        <NuxtLink class="text-sm hover:text-green-500 p-0.5" to="/annonces">
+        <NuxtLink class="text-sm hover:text-green-500 p-0.5" to="/annonce/list">
           <span>{{ annonces.length }} offres <Icon name="material-symbols:arrow-right-alt-rounded" /></span>
         </NuxtLink>
       </div>
       <div class="grid grid-cols-[repeat(auto-fill,minmax(400px,0fr))] gap-4">
         <UiAnnonceCard
           v-for="annonce in annonces.slice(0, 10)"
+          :key="annonce.id"
+          :annonce="annonce"
+          :is-favorite="isFavorite(annonce)"
+          @toggle-favorite="toggleFavorite"
+        />
+      </div>
+    </section>
+
+    <section v-for="category in categories" :key="category.id" class="flex flex-col gap-4">
+      <div class="inline-flex gap-2 items-end">
+        <h2 class="text-2xl font-semibold">{{ category.label }}</h2>
+        <NuxtLink class="text-sm hover:text-green-500 p-0.5" to="/annonce/list">
+          <span
+            >{{ annonces.filter((a) => a.categories.some((c) => c === category.label)).slice(0, 10).length }} offres
+            <Icon name="material-symbols:arrow-right-alt-rounded"
+          /></span>
+        </NuxtLink>
+      </div>
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(400px,0fr))] gap-4">
+        <UiAnnonceCard
+          v-for="annonce in annonces.filter((a) => a.categories.some((c) => c === category.label)).slice(0, 10)"
           :key="annonce.id"
           :annonce="annonce"
           :is-favorite="isFavorite(annonce)"
