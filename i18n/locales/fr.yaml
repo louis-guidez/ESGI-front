@@ -24,6 +24,7 @@ conversations: 'Conversations'
 conversationWith: 'Conversation avec {user}'
 createAnAccount: "Créer un compte"
 createAnAd: "Déposer une annonce"
+editAnnonce: "Modifier l'annonce"
 email: "Email"
 emailInvalid: "L'email est invalide"
 emailRequired: "L'email est requis"

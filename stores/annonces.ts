@@ -4,8 +4,8 @@ export interface Annonce {
   id: number
   titre: string
   description: string
-  categories: string
-  prix: number
+  categories: string[]
+  prix: number | string
   statut: string
   dateCreation: Date
   photos: string[]
@@ -78,18 +78,17 @@ export const useAnnonceStore = defineStore('annonce', () => {
     }
   }
 
-  const updateAnnonce = async (id: number, data: Partial<Annonce>) => {
+  const updateAnnonce = async (id: number, formData: FormData) => {
     try {
       const { user } = useUserStore()
       if (!user?.token) throw new Error('Utilisateur non authentifié')
 
       const response = await apiFetch(`/secure/annonces/${id}`, {
         method: 'PUT',
-        body: data,
+        body: formData,
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
-        ignoreResponseError: true,
       })
 
       toast.success('Annonce mise à jour')

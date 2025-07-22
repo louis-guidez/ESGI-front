@@ -3,6 +3,7 @@ const route = useRoute()
 
 const id = computed(() => route.params.id)
 
+const { user } = extractStore(useUserStore())
 const { getAnnonce } = extractStore(useAnnonceStore())
 
 const { data } = await useAsyncData<Annonce | undefined>('annonce', () => getAnnonce(Number(id.value)))
@@ -13,6 +14,10 @@ const selectedImage = ref(0)
 <template>
   <div class="p-8 flex flex-col lg:flex-row justify-center gap-8">
     <div class="pt-12 p-12 lg:p-24 flex-[2_1_auto] flex flex-col gap-8">
+      <NuxtLink v-if="user?.id === data?.user?.id" :to="`/editAnnonce/${id}`">
+        <UiButton>{{ $t('editAnnonce') }}</UiButton>
+      </NuxtLink>
+
       <div class="max-h-[50vh] w-full flex gap-4 overflow-hidden">
         <div class="w-4/5 flex flex-col bg-green-200 rounded-2xl overflow-hidden">
           <NuxtImg v-if="data" :src="data.photos[selectedImage]" class="w-full object-cover aspect-16/9" />
@@ -61,8 +66,6 @@ const selectedImage = ref(0)
         </div>
       </div>
     </div>
-
-    {{ console.log(data) }}
 
     <div class="p-12 flex-[1_1_auto] flex flex-col gap-8 bg-white rounded-2xl">
       <div v-if="data?.user">
