@@ -1,10 +1,4 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-
-import AnnonceCard from '@/components/Ui/AnnonceCard.vue'
-
-import { useAnnonceStore } from '@/stores/annonces'
-
 defineOgImageComponent('Lendo', {
   headline: '🛒',
   title: 'Lendo',
@@ -14,9 +8,17 @@ defineOgImageComponent('Lendo', {
 })
 
 const { annonces, groupedByCategory, fetchAnnonces } = extractStore(useAnnonceStore())
+const { fetchCategories, getAllCategories } = useCategorieStore()
+
+const categories = ref([])
 
 onMounted(async () => {
-  await fetchAnnonces()
+  const response = await fetchAnnonces()
+  annonces.value = response
+
+  await fetchCategories()
+
+  categories.value = getAllCategories()
 })
 
 console.log('📦 Annonces initialisées', groupedByCategory)
@@ -86,7 +88,7 @@ console.log('📦 Annonces initialisées', groupedByCategory)
 //   },
 // ])
 
-const favorites = ref([])
+const favorites = useCookie('favorites', { default: () => [] })
 
 function toggleFavorite(annonce) {
   const exists = favorites.value.find((a) => a.id === annonce.id)
@@ -103,44 +105,56 @@ function isFavorite(annonce) {
 </script>
 
 <template>
-  <div class="page">
-    <!-- Favoris -->
-    <section v-if="favorites.length">
-      <h2>Vos offres sauvegardées</h2>
-      <div class="card-list">
-        <AnnonceCard v-for="annonce in favorites" :key="annonce.id" :annonce="annonce" :is-favorite="true" @toggle-favorite="toggleFavorite" />
+  <div class="p-12 flex flex-col gap-12">
+    <section v-if="favorites.length" class="flex flex-col gap-4">
+      <div class="inline-flex gap-2 items-end">
+        <h2 class="text-2xl font-semibold">Vos offres sauvegardées</h2>
+        <NuxtLink class="text-sm hover:text-green-500 p-0.5" to="/favorites">
+          <span>{{ favorites.length }} offres <Icon name="material-symbols:arrow-right-alt-rounded" /></span>
+        </NuxtLink>
+      </div>
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(400px,0fr))] gap-4">
+        <UiAnnonceCard v-for="annonce in favorites" :key="annonce.id" :annonce="annonce" :is-favorite="true" @toggle-favorite="toggleFavorite" />
       </div>
     </section>
 
-    <!-- Affichage dynamique par catégorie -->
-    <section v-if="annonces.length">
-      <h2>
-        Toutes les annonces <span class="count">{{ annonces.length }} offres</span>
-      </h2>
-      <div class="card-list">
-        <AnnonceCard v-for="annonce in annonces" :key="annonce.id" :annonce="annonce" :is-favorite="isFavorite(annonce)" @toggle-favorite="toggleFavorite" />
+    <section v-if="annonces.length" class="flex flex-col gap-4">
+      <div class="inline-flex gap-2 items-end">
+        <h2 class="text-2xl font-semibold">Toutes les annonces</h2>
+        <NuxtLink class="text-sm hover:text-green-500 p-0.5" to="/annonce/list">
+          <span>{{ annonces.length }} offres <Icon name="material-symbols:arrow-right-alt-rounded" /></span>
+        </NuxtLink>
+      </div>
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(400px,0fr))] gap-4">
+        <UiAnnonceCard
+          v-for="annonce in annonces.slice(0, 10)"
+          :key="annonce.id"
+          :annonce="annonce"
+          :is-favorite="isFavorite(annonce)"
+          @toggle-favorite="toggleFavorite"
+        />
+      </div>
+    </section>
+
+    <section v-for="category in categories" :key="category.id" class="flex flex-col gap-4">
+      <div class="inline-flex gap-2 items-end">
+        <h2 class="text-2xl font-semibold">{{ category.label }}</h2>
+        <NuxtLink class="text-sm hover:text-green-500 p-0.5" to="/annonce/list">
+          <span
+            >{{ annonces.filter((a) => a.categories.some((c) => c === category.label)).slice(0, 10).length }} offres
+            <Icon name="material-symbols:arrow-right-alt-rounded"
+          /></span>
+        </NuxtLink>
+      </div>
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(400px,0fr))] gap-4">
+        <UiAnnonceCard
+          v-for="annonce in annonces.filter((a) => a.categories.some((c) => c === category.label)).slice(0, 10)"
+          :key="annonce.id"
+          :annonce="annonce"
+          :is-favorite="isFavorite(annonce)"
+          @toggle-favorite="toggleFavorite"
+        />
       </div>
     </section>
   </div>
 </template>
-
-<style scoped>
-.page {
-  padding: 20px;
-  font-family: sans-serif;
-}
-.card-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-h2 {
-  margin-top: 25px;
-  font-size: 1.2rem;
-}
-.count {
-  font-weight: normal;
-  font-size: 0.9rem;
-  color: #666;
-}
-</style>

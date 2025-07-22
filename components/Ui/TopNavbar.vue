@@ -1,8 +1,16 @@
 <script setup>
-const { user, logout } = extractStore(useUserStore())
+const router = useRouter()
 
-const search = ref('')
+const { user, logout } = extractStore(useUserStore())
+const { search } = extractStore(useAnnonceStore())
+
+const searchValue = ref('')
 const searchRef = ref()
+
+const handleSearch = () => {
+  search.value = searchValue.value.trim()
+  router.push({ path: '/Annonce/List' })
+}
 
 defineExpose({ search, searchRef })
 </script>
@@ -15,9 +23,9 @@ defineExpose({ search, searchRef })
       </NuxtLink>
     </div>
 
-    <form class="size-full max-w-[400px] py-1 inline-flex gap-1 items-center justify-center" @submit.prevent="console.log(search.trim())">
-      <UiInput ref="searchRef" v-model="search" type="search" :placeholder="$t('search')" class="size-full" />
-      <UiButton class="h-full aspect-square" size="sm">
+    <form class="size-full max-w-[400px] py-1 inline-flex gap-1 items-center justify-center" @submit.prevent="handleSearch">
+      <UiInput ref="searchRef" v-model="searchValue" type="search" :placeholder="$t('search')" class="size-full" />
+      <UiButton class="h-full aspect-square" size="sm" type="submit">
         <Icon :size="18" name="fluent:search-12-filled" />
       </UiButton>
     </form>

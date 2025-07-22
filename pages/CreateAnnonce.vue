@@ -4,6 +4,10 @@ import * as yup from 'yup'
 import { useAnnonceStore } from '@/stores/annonces'
 import { useRouter } from 'vue-router'
 
+definePageMeta({
+  middleware: ['auth'],
+})
+
 const router = useRouter()
 const { createAnnonce } = useAnnonceStore()
 const { fetchCategories, getAllCategories, getById } = useCategorieStore()
