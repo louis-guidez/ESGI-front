@@ -50,17 +50,14 @@ const { handleSubmit, setValues } = useForm({
 
 const onSubmit = handleSubmit(async () => {
   try {
-    const newFormData: Partial<Annonce> = {
+    const newFormData: Partial<Annonce> & { categorieIds: string[] } = {
       titre: form.value.title,
       description: form.value.description,
       prix: form.value.price,
-      categories: [],
+      categorieIds: [],
     }
 
-    form.value.categories.forEach((id) => {
-      const cat = categoryOptions.value.find((option) => option.value === id)
-      if (cat) newFormData.categories?.push(cat.label)
-    })
+    form.value.categories.map((id) => newFormData.categorieIds?.push(id.toString()))
 
     const response = await updateAnnonce(Number(id.value), newFormData)
 

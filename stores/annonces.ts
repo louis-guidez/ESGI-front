@@ -81,7 +81,7 @@ export const useAnnonceStore = defineStore('annonce', () => {
     }
   }
 
-  const updateAnnonce = async (id: number, formData: Partial<Annonce>) => {
+  const updateAnnonce = async (id: number, formData: Partial<Annonce> & { categorieIds: string[] }) => {
     try {
       const { user } = useUserStore()
       if (!user?.token) throw new Error('Utilisateur non authentifié')
