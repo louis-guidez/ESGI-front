@@ -9,6 +9,24 @@ const { getAnnonce } = extractStore(useAnnonceStore())
 const { data } = await useAsyncData<Annonce | undefined>('annonce', () => getAnnonce(Number(id.value)))
 
 const selectedImage = ref(0)
+
+const { locale } = useI18n()
+
+const runtime = useRuntimeConfig()
+const geoapifyApiKey = runtime.public.GEOAPIFY_API_KEY
+const geoapifyGeocodeBaseUrl = 'https://api.geoapify.com/v1/geocode/search'
+const { data: address } = await useAsyncData<{ features: { geometry: { coordinates: [number, number] } }[] }>('place', async () => {
+  console.log('test')
+  return $fetch(`${geoapifyGeocodeBaseUrl}`, {
+    params: {
+      apiKey: geoapifyApiKey,
+      lang: locale.value,
+      // text: '',
+      postcode: data.value?.user.postalCode,
+      city: data.value?.user.ville,
+    },
+  })
+})
 </script>
 
 <template>
@@ -80,7 +98,7 @@ const selectedImage = ref(0)
             <div class="p-2 flex flex-col">
               <h2 class="text-lg font-semibold">{{ data.user.prenom }} {{ data.user.nom }}</h2>
               <span class="text-sm text-gray-500">{{ data.user.email }}</span>
-              <span class="text-sm text-gray-500">{{ data.user.ville }}</span>
+              <span class="text-sm text-gray-500">{{ `${data.user.ville}, ${data.user.postalCode}` }}</span>
             </div>
 
             <UiButton>{{ $t('contactVendor') }}</UiButton>
@@ -88,7 +106,13 @@ const selectedImage = ref(0)
         </div>
       </div>
 
-      <UiMap />
+      <div class="flex flex-col gap-1">
+        <UiMap
+          :marker="{ lng: address?.features[0].geometry.coordinates[0]!, lat: address?.features[0].geometry.coordinates[1]! }"
+          :center="{ lng: address?.features[0].geometry.coordinates[0]!, lat: address?.features[0].geometry.coordinates[1]! }"
+        />
+        <span v-if="data?.user" class="text-sm w-full text-right text-gray-500">{{ `${data.user.ville}, ${data.user.postalCode}` }}</span>
+      </div>
 
       <NuxtLink :to="`/checkout?annonce=${id}`">
         <UiButton class="w-full">{{ $t('reserve') }}</UiButton>
