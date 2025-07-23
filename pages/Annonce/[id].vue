@@ -16,12 +16,10 @@ const runtime = useRuntimeConfig()
 const geoapifyApiKey = runtime.public.GEOAPIFY_API_KEY
 const geoapifyGeocodeBaseUrl = 'https://api.geoapify.com/v1/geocode/search'
 const { data: address } = await useAsyncData<{ features: { geometry: { coordinates: [number, number] } }[] }>('place', async () => {
-  console.log('test')
   return $fetch(`${geoapifyGeocodeBaseUrl}`, {
     params: {
       apiKey: geoapifyApiKey,
       lang: locale.value,
-      // text: '',
       postcode: data.value?.user.postalCode,
       city: data.value?.user.ville,
     },
@@ -59,12 +57,15 @@ const { data: address } = await useAsyncData<{ features: { geometry: { coordinat
           <span class="inline-flex gap-8 items-end">
             <h2 class="text-lg font-semibold">{{ data?.prix }}€</h2>
             <span class="flex gap-2">
-              <!-- TODO REDIRECT TO CHAT -->
-              <UiButton intent="secondary">{{ $t('contactVendor') }}</UiButton>
+              <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/conversations?newUserIdChat=${id}`">
+                <UiButton intent="secondary">{{ $t('contactVendor') }}</UiButton>
+              </NuxtLink>
+              <UiButton v-else intent="secondary" :disabled="true">{{ $t('contactVendor') }}</UiButton>
 
-              <NuxtLink :to="`/checkout?annonce=${id}`">
+              <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/checkout?annonce=${id}`">
                 <UiButton>{{ $t('reserve') }}</UiButton>
               </NuxtLink>
+              <UiButton v-else :disabled="true">{{ $t('reserve') }}</UiButton>
             </span>
           </span>
         </div>
@@ -101,7 +102,10 @@ const { data: address } = await useAsyncData<{ features: { geometry: { coordinat
               <span class="text-sm text-gray-500">{{ `${data.user.ville}, ${data.user.postalCode}` }}</span>
             </div>
 
-            <UiButton>{{ $t('contactVendor') }}</UiButton>
+            <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/conversations?newUserIdChat=${id}`">
+              <UiButton intent="secondary">{{ $t('contactVendor') }}</UiButton>
+            </NuxtLink>
+            <UiButton v-else :disabled="true">{{ $t('contactVendor') }}</UiButton>
           </div>
         </div>
       </div>
@@ -114,9 +118,10 @@ const { data: address } = await useAsyncData<{ features: { geometry: { coordinat
         <span v-if="data?.user" class="text-sm w-full text-right text-gray-500">{{ `${data.user.ville}, ${data.user.postalCode}` }}</span>
       </div>
 
-      <NuxtLink :to="`/checkout?annonce=${id}`">
+      <NuxtLink v-if="user?.id !== data?.user?.id" class="w-full" :to="`/checkout?annonce=${id}`">
         <UiButton class="w-full">{{ $t('reserve') }}</UiButton>
       </NuxtLink>
+      <UiButton v-else class="w-full" :disabled="true">{{ $t('reserve') }}</UiButton>
     </div>
   </div>
 </template>
