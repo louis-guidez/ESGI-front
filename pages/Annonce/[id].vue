@@ -9,6 +9,22 @@ const { getAnnonce } = extractStore(useAnnonceStore())
 const { data } = await useAsyncData<Annonce | undefined>('annonce', () => getAnnonce(Number(id.value)))
 
 const selectedImage = ref(0)
+
+const { locale } = useI18n()
+
+const runtime = useRuntimeConfig()
+const geoapifyApiKey = runtime.public.GEOAPIFY_API_KEY
+const geoapifyGeocodeBaseUrl = 'https://api.geoapify.com/v1/geocode/search'
+const { data: address } = await useAsyncData<{ features: { geometry: { coordinates: [number, number] } }[] }>('place', async () => {
+  return $fetch(`${geoapifyGeocodeBaseUrl}`, {
+    params: {
+      apiKey: geoapifyApiKey,
+      lang: locale.value,
+      postcode: data.value?.user.postalCode,
+      city: data.value?.user.ville,
+    },
+  })
+})
 </script>
 
 <template>
@@ -41,12 +57,15 @@ const selectedImage = ref(0)
           <span class="inline-flex gap-8 items-end">
             <h2 class="text-lg font-semibold">{{ data?.prix }}€</h2>
             <span class="flex gap-2">
-              <!-- TODO REDIRECT TO CHAT -->
-              <UiButton intent="secondary">{{ $t('contactVendor') }}</UiButton>
+              <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/conversations?newUserIdChat=${id}`">
+                <UiButton intent="secondary">{{ $t('contactVendor') }}</UiButton>
+              </NuxtLink>
+              <UiButton v-else intent="secondary" :disabled="true">{{ $t('contactVendor') }}</UiButton>
 
-              <NuxtLink :to="`/checkout?annonce=${id}`">
+              <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/ReservationCheckout/${id}`">
                 <UiButton>{{ $t('reserve') }}</UiButton>
               </NuxtLink>
+              <UiButton v-else :disabled="true">{{ $t('reserve') }}</UiButton>
             </span>
           </span>
         </div>
@@ -80,19 +99,37 @@ const selectedImage = ref(0)
             <div class="p-2 flex flex-col">
               <h2 class="text-lg font-semibold">{{ data.user.prenom }} {{ data.user.nom }}</h2>
               <span class="text-sm text-gray-500">{{ data.user.email }}</span>
-              <span class="text-sm text-gray-500">{{ data.user.ville }}</span>
+              <span class="text-sm text-gray-500">{{ `${data.user.ville}, ${data.user.postalCode}` }}</span>
             </div>
 
-            <UiButton>{{ $t('contactVendor') }}</UiButton>
+            <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/conversations?newUserIdChat=${id}`">
+              <UiButton intent="secondary">{{ $t('contactVendor') }}</UiButton>
+            </NuxtLink>
+            <UiButton v-else :disabled="true">{{ $t('contactVendor') }}</UiButton>
           </div>
         </div>
       </div>
 
-      <UiMap />
+      <div class="flex flex-col gap-1">
+        <UiMap
+          :marker="
+            data?.user.postalCode && data?.user.ville
+              ? { lng: address?.features[0].geometry.coordinates[0]!, lat: address?.features[0].geometry.coordinates[1]! }
+              : undefined
+          "
+          :center="
+            data?.user.postalCode && data?.user.ville
+              ? { lng: address?.features[0].geometry.coordinates[0]!, lat: address?.features[0].geometry.coordinates[1]! }
+              : undefined
+          "
+        />
+        <span v-if="data?.user" class="text-sm w-full text-right text-gray-500">{{ `${data.user.ville}, ${data.user.postalCode}` }}</span>
+      </div>
 
-      <NuxtLink :to="`/checkout?annonce=${id}`">
+      <NuxtLink v-if="user?.id !== data?.user?.id" class="w-full" :to="`/ReservationCheckout/${id}`">
         <UiButton class="w-full">{{ $t('reserve') }}</UiButton>
       </NuxtLink>
+      <UiButton v-else class="w-full" :disabled="true">{{ $t('reserve') }}</UiButton>
     </div>
   </div>
 </template>

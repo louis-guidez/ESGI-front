@@ -50,25 +50,16 @@ const { handleSubmit, setValues } = useForm({
 
 const onSubmit = handleSubmit(async () => {
   try {
-    const formData = new FormData()
-    formData.append('titre', form.value.title)
-    formData.append('description', form.value.description)
-    formData.append('prix', form.value.price)
-    formData.append('statut', 'disponible')
-    formData.append('dateCreation', new Date().toISOString())
-
-    const files = form.value.pictures.files
-    if (files) {
-      Array.from(files).forEach((file, i) => {
-        formData.append(`photos[${i}]`, file)
-      })
+    const newFormData: Partial<Annonce> & { categorieIds: string[] } = {
+      titre: form.value.title,
+      description: form.value.description,
+      prix: form.value.price,
+      categorieIds: [],
     }
 
-    form.value.categories.forEach((id, index) => {
-      formData.append(`categorieIds[${index}]`, id.toString())
-    })
+    form.value.categories.map((id) => newFormData.categorieIds?.push(id.toString()))
 
-    const response = await updateAnnonce(Number(id.value), formData)
+    const response = await updateAnnonce(Number(id.value), newFormData)
 
     return response
   } catch (e) {

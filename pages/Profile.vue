@@ -2,6 +2,8 @@
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import Account from '~/components/Profile/Account.vue'
 import Settings from '~/components/Profile/Settings.vue'
+import Annonces from '~/components/Profile/Annonces.vue'
+import Reservations from '~/components/Profile/Reservations.vue'
 
 definePageMeta({
   middleware: ['auth'],
@@ -11,10 +13,18 @@ const { t } = useI18n()
 
 const { user } = extractStore(useUserStore())
 
+console.log('user', user.value?.id)
+
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isMobile = breakpoints.smaller('xl')
 
 const menuOpen = ref(true)
+
+const { getAnnoncesByUser } = useAnnonceStore()
+
+onMounted(async () => {
+  await getAnnoncesByUser()
+})
 
 watch(
   isMobile,
@@ -36,6 +46,14 @@ const menuOptions = [
   {
     label: t('settings'),
     component: shallowRef(Settings),
+  },
+  {
+    label: t('mesAnnonces'),
+    component: shallowRef(Annonces),
+  },
+  {
+    label: t('reservations'),
+    component: shallowRef(Reservations),
   },
 ]
 const selectedMenuOption = ref(menuOptions[0])
