@@ -7,7 +7,7 @@ defineOgImageComponent('Lendo', {
   colorMode: 'dark',
 })
 
-const { annonces, groupedByCategory, fetchAnnonces } = extractStore(useAnnonceStore())
+const { annonces, fetchAnnonces } = extractStore(useAnnonceStore())
 const { fetchCategories, getAllCategories } = useCategorieStore()
 
 const categories = ref([])
@@ -20,73 +20,6 @@ onMounted(async () => {
 
   categories.value = getAllCategories()
 })
-
-console.log('📦 Annonces initialisées', groupedByCategory)
-
-//  console.log('Annonces chargées :', annonces.value)
-
-// const categories = ref([
-//   {
-//     categorie: 'Mobilier',
-//     annonces: [
-//       {
-//         id: 1,
-//         titre: 'Tonnelle',
-//         description: 'Tonnelle 3x3m en bon état',
-//         prix: 36,
-//         statut: 'disponible',
-//         dateCreation: '2025-07-15 14:00:00',
-//         photos: ['https://example.com/photos/tonnelle1.jpg'],
-//       },
-//       {
-//         id: 2,
-//         titre: 'Table en bois',
-//         description: 'Table rustique avec 6 chaises',
-//         prix: 120,
-//         statut: 'disponible',
-//         dateCreation: '2025-07-14 10:00:00',
-//         photos: ['https://example.com/photos/table1.jpg'],
-//       },
-//     ],
-//   },
-//   {
-//     categorie: 'Électroménager',
-//     annonces: [
-//       {
-//         id: 3,
-//         titre: 'Aspirateur Dyson',
-//         description: 'Dyson V8 avec accessoires',
-//         prix: 150,
-//         statut: 'disponible',
-//         dateCreation: '2025-07-13 09:00:00',
-//         photos: ['https://example.com/photos/dyson.jpg'],
-//       },
-//       {
-//         id: 4,
-//         titre: 'Machine à café Krups',
-//         description: 'Machine à café automatique',
-//         prix: 80,
-//         statut: 'disponible',
-//         dateCreation: '2025-07-10 15:00:00',
-//         photos: ['https://example.com/photos/cafe.jpg'],
-//       },
-//     ],
-//   },
-//   {
-//     categorie: 'Bricolage',
-//     annonces: [
-//       {
-//         id: 5,
-//         titre: 'Scie circulaire Makita',
-//         description: 'Scie en parfait état',
-//         prix: 90,
-//         statut: 'disponible',
-//         dateCreation: '2025-07-12 11:00:00',
-//         photos: ['https://example.com/photos/scie.jpg'],
-//       },
-//     ],
-//   },
-// ])
 
 const favorites = useCookie('favorites', { default: () => [] })
 

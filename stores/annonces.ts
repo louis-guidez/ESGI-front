@@ -43,18 +43,47 @@ export const useAnnonceStore = defineStore('annonce', () => {
     }
   }
 
+  const getAnnoncesByUser = async () => {
+    try {
+      const { user } = useUserStore()
+      if (!user?.token) throw new Error('Utilisateur non authentifié')
+
+      loading.value = true
+      const data = await apiFetch<Annonce[]>('/secure/utilisateurs/annonces', {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+
+      annonces.value = data
+
+      return data
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Erreur lors du chargement des annonces de l’utilisateur:', error.message)
+      } else {
+        console.error('Erreur lors du chargement des annonces de l’utilisateur:', error)
+      }
+      toast.error("Erreur lors du chargement des annonces de l'utilisateur")
+      return []
+    } finally {
+      loading.value = false
+    }
+  }
+
   const groupedByCategory = computed(() => {
     const map = new Map<string, Annonce[]>()
 
     for (const annonce of annonces.value) {
-      const categorie = (annonce as Annonce).categories || 'Autre' // adapte selon ton modèle
-      if (!map.has(categorie)) map.set(categorie, [])
-      map.get(categorie)!.push(annonce)
+      const categories = annonce.categories?.length ? annonce.categories : ['Autre']
+
+      for (const cat of categories) {
+        if (!map.has(cat)) map.set(cat, [])
+        map.get(cat)!.push(annonce)
+      }
     }
 
-    console.log('📦 Annonces chargées :', Array.from(map.entries()))
-
-    return Array.from(map.entries()).map(([categorie, annonces]) => ({ categorie, annonces }))
+    return Object.fromEntries(map.entries())
   })
 
   const createAnnonce = async (formData: FormData) => {
@@ -106,14 +135,13 @@ export const useAnnonceStore = defineStore('annonce', () => {
       const { user } = useUserStore()
       if (!user?.token) throw new Error('Utilisateur non authentifié')
 
-      await apiFetch(`/annonces/${id}`, {
+      await apiFetch(`/secure/annonces/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       })
 
-      annonces.value = annonces.value.filter((a) => a.id !== id)
       toast.success('Annonce supprimée')
     } catch {
       toast.error('Erreur lors de la suppression de l’annonce')
@@ -152,6 +180,7 @@ export const useAnnonceStore = defineStore('annonce', () => {
     createAnnonce,
     updateAnnonce,
     deleteAnnonce,
+    getAnnoncesByUser,
     groupedByCategory,
     search,
     reserveAnnonce,
