@@ -3,6 +3,7 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import type { InputPlaceAutocompleteValue } from '~/components/Ui/InputPlaceAutocomplete.vue'
 import { toast } from 'vue-sonner'
+import WalletCard from '@/components/Ui/WalletCard.vue'
 
 const { t } = useI18n()
 
@@ -86,6 +87,9 @@ watch(
 <template>
   <div class="size-full flex flex-col items-center gap-16">
     <div class="min-w-1/2 w-fit flex flex-col items-center gap-2">
+      <div class="p-4 w-full max-w-md mx-auto">
+        <WalletCard :amount="Number(user?.cagnotte || 0)" />
+      </div>
       <h2 class="w-full text-left text-xl font-semibold">{{ $t('personalInformations') }}</h2>
       <form v-if="user" class="w-full flex flex-col gap-4" @submit.prevent="onSubmitInfos">
         <FormInput id="email" v-model="formInfos.email" name="email" class="w-full" :label="$t('email')" type="email" :required="true" />

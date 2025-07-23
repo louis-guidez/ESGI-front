@@ -87,6 +87,9 @@ function isFavorite(annonce) {
           :is-favorite="isFavorite(annonce)"
           @toggle-favorite="toggleFavorite"
         />
+        <NuxtLink class="text-sm hover:text-green-700 p-0.5" to="/CreateAnnonce">
+          <UiCreateAnnonceCard v-if="annonces.filter((a) => a.categories.some((c) => c === category.label)).length === 0" class="hover:bg-green-200" />
+        </NuxtLink>
       </div>
     </section>
   </div>

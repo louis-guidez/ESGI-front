@@ -80,7 +80,7 @@ const datePickerContent = cva('datePickerContent', {
   },
 })
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     id?: string
     type?: string
@@ -91,6 +91,9 @@ withDefaults(
     size?: DatePickerFieldProps['size']
     disabled?: boolean
     required?: boolean
+    unavailableBefore?: Date
+    unavailableAfter?: Date
+    unavailableDates?: Date[]
   }>(),
   {
     id: undefined,
@@ -99,8 +102,25 @@ withDefaults(
     intent: 'primary',
     size: 'md',
     disabled: false,
+    required: false,
+    unavailableBefore: undefined,
+    unavailableAfter: undefined,
+    unavailableDates: () => [],
   },
 )
+
+const handleUnavailableDate = (date: DateValue) => {
+  const d = new Date(date.toString())
+
+  if (props.unavailableBefore && new Date(d).getTime() < new Date(props.unavailableBefore).getTime()) return true
+  if (props.unavailableAfter && new Date(d).getTime() > new Date(props.unavailableAfter).getTime()) return true
+
+  if (props.unavailableDates) {
+    return props.unavailableDates.some((unavailableDate) => unavailableDate.toISOString().split('T')[0] === d.toISOString().split('T')[0])
+  }
+
+  return false
+}
 
 defineEmits(['update:modelValue'])
 </script>
@@ -115,6 +135,7 @@ defineEmits(['update:modelValue'])
       :id="id"
       :locale="locale"
       :model-value="modelValue"
+      :is-date-unavailable="handleUnavailableDate"
       @update:model-value="
         (dateValue) => {
           $emit('update:modelValue', dateValue)

@@ -19,8 +19,10 @@ async function handleCancel(reservationToDelete) {
 
     <div v-if="reservations.length === 0" class="text-gray-500">Aucune réservation trouvée.</div>
 
-    <div v-else class="space-y-6">
-      <ProfileReservationCard v-for="reservation in reservations" :key="reservation.id" :reservation="reservation" @cancel="handleCancel" />
+    <div v-else class="space-y-6 flex flex-col gap-2">
+      <NuxtLink v-for="reservation in reservations" :key="reservation.id" :to="`/Annonce/${reservation.annonce.id}`">
+        <ProfileReservationCard :reservation="reservation" @cancel="handleCancel" />
+      </NuxtLink>
     </div>
   </div>
 </template>
