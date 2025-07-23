@@ -148,7 +148,7 @@ export const useAnnonceStore = defineStore('annonce', () => {
     }
   }
 
-  const reserveAnnonce = async (formData: { annonceId: number; startDate: string; endDate: string; userId: number }) => {
+  const reserveAnnonce = async (formData: { annonceId: number; dateDebut: string; dateFin: string; utilisateurId: number; payment_method_id: string }) => {
     try {
       const { user } = useUserStore()
       if (!user?.token) throw new Error('Utilisateur non authentifié')

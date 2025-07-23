@@ -4,6 +4,8 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { toast } from 'vue-sonner'
 
+import StripeCheckout from '~/components/StripeCheckout.vue'
+
 const { reserveAnnonce } = extractStore(useAnnonceStore())
 const { user } = extractStore(useUserStore())
 
@@ -24,17 +26,22 @@ const { handleSubmit } = useForm({
   }),
 })
 
+const stripeCheckoutRef = ref<typeof StripeCheckout | null>(null)
+
 const onSubmit = handleSubmit(async () => {
-  if (!form.value.startDate || !form.value.endDate || !user.value) {
-    toast.error('Non authentifié')
-    return
-  }
+  if (!user.value?.id) return toast.error('Non authentifié')
+
+  const paymentMethod = await stripeCheckoutRef.value?.handleSubmit()
+  console.log('paymentMethod', paymentMethod)
+
+  if (!paymentMethod) return toast.error('Paiement non effectué')
 
   const res = await reserveAnnonce({
-    startDate: new Date((form.value.startDate as DateValue).toString()).toISOString(),
-    endDate: new Date((form.value.endDate as DateValue).toString()).toISOString(),
+    dateDebut: new Date((form.value.startDate as unknown as DateValue).toString()).toISOString(),
+    dateFin: new Date((form.value.endDate as unknown as DateValue).toString()).toISOString(),
     annonceId: Number(id.value),
-    userId: user.value.id,
+    utilisateurId: user.value.id,
+    payment_method_id: paymentMethod.id,
   })
   console.log('res', res)
   return console.log(form.value)
@@ -42,14 +49,16 @@ const onSubmit = handleSubmit(async () => {
 </script>
 
 <template>
-  <div class="p-12 flex flex-col gap-4 items-center">
-    <h1>Paiement</h1>
+  <div class="p-12 flex flex-col gap-12 items-center">
+    <h1 class="w-full lg:w-1/2 text-4xl font-bold">Paiement</h1>
 
-    <form class="w-full flex flex-col gap-4" @submit="onSubmit">
+    <form class="w-full lg:w-1/2 flex flex-col gap-4" @submit="onSubmit">
       <div class="w-full flex gap-4">
         <FormDatePicker v-model="form.startDate" name="startDate" :label="$t('startDate')" :required="true" class="w-full" />
         <FormDatePicker v-model="form.endDate" name="endDate" :label="$t('endDate')" :required="true" class="w-full" />
       </div>
+
+      <StripeCheckout ref="stripeCheckoutRef" />
 
       <UiButton type="submit" class="w-full font-bold">
         <span>{{ $t('save') }}</span>
