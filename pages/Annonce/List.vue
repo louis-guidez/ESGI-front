@@ -68,7 +68,7 @@ onMounted(async () => {
       <h1 class="text-4xl font-bold">Toutes les annonces</h1>
 
       <section v-if="filteredData?.length" class="flex flex-col gap-24">
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(600px,1fr))] gap-12">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-12">
           <UiAnnonceCard
             v-for="annonce in filteredData"
             :key="annonce.id"
@@ -84,7 +84,7 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div class="sticky top-0 p-8 hidden lg:flex flex-col gap-8 w-1/3 bg-white overflow-hidden rounded-2xl">
+    <div class="sticky top-[5.5rem] p-8 hidden h-screen lg:flex flex-col gap-8 w-1/3 bg-white overflow-hidden rounded-2xl">
       <h2 class="text-2xl font-semibold">Filtres</h2>
 
       <div class="size-full flex flex-col gap-4">
@@ -95,7 +95,7 @@ onMounted(async () => {
           </UiButton>
         </form>
 
-        <UiSelect v-model="selectedCategories" name="categories" multiple :options="categoryOptions" :label="$t('categories')" />
+        <UiSelect v-model="selectedCategories" size="lg" name="categories" multiple :options="categoryOptions" :label="$t('categories')" />
       </div>
     </div>
   </div>
