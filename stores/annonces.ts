@@ -43,6 +43,15 @@ export const useAnnonceStore = defineStore('annonce', () => {
     }
   }
 
+  const getReservationsForAnnonce = async (annonceId: number) => {
+    try {
+      const data = await apiFetch<Reservation[]>(`/reservations/annonce/${annonceId}`)
+      return data
+    } catch {
+      toast.error('Erreur lors du chargement des reservations')
+    }
+  }
+
   const getAnnoncesByUser = async () => {
     try {
       const { user } = useUserStore()
@@ -177,6 +186,7 @@ export const useAnnonceStore = defineStore('annonce', () => {
     loading,
     fetchAnnonces,
     getAnnonce,
+    getReservationsForAnnonce,
     createAnnonce,
     updateAnnonce,
     deleteAnnonce,

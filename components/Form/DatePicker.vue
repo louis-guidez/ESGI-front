@@ -8,6 +8,9 @@ const props = defineProps<{
   label: string
   modelValue?: Date
   required?: boolean
+  unavailableBefore?: Date
+  unavailableAfter?: Date
+  unavailableDates?: Date[]
 }>()
 
 const { value, errorMessage }: { value: Ref<DateValue>; errorMessage: Ref<string | undefined> } = useField(() => props.name, {
@@ -25,6 +28,9 @@ defineEmits(['update:modelValue'])
       :error-message="errorMessage"
       class="w-full"
       :required="required"
+      :unavailable-before="unavailableBefore"
+      :unavailable-after="unavailableAfter"
+      :unavailable-dates="unavailableDates"
       @update:model-value="$emit('update:modelValue', $event)"
     />
   </div>
