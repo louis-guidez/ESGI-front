@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/eslint', '@nuxt/icon', '@pinia/nuxt', '@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/seo', '@vee-validate/nuxt', 'nuxt-nodemailer'],
   runtimeConfig: {
     public: {
+      ENV_MODE: process.env.NODE_ENV === 'production' ? 'prod' : 'dev',
       API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:8000/api',
       MERCURE_BASE_URL: process.env.MERCURE_BASE_URL || 'http://localhost:3001/.well-known/mercure',
       // TODO need to move this to private variable => only accessible on the server-side

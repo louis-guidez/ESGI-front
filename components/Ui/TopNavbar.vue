@@ -12,6 +12,8 @@ const handleSearch = () => {
   router.push({ path: '/Annonce/List' })
 }
 
+const config = useRuntimeConfig()
+
 defineExpose({ search, searchRef })
 </script>
 
@@ -44,7 +46,7 @@ defineExpose({ search, searchRef })
         </uiButton>
       </NuxtLink>
 
-      <NuxtLink :to="user ? '/testslouis' : '/login'" class="flex items-center gap-2">
+      <NuxtLink v-if="config?.public?.ENV_MODE === 'dev'" :to="'/testslouis'" class="flex items-center gap-2">
         <uiButton intent="ghost" class="!p-2 flex items-center gap-2">
           <Icon :size="24" name="fluent:settings-20-filled" />
         </uiButton>

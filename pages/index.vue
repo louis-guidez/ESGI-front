@@ -113,7 +113,7 @@ function isFavorite(annonce) {
           <span>{{ favorites.length }} offres <Icon name="material-symbols:arrow-right-alt-rounded" /></span>
         </NuxtLink>
       </div>
-      <div class="grid grid-cols-[repeat(auto-fill,minmax(400px,0fr))] gap-4">
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(300px,0fr))] gap-4">
         <UiAnnonceCard v-for="annonce in favorites" :key="annonce.id" :annonce="annonce" :is-favorite="true" @toggle-favorite="toggleFavorite" />
       </div>
     </section>
@@ -125,7 +125,7 @@ function isFavorite(annonce) {
           <span>{{ annonces.length }} offres <Icon name="material-symbols:arrow-right-alt-rounded" /></span>
         </NuxtLink>
       </div>
-      <div class="grid grid-cols-[repeat(auto-fill,minmax(400px,0fr))] gap-4">
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(300px,0fr))] gap-4">
         <UiAnnonceCard
           v-for="annonce in annonces.slice(0, 10)"
           :key="annonce.id"
@@ -146,7 +146,7 @@ function isFavorite(annonce) {
           /></span>
         </NuxtLink>
       </div>
-      <div class="grid grid-cols-[repeat(auto-fill,minmax(400px,0fr))] gap-4">
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(300px,0fr))] gap-4">
         <UiAnnonceCard
           v-for="annonce in annonces.filter((a) => a.categories.some((c) => c === category.label)).slice(0, 10)"
           :key="annonce.id"
