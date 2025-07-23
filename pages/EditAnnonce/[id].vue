@@ -54,7 +54,6 @@ const onSubmit = handleSubmit(async () => {
       titre: form.value.title,
       description: form.value.description,
       prix: form.value.price,
-      statut: 'disponible',
       categories: [],
     }
 
