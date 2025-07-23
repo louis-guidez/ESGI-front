@@ -88,24 +88,24 @@ const { data: address } = await useAsyncData<{ features: { geometry: { coordinat
 
     <div class="p-12 flex-[1_1_auto] flex flex-col gap-8 bg-white rounded-2xl">
       <div v-if="data?.user">
-        <div class="flex items-center gap-4">
-          <div class="w-1/4 aspect-square bg-gray-300 rounded-xl flex items-center justify-center">
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <div class="w-1/3 aspect-square bg-gray-300 rounded-xl flex items-center justify-center">
             <Icon name="fluent:person-24-filled" size="48" />
 
             <!-- <NuxtImg :src="data.user.avatar" class="w-12 h-12 rounded-full" /> -->
           </div>
 
-          <div class="p-2 flex flex-col gap-2">
-            <div class="p-2 flex flex-col">
+          <div class="w-full p-2 flex flex-col items-center gap-2">
+            <div class="p-2 flex flex-col items-center">
               <h2 class="text-lg font-semibold">{{ data.user.prenom }} {{ data.user.nom }}</h2>
               <span class="text-sm text-gray-500">{{ data.user.email }}</span>
               <span class="text-sm text-gray-500">{{ `${data.user.ville}, ${data.user.postalCode}` }}</span>
             </div>
 
-            <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/conversations?newUserIdChat=${id}`">
-              <UiButton intent="secondary">{{ $t('contactVendor') }}</UiButton>
+            <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/conversations?newUserIdChat=${id}`" class="w-full">
+              <UiButton intent="secondary" class="w-full">{{ $t('contactVendor') }}</UiButton>
             </NuxtLink>
-            <UiButton v-else :disabled="true">{{ $t('contactVendor') }}</UiButton>
+            <UiButton v-else :disabled="true" class="w-full">{{ $t('contactVendor') }}</UiButton>
           </div>
         </div>
       </div>
