@@ -55,7 +55,6 @@ export const useAnnonceStore = defineStore('annonce', () => {
         },
       })
 
-      // Optionnel : tu peux mettre à jour l’état global si tu veux
       annonces.value = data
 
       return data
@@ -136,14 +135,13 @@ export const useAnnonceStore = defineStore('annonce', () => {
       const { user } = useUserStore()
       if (!user?.token) throw new Error('Utilisateur non authentifié')
 
-      await apiFetch(`/annonces/${id}`, {
+      await apiFetch(`/secure/annonces/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       })
 
-      annonces.value = annonces.value.filter((a) => a.id !== id)
       toast.success('Annonce supprimée')
     } catch {
       toast.error('Erreur lors de la suppression de l’annonce')

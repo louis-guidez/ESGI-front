@@ -19,6 +19,12 @@ const isMobile = breakpoints.smaller('xl')
 
 const menuOpen = ref(true)
 
+const { getAnnoncesByUser } = useAnnonceStore()
+
+onMounted(async () => {
+  await getAnnoncesByUser()
+})
+
 watch(
   isMobile,
   (isMobile) => {
