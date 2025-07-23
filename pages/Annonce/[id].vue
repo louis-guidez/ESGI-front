@@ -111,18 +111,20 @@ const { data: address } = await useAsyncData<{ features: { geometry: { coordinat
       </div>
 
       <div class="flex flex-col gap-1">
-        <UiMap
-          :marker="
-            data?.user.postalCode && data?.user.ville
-              ? { lng: address?.features[0].geometry.coordinates[0]!, lat: address?.features[0].geometry.coordinates[1]! }
-              : undefined
-          "
-          :center="
-            data?.user.postalCode && data?.user.ville
-              ? { lng: address?.features[0].geometry.coordinates[0]!, lat: address?.features[0].geometry.coordinates[1]! }
-              : undefined
-          "
-        />
+        <ClientOnly>
+          <UiMap
+            :marker="
+              data?.user.postalCode && data?.user.ville
+                ? { lng: address?.features[0].geometry.coordinates[0]!, lat: address?.features[0].geometry.coordinates[1]! }
+                : undefined
+            "
+            :center="
+              data?.user.postalCode && data?.user.ville
+                ? { lng: address?.features[0].geometry.coordinates[0]!, lat: address?.features[0].geometry.coordinates[1]! }
+                : undefined
+            "
+          />
+        </ClientOnly>
         <span v-if="data?.user" class="text-sm w-full text-right text-gray-500">{{ `${data.user.ville}, ${data.user.postalCode}` }}</span>
       </div>
 

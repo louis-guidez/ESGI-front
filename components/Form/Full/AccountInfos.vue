@@ -95,7 +95,9 @@ watch(
         <FormInput id="email" v-model="formInfos.email" name="email" class="w-full" :label="$t('email')" type="email" :required="true" />
         <FormInput id="name" v-model="formInfos.name" name="name" class="w-full" :label="$t('name')" :required="true" />
         <FormInput id="lastname" v-model="formInfos.lastname" name="lastname" class="w-full" :label="$t('lastname')" :required="true" />
-        <FormInputPlaceAutocomplete id="address" v-model="formInfos.address" name="address" class="w-full" :label="$t('address')" :required="true" />
+        <ClientOnly>
+          <FormInputPlaceAutocomplete id="address" v-model="formInfos.address" name="address" class="w-full" :label="$t('address')" :required="true" />
+        </ClientOnly>
 
         <UiButton type="submit" class="w-full font-bold">
           <span>{{ $t('save') }}</span>

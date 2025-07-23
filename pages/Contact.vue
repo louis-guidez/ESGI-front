@@ -40,7 +40,14 @@ const onSubmit = handleSubmit(async () => {
     </div>
 
     <div class="w-full lg:w-1/2 mt-12 flex flex-col items-center gap-2">
-      <UiMap :center="{ lng: 3.0392583, lat: 50.6306175 }" :marker="{ lng: 3.0392583, lat: 50.6306175 }" :popup="true" :popup-text="$t('addressPlaceholder')" />
+      <ClientOnly>
+        <UiMap
+          :center="{ lng: 3.0392583, lat: 50.6306175 }"
+          :marker="{ lng: 3.0392583, lat: 50.6306175 }"
+          :popup="true"
+          :popup-text="$t('addressPlaceholder')"
+        />
+      </ClientOnly>
       <span class="block w-4/5 font-semibold text-center">{{ $t('contactUs_physical') }}</span>
     </div>
 
