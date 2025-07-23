@@ -3,6 +3,7 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import Account from '~/components/Profile/Account.vue'
 import Settings from '~/components/Profile/Settings.vue'
 import Annonces from '~/components/Profile/Annonces.vue'
+import Reservations from '~/components/Profile/Reservations.vue'
 
 definePageMeta({
   middleware: ['auth'],
@@ -49,6 +50,10 @@ const menuOptions = [
   {
     label: t('mesAnnonces'),
     component: shallowRef(Annonces),
+  },
+  {
+    label: t('reservations'),
+    component: shallowRef(Reservations),
   },
 ]
 const selectedMenuOption = ref(menuOptions[0])

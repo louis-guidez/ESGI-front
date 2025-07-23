@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full relative flex flex-col lg:flex-row rounded-xl overflow-hidden shadow border border-gray-200 bg-white">
+  <div class="w-full relative flex flex-col lg:flex-row rounded-xl overflow-hidden border-1 border-solid border-gray-300 bg-white">
     <!-- Bouton corbeille en haut à droite avec UiButton -->
     <div class="absolute top-2 right-2 flex gap-2">
       <template v-if="confirming">
