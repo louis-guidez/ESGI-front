@@ -35,9 +35,9 @@ const form = ref({
 
 const { handleSubmit, setValues } = useForm({
   validationSchema: yup.object({
-    title: yup.string().required(),
-    description: yup.string().required(),
-    price: yup.number().required(),
+    title: yup.string().required('Le titre est requis'),
+    description: yup.string().required('La description est requise'),
+    price: yup.number().required('Le prix est requis'),
     categories: yup.array().required().min(1, 'Sélectionner au moins une catégorie'),
     // pictures: yup
     //   .object({

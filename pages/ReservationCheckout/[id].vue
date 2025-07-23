@@ -23,8 +23,8 @@ const form = ref({
 
 const { handleSubmit } = useForm({
   validationSchema: yup.object({
-    startDate: yup.mixed().required(),
-    endDate: yup.mixed().required(),
+    startDate: yup.mixed().required('La date de début est requise'),
+    endDate: yup.mixed().required('La date de fin est requise'),
   }),
 })
 
