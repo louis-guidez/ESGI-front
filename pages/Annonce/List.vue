@@ -9,13 +9,6 @@ defineOgImageComponent('Lendo', {
 
 const { search, fetchAnnonces } = extractStore(useAnnonceStore())
 
-const { data } = useAsyncData('annonces-list', () => fetchAnnonces(search.value), { watch: [search] })
-const filteredData = computed(() => {
-  const selectedCategoriesOptions = categoryOptions.value.filter((c) => selectedCategories.value.includes(c.value))
-
-  return data.value.filter((annonce) => annonce.categories.some((cat) => selectedCategoriesOptions.some((c) => c.label === cat)))
-})
-
 const { fetchCategories, getAllCategories } = useCategorieStore()
 
 const categoryOptions = computed(() =>
@@ -24,6 +17,15 @@ const categoryOptions = computed(() =>
     value: cat.id,
   })),
 )
+
+const { data } = useAsyncData('annonces-list', () => fetchAnnonces(search.value), { watch: [search] })
+const filteredData = computed(() => {
+  if (!data.value || !categoryOptions.value) return []
+  const selectedCategoriesOptions = categoryOptions.value.filter((c) => selectedCategories.value.includes(c.value))
+
+  return data.value.filter((annonce) => annonce.categories.some((cat) => selectedCategoriesOptions.some((c) => c.label === cat)))
+})
+
 const selectedCategories = ref([])
 
 watch(categoryOptions, async () => {
