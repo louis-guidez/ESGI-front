@@ -27,14 +27,14 @@ const seller = computed(() => {
 </script>
 
 <template>
-  <div class="size-full overflow-hidden rounded-lg bg-white aspect-[3/2] relative">
+  <div class="size-full overflow-hidden rounded-lg bg-white aspect-[3/2] relative" :title="`${annonce.titre} - ${annonce.prix}€`">
     <NuxtLink :to="`/annonce/${annonce.id}`" class="">
       <div class="h-full flex flex-col">
         <div class="flex h-full overflow-hidden bg-gray-200">
           <NuxtImg :src="annonce.photos?.[0]" alt="photo" class="size-full object-cover" />
         </div>
         <div class="h-1/2 p-4 flex flex-col gap-2 justify-between">
-          <span class="font-semibold text-lg">{{ annonce.titre }}</span>
+          <span class="font-semibold text-lg truncate">{{ annonce.titre }}</span>
 
           <div class="inline-flex w-full justify-between">
             <span class="truncate">{{ seller }}</span>
