@@ -6,6 +6,8 @@ import { toast } from 'vue-sonner'
 
 import StripeCheckout from '~/components/StripeCheckout.vue'
 
+const router = useRouter()
+
 const { reserveAnnonce, getReservationsForAnnonce } = extractStore(useAnnonceStore())
 const { user } = extractStore(useUserStore())
 
@@ -45,8 +47,10 @@ const onSubmit = handleSubmit(async () => {
     utilisateurId: user.value.id,
     payment_method_id: paymentMethod.id,
   })
-  console.log('res', res)
-  return console.log(form.value)
+
+  if (res) {
+    router.push({ path: '/' })
+  }
 })
 
 onMounted(async () => {
