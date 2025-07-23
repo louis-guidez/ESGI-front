@@ -31,7 +31,7 @@
     <div class="p-4 flex flex-col justify-between flex-1">
       <div>
         <h2 class="text-lg font-semibold text-gray-800">{{ reservation.annonce.titre }}</h2>
-        <div class="text-green-600 font-bold text-lg mt-1">{{ reservation.annonce.prix }} €</div>
+        <div class="text-green-600 font-bold text-lg mt-1">{{ reservation.stripeAmount }} €</div>
         <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
           {{ reservation.statut }}
         </span>
