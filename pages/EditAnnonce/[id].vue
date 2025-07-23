@@ -7,6 +7,7 @@ definePageMeta({
 })
 
 const route = useRoute()
+const router = useRouter()
 
 const id = computed(() => route.params.id)
 
@@ -61,7 +62,9 @@ const onSubmit = handleSubmit(async () => {
 
     const response = await updateAnnonce(Number(id.value), newFormData)
 
-    return response
+    if (response) {
+      router.push({ path: `/Annonce/${response.id}` })
+    }
   } catch (e) {
     console.error(e)
   }

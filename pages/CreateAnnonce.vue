@@ -32,7 +32,7 @@ const categoryOptions = computed(() =>
 const form = ref({
   title: '',
   description: '',
-  price: '',
+  price: '0',
   categories: [] as number[],
   pictures: {
     value: '',
@@ -77,7 +77,7 @@ const onSubmit = handleSubmit(async () => {
 
     const response = await createAnnonce(formData)
     if (response) {
-      router.push('/')
+      router.push({ path: `/Annonce/${response.id}` })
     }
   } catch (e) {
     console.error(e)
