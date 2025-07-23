@@ -72,9 +72,6 @@ const unavailableDates = computed(() => {
   <div class="p-12 flex flex-col gap-12 items-center">
     <h1 class="w-full lg:w-1/2 text-4xl font-bold">Réservation et Paiement</h1>
 
-    {{ reservations }}
-    {{ unavailableDates }}
-
     <form class="w-full lg:w-1/2 flex flex-col gap-4" @submit="onSubmit">
       <div class="w-full flex gap-4">
         <FormDatePicker
