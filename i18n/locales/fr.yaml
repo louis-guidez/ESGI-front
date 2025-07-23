@@ -37,6 +37,7 @@ lastname: "Nom"
 lastnameRequired: "Le nom est requis"
 loading: "Chargement"
 login: "Se connecter"
+mesAnnonces: "Mes annonces"
 messageNotSent: "Message non envoyé !"
 messagePlaceholder: 'Votre message…'
 messageSent: "Message envoyé !"
