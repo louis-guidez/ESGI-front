@@ -1,8 +1,16 @@
 <script setup lang="ts">
+import type { DateValue } from 'reka-ui'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
+import { toast } from 'vue-sonner'
+
+const { reserveAnnonce } = extractStore(useAnnonceStore())
+const { user } = extractStore(useUserStore())
 
 // const { t } = useI18n()
+
+const route = useRoute()
+const id = computed(() => route.params.id)
 
 const form = ref({
   startDate: undefined,
@@ -11,12 +19,24 @@ const form = ref({
 
 const { handleSubmit } = useForm({
   validationSchema: yup.object({
-    startDate: yup.mixed(),
-    endDate: yup.mixed(),
+    startDate: yup.mixed().required(),
+    endDate: yup.mixed().required(),
   }),
 })
 
-const onSubmit = handleSubmit(() => {
+const onSubmit = handleSubmit(async () => {
+  if (!form.value.startDate || !form.value.endDate || !user.value) {
+    toast.error('Non authentifié')
+    return
+  }
+
+  const res = await reserveAnnonce({
+    startDate: new Date((form.value.startDate as DateValue).toString()).toISOString(),
+    endDate: new Date((form.value.endDate as DateValue).toString()).toISOString(),
+    annonceId: Number(id.value),
+    userId: user.value.id,
+  })
+  console.log('res', res)
   return console.log(form.value)
 })
 </script>

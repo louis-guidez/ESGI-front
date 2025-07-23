@@ -120,6 +120,30 @@ export const useAnnonceStore = defineStore('annonce', () => {
     }
   }
 
+  const reserveAnnonce = async (formData: { annonceId: number; startDate: string; endDate: string; userId: number }) => {
+    try {
+      const { user } = useUserStore()
+      if (!user?.token) throw new Error('Utilisateur non authentifié')
+
+      const response = await apiFetch('/secure/reservations', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+
+      toast.success('Réservation créée avec succès')
+      return response
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error('Erreur lors de la création de l’Réservation:', e.message)
+      } else {
+        toast.error('Erreur lors de la création de l’Réservation')
+      }
+    }
+  }
+
   return {
     annonces,
     loading,
@@ -130,5 +154,6 @@ export const useAnnonceStore = defineStore('annonce', () => {
     deleteAnnonce,
     groupedByCategory,
     search,
+    reserveAnnonce,
   }
 })
