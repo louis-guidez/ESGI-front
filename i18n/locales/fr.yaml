@@ -58,6 +58,7 @@ PasswordMinLength: "Le mot de passe doit contenir au moins {length} caractères"
 passwordRequired: "Le mot de passe est requis"
 passwordsDontMatch: "Les mots de passe ne correspondent pas"
 personalInformations: "Informations personnelles"
+wallet: "Cagnotte"
 profile: "Profil"
 register: "S'inscrire"
 reserve: 'Réserver'
