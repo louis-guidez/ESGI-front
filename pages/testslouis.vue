@@ -17,9 +17,9 @@
         <li
           v-for="u in utilisateurs"
           :key="u.id"
-          @click="selectUser(u.id)"
           :class="{ selected: contactUserId === u.id }"
           style="cursor: pointer; padding: 5px; border: 1px solid #ccc; margin-bottom: 4px"
+          @click="selectUser(u.id)"
         >
           {{ u.prenom }} {{ u.nom }} (ID: {{ u.id }})
         </li>
@@ -38,11 +38,7 @@
 
     <div v-if="annonces.length" class="mt-6">
       <h3>Toutes les annonces :</h3>
-      <div
-        v-for="annonce in annonces"
-        :key="annonce.id"
-        style="border: 1px solid #ccc; margin: 1em; padding: 1em"
-      >
+      <div v-for="annonce in annonces" :key="annonce.id" style="border: 1px solid #ccc; margin: 1em; padding: 1em">
         <h4>{{ annonce.titre }}</h4>
         <p>{{ annonce.description }}</p>
         <p>Prix : {{ annonce.prix }} €</p>
@@ -51,13 +47,7 @@
         <div v-if="annonce.photos.length">
           <p>Photos :</p>
           <div style="display: flex; gap: 1em">
-            <img
-              v-for="(photo, i) in annonce.photos"
-              :key="i"
-              :src="photo"
-              alt="photo"
-              style="width: 150px; height: auto; object-fit: cover"
-            />
+            <img v-for="(photo, i) in annonce.photos" :key="i" :src="photo" alt="photo" style="width: 150px; height: auto; object-fit: cover" />
           </div>
         </div>
       </div>
@@ -82,6 +72,22 @@ import StripeCheckout from '~/components/StripeCheckout.vue'
 import { useUserStore } from '@/stores/user'
 
 const { user } = extractStore(useUserStore())
+
+definePageMeta({
+  middleware: [
+    () => {
+      const {
+        public: { ENV_MODE },
+      } = useRuntimeConfig()
+
+      if (ENV_MODE !== 'dev') {
+        return navigateTo('/index')
+      }
+
+      return true
+    },
+  ],
+})
 
 const utilisateurs = ref([])
 const contactUserId = ref(null)
