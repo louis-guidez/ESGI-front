@@ -55,7 +55,7 @@ const onSubmitPassword = handleSubmitPassword(async () => {
         <FormInput
           id="newPasswordConfirmation"
           v-model="formPassword.newPasswordConfirmation"
-          name="newPassword"
+          name="newPasswordConfirmation"
           class="w-full"
           :label="$t('newPasswordConfirmation')"
           type="password"
