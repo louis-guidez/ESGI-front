@@ -57,7 +57,7 @@ const { data: address } = await useAsyncData<{ features: { geometry: { coordinat
           <span class="inline-flex gap-8 items-end">
             <h2 class="text-lg font-semibold">{{ data?.prix }}€</h2>
             <span class="flex gap-2">
-              <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/conversations?newUserIdChat=${id}`">
+              <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/conversations?newUserIdChat=${data?.user.id}`">
                 <UiButton intent="secondary">{{ $t('contactVendor') }}</UiButton>
               </NuxtLink>
               <UiButton v-else intent="secondary" :disabled="true">{{ $t('contactVendor') }}</UiButton>
@@ -102,7 +102,7 @@ const { data: address } = await useAsyncData<{ features: { geometry: { coordinat
               <span class="text-sm text-gray-500">{{ `${data.user.ville}, ${data.user.postalCode}` }}</span>
             </div>
 
-            <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/conversations?newUserIdChat=${id}`" class="w-full">
+            <NuxtLink v-if="user?.id !== data?.user?.id" :to="`/conversations?newUserIdChat=${data?.user.id}`" class="w-full">
               <UiButton intent="secondary" class="w-full">{{ $t('contactVendor') }}</UiButton>
             </NuxtLink>
             <UiButton v-else :disabled="true" class="w-full">{{ $t('contactVendor') }}</UiButton>
