@@ -22,9 +22,9 @@ console.log('📦 Annonces initialisées', groupedByCategory.value)
     <div v-if="annonces.length === 0" class="text-gray-500">Aucune annonce trouvée.</div>
 
     <div v-else class="space-y-6 flex flex-col gap-2">
-      <NuxtLink v-for="annonce in annonces" :key="annonce.id" :to="`/Annonce/${annonce.id}`">
-        <ProfileAnnonceCard :annonce="annonce" @delete="handleDelete" />
-      </NuxtLink>
+      <!-- <NuxtLink v-for="annonce in annonces" :key="annonce.id" :to="`/Annonce/${annonce.id}`"> -->
+      <ProfileAnnonceCard v-for="annonce in annonces" :key="annonce.id" :annonce="annonce" @delete="handleDelete" />
+      <!-- </NuxtLink> -->
     </div>
   </div>
 </template>
